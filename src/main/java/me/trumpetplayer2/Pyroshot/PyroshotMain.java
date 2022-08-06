@@ -59,7 +59,6 @@ public class PyroshotMain extends JavaPlugin{
 	    }
 	    //Schedule
 	    schedule();
-	    
 	}
 	
 	//Basic Disable Code
@@ -110,6 +109,4 @@ public class PyroshotMain extends JavaPlugin{
 		}
 	    }
 	}
-
-	
 }

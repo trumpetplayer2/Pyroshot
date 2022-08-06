@@ -30,7 +30,11 @@ public enum Kit {
     BUILDER,
     WITCH,
     SNIPER,
-    MOSS;
+    MOSS,
+    MACHGUN,
+    GRENADIER,
+    GLOW,
+    PYROMANIAC;
     
     public static int numberOfKits = getNumberOfKits();
     
@@ -81,6 +85,17 @@ public enum Kit {
 		break;
 	case "moss" : kit = MOSS;
 		break;
+	case "machine gun" :
+	case "machgun" :
+	case "machinegun" : 
+	    kit = MACHGUN;
+	    break;
+	case "grenadier" : kit = GRENADIER; 
+	    break;
+	case "glow" : kit = GLOW; 
+	    break;
+	case "pyromaniac" : kit = PYROMANIAC;
+	    break;
 	default: kit = DEFAULT;
 		break;
 	}
@@ -108,6 +123,14 @@ public enum Kit {
 		break;
 	case 9 : kit = MOSS;
 		break;
+	case 10 : kit = MACHGUN;
+	    break;
+	case 11 : kit = GRENADIER;
+	    break;
+	case 12 : kit = GLOW;
+	    break;
+	case 13 : kit = PYROMANIAC;
+	    break;
 	default: kit = DEFAULT;
 		break;
 	}
@@ -127,6 +150,10 @@ public enum Kit {
 	case WITCH	 : cooldown = 300; break;
 	case SNIPER	 : cooldown = 7; break;
 	case MOSS	 : cooldown = 300; break;
+	case MACHGUN : cooldown = 300; break;
+    case GLOW: cooldown = 300; break;
+    case GRENADIER:cooldown = 300; break;
+    case PYROMANIAC: cooldown = 300; break;
 	}
 	return cooldown;
     }
@@ -188,6 +215,18 @@ public enum Kit {
 	
 	case MOSS :
 	    s = "Moss";
+	    break;
+	case MACHGUN :
+	    s = "Machine Gun";
+	    break;
+	case GRENADIER :
+	    s = "Grenadier";
+	    break;
+	case GLOW :
+	    s = "Glow";
+	    break;
+	case PYROMANIAC:
+	    s = "Pyromaniac";
 	    break;
 	default: 
 	    s = "Default";
@@ -396,7 +435,6 @@ public enum Kit {
 		im.addEnchant(Enchantment.KNOCKBACK, 3, true);
 		im.setLore(WitchLore);
 		im.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Witch Kit");
-		
 	    break;
 		
 	case  SNIPER :
@@ -457,6 +495,76 @@ public enum Kit {
 		im.setLore(MossLore);
 		im.setDisplayName(ChatColor.GREEN + "" +  ChatColor.BOLD + "Moss Kit");
 		break;
+	case MACHGUN:
+        i = new ItemStack(Material.GOLDEN_CARROT);
+        im = i.getItemMeta();
+        
+        List<String> MachLore = new ArrayList<String>();
+        MachLore.add(ChatColor.GOLD + "Machine Gun Kit");
+        MachLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        MachLore.add(ChatColor.GOLD + " + Double Jump");
+        MachLore.add(ChatColor.GOLD + " + High Fire Rate");
+        MachLore.add(ChatColor.GOLD + " - Lower per fireball damage");
+        MachLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        
+        im.addEnchant(Enchantment.QUICK_CHARGE, 3, true);
+        im.setLore(MachLore);
+        im.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Machine Gun Kit");
+        break;
+	case GRENADIER:
+	    i = new ItemStack(Material.FIREWORK_STAR);
+        im = i.getItemMeta();
+        
+        List<String> GrenadierLore = new ArrayList<String>();
+        GrenadierLore.add(ChatColor.GOLD + "Grenadier Kit");
+        GrenadierLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        GrenadierLore.add(ChatColor.GOLD + " + Double Jump");
+        GrenadierLore.add(ChatColor.GOLD + " + Gains Mid-range Grenades over time");
+        GrenadierLore.add(ChatColor.GOLD + " + Grenades have different effects");
+        GrenadierLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        
+        im.addEnchant(Enchantment.KNOCKBACK, 3, true);
+        im.setLore(GrenadierLore);
+        im.setDisplayName(ChatColor.GRAY + "" + ChatColor.BOLD + "Grenadier Kit");
+        break;
+	case GLOW:
+	    if(Debug.getNMSVersion() < 1.17) {
+	        i = new ItemStack(Material.GLOWSTONE);
+	        }else {
+	            i = new ItemStack(Material.GLOW_BERRIES);
+	        }
+	        im = i.getItemMeta();
+	        
+	        List<String> GlowLore = new ArrayList<String>();
+	        GlowLore.add(ChatColor.GOLD + "Glow Kit");
+	        GlowLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+	        GlowLore.add(ChatColor.GOLD + " + Double Jump");
+	        GlowLore.add(ChatColor.GOLD + " + Special - Heat Vision");
+	        GlowLore.add(ChatColor.GOLD + " - Bioluminescent");
+	        GlowLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+	        
+	        im.addEnchant(Enchantment.DAMAGE_UNDEAD, 2, true);
+	        im.setLore(GlowLore);
+	        im.setDisplayName(ChatColor.YELLOW + "" + ChatColor.BOLD + "Glow Kit");
+	        break;
+	case PYROMANIAC:
+        i = new ItemStack(Material.FIRE_CHARGE);
+        im = i.getItemMeta();
+        
+        List<String> PyroLore = new ArrayList<String>();
+        PyroLore.add(ChatColor.GOLD + "Pyromaniac Kit");
+        PyroLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        PyroLore.add(ChatColor.GOLD + " + Double Jump");
+        PyroLore.add(ChatColor.GOLD + " + Bonus Damage while on fire");
+        PyroLore.add(ChatColor.GOLD + " + Bonus Fire on fireball hit");
+        PyroLore.add(ChatColor.GOLD + " + Special - Light it Up");
+        PyroLore.add(ChatColor.GOLD + " - Needs Fire");
+        PyroLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        
+        im.addEnchant(Enchantment.ARROW_FIRE, 3, true);
+        im.setLore(PyroLore);
+        im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Pyromaniac Kit");
+        break;
 	default:
 	    i = new ItemStack(Material.BARRIER);
 	    im = i.getItemMeta();

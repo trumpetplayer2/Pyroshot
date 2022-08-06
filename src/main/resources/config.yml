@@ -1,0 +1,140 @@
+#####################################
+#  Fireball Bow Minigame Config     #
+#####################################
+fireball-power:
+#Power based on how long you pull. 1 is very little, 3 is full, 2 is anything inbetween
+  level-1: 0.3
+  level-2: 3
+  level-3: 2.5
+bow-properties:
+#Bow given upon minigame starting
+  name: "&6Fireball Bow"
+#Is the bow unbreakable?
+  unbreakable: true
+#Custom Lore
+  lore:
+    - "&cOfficial Fireball Bow"
+    - "&cNot for Resale"
+    - "&cPyroshot Inc"
+minigame:
+#Minimum players to start the game
+  minimum-players: 2
+#Does water count as a instant loss?
+  water-loss: true  
+#If true, enable Double Jump
+  double-jump: true
+#If set to true, enables pvp in the lobby. NOTE - PVP has to be ENABLED serverside to function properly
+  enable-pvp: false
+#Should spectators exist?
+  spectators: false
+#Should plugin load Default Worlds if they don't exist? 
+#WARNING: ONLY SET TO TRUE YOU HAVE OTHER WORLDS PRESENT IN THE GAMEMAPS FOLDER
+  disable-default-worlds: false
+#Autoreset
+  autoreset:
+    #Worlds to Reset
+    world:
+      zephstorm:
+        icon: "DARK_OAK_PLANKS"
+        display: "&eBattle of Zephstorm"
+        lore:
+          - "&62 Teams"
+          - "&6Battle of Zephstorm"
+          - "&6Map By Lemonadestand57"
+          - "&6Check out on twitch!"
+        teams:
+          red:
+            #Team name must not contain spaces
+            team-name: Red
+            #Team color should be a ChatColor color. Please see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html for more info!
+            team-color: RED
+            spawn-loc:
+              x: 9
+              y: 38
+              z: 63
+          blue:
+            #Team name must not contain spaces
+            team-name: Blue
+            #Team color should be a ChatColor color. Please see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html for more info!
+            team-color: BLUE
+            spawn-loc:
+              x: 9
+              y: 38
+              z: -62
+        #Needs Spectators enabled above as well
+        spectators:
+          x: 0
+          y: 38
+          z: 0
+          
+      steampunk:
+        icon: "DARK_OAK_BOAT"
+        display: "&5Battle of Brothers"
+        lore:
+          - "&64 Teams"
+          - "&6Battle of Brothers"
+          - "&6Map By Lemonadestand57"
+          - "&6Check out on twitch!"
+        teams:
+          black:
+            #Team name must not contain spaces
+            team-name: Black
+            #Team color should be a ChatColor color. Please see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html for more info!
+            team-color: BLACK
+            spawn-loc:
+              x: 74
+              y: -17
+              z: 28
+          gray:
+            #Team name must not contain spaces
+            team-name: Gray
+            #Team color should be a ChatColor color. Please see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html for more info!
+            team-color: GRAY
+            spawn-loc:
+              x: 28
+              y: -17
+              z: -57
+          red:
+            #Team name must not contain spaces
+            team-name: Red
+            #Team color should be a ChatColor color. Please see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html for more info!
+            team-color: RED
+            spawn-loc:
+              x: -57
+              y: -17
+              z: -11
+          green:
+            #Team name must not contain spaces
+            team-name: Green
+            #Team color should be a ChatColor color. Please see https://hub.spigotmc.org/javadocs/spigot/org/bukkit/ChatColor.html for more info!
+            team-color: GREEN
+            spawn-loc:
+              x: -11
+              y: -17
+              z: 74
+        #Needs Spectators enabled above as well
+        spectators:
+          x: 0
+          y: -17
+          z: 0
+
+autostart:
+  #Should the game autostart
+  enable: true
+  #Minimum amount of players for countdown to start
+  min-players: 2
+  #Time in Seconds for countdown to reach 0 after minimum players has been reached
+  timer: 120
+  #How long before the match starts should initialization occur. A value equal or greater than the countdown, or less than 0, will occur when the countdown reaches 0. 
+  #NOTE: Initialization is when the map is chosen/loaded and the team selection begins.
+  #Default - 30 seconds before match starts
+  initialize: 90
+  
+match-end:
+  #if enabled, Teleport players to a set location upon game completion
+  teleport: false
+  #Teleport here if above is true and match ends
+  x: 0
+  y: 0
+  z: 0
+  world: world
