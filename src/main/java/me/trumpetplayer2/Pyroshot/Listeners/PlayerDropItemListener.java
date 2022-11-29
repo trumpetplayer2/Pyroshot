@@ -14,6 +14,7 @@ import org.bukkit.util.Vector;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
+import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 
 public class PlayerDropItemListener implements Listener{
@@ -87,44 +88,125 @@ public class PlayerDropItemListener implements Listener{
 	}
     }
     
+//    private void Build(Player p) {
+//	Location underPlayer = p.getLocation().clone().subtract(0, 1, 0);
+//	Block wallBlock = underPlayer.getBlock();
+//	do {
+//		underPlayer.subtract(0, 1, 0);
+//		if(Debug.getNMSVersion() < 1.18) {
+//		    if(underPlayer.getY() < -64) {
+//            //Player is above void
+//            wallBlock.setType(Material.OAK_WOOD);}
+//		}
+//		else if(underPlayer.getY() < 1) {
+//			//Player is above void
+//			wallBlock.setType(Material.OAK_WOOD);
+//		}
+//		wallBlock = underPlayer.getBlock();
+//	}while(wallBlock.getType() == Material.AIR);
+//	
+//	//Determine middle block in front of player
+//	Location origin = p.getEyeLocation();
+//	Vector direction = origin.getDirection();
+//	Location centerLocation = origin.clone().add(direction);
+//	
+//	//Determine corner
+//	Location rotated = origin.clone();
+//	rotated.setPitch(0);
+//	rotated.setYaw(origin.getYaw() - 90);
+//	Vector rotation = rotated.getDirection();
+//	Location blockLocation = centerLocation.clone().add(rotation).subtract(0, 3 / 2, 0);
+//	rotation.multiply(-1);
+//	int initialX = blockLocation.getBlockX();
+//	int initialZ = blockLocation.getBlockZ();
+//	
+//	//Build 3x3 walls
+//	for (int y = 0; y < 3; y++) {
+//	    for (int i = 0; i < 3; i++) {
+//	        blockLocation.getBlock().setType(wallBlock.getType());
+//	        blockLocation.add(rotation);
+//	    }
+//	 
+//	    blockLocation.add(0, 1, 0); // Increase the height by 1
+//	    blockLocation.setX(initialX);
+//	    blockLocation.setZ(initialZ);
+//	}
+//	
+//    }
+    
     private void Build(Player p) {
-	Location underPlayer = p.getLocation().clone().subtract(0, 1, 0);
-	Block wallBlock = underPlayer.getBlock();
-	do {
-		underPlayer.subtract(0, 1, 0);
-		if (underPlayer.getY() < 1) {
-			//Player is above void
-			wallBlock.setType(Material.OAK_WOOD);
-		}
-		wallBlock = underPlayer.getBlock();
-	}while(wallBlock.getType() == Material.AIR);
-	
-	//Determine middle block in front of player
-	Location origin = p.getEyeLocation();
-	Vector direction = origin.getDirection();
-	Location centerLocation = origin.clone().add(direction);
-	
-	//Determine corner
-	Location rotated = origin.clone();
-	rotated.setPitch(0);
-	rotated.setYaw(origin.getYaw() - 90);
-	Vector rotation = rotated.getDirection();
-	Location blockLocation = centerLocation.clone().add(rotation).subtract(0, 3 / 2, 0);
-	rotation.multiply(-1);
-	int initialX = blockLocation.getBlockX();
-	int initialZ = blockLocation.getBlockZ();
-	
-	//Build 3x3 walls
-	for (int y = 0; y < 3; y++) {
-	    for (int i = 0; i < 3; i++) {
-	        blockLocation.getBlock().setType(wallBlock.getType());
-	        blockLocation.add(rotation);
-	    }
-	 
-	    blockLocation.add(0, 1, 0); // Increase the height by 1
-	    blockLocation.setX(initialX);
-	    blockLocation.setZ(initialZ);
-	}
-	
+        //Get block under player
+        Location underPlayer = p.getLocation().clone().subtract(0, 1, 0);
+        Block wallBlock = underPlayer.getBlock();
+        do {
+            underPlayer.subtract(0, 1, 0);
+            if(Debug.getNMSVersion() < 1.18) {
+                if(underPlayer.getY() < -64) {
+                //Player is above void
+                wallBlock.setType(Material.OAK_WOOD);}
+            }
+            else if(underPlayer.getY() < 1) {
+                //Player is above void
+                wallBlock.setType(Material.OAK_WOOD);
+            }
+            wallBlock = underPlayer.getBlock();
+        }while(wallBlock.getType() == Material.AIR);
+        
+        //Determine middle block in front of player
+        Location origin = p.getEyeLocation();
+        Vector direction = ClosestStraight(origin.getPitch(), origin.getYaw());
+        
+        Location centerLocation = origin.clone().add(direction);
+        
+        //Determine corner
+        Location rotated = origin.clone();
+        rotated.setPitch(0);
+        rotated.setYaw(origin.getYaw() - 90);
+        Vector rotation = rotated.getDirection();
+        Location blockLocation = centerLocation.clone().add(rotation).subtract(0, 3 / 2, 0);
+        rotation.multiply(-1);
+        int initialX = blockLocation.getBlockX();
+        int initialZ = blockLocation.getBlockZ();
+        
+      //Build 3x3 walls
+        for (int y = 0; y < 3; y++) {
+            for (int i = 0; i < 3; i++) {
+                blockLocation.getBlock().setType(wallBlock.getType());
+                blockLocation.add(rotation);
+            }
+         
+            blockLocation.add(0, 1, 0); // Increase the height by 1
+            blockLocation.setX(initialX);
+            blockLocation.setZ(initialZ);
+        }
+    }
+    
+    private Vector ClosestStraight(float pitch, float yaw) {
+        //Calculate new pitch off of old pitch
+        //Pitch - Straight up -90, Straight down 90, Forward 0
+        if(pitch < 22.5 && pitch > -22.5) {
+            pitch = 0;
+        }else if(pitch < -22.5) {
+            pitch = -90;
+        }else if(pitch > 22.5) {
+            pitch = 90;
+        }
+        //Yaw - North 0, East 90, South 180, West 270
+        if(yaw < 22.5 || yaw >= 337.5) {
+            yaw = 0;
+        }else if(yaw >= 22.5 && yaw < 112.5) {
+            yaw = 90;
+        }else if(yaw >= 112.5 && yaw < 202.5) {
+            yaw = 180;
+        }else if(yaw >= 202.5 && yaw < 337.5) {
+            yaw = 270;
+        }
+        
+        //Calculate x, y and z
+        double x = Math.sin(pitch) * Math.cos(yaw);
+        double y = Math.sin(pitch) * Math.sin(yaw);
+        double z = Math.cos(pitch);
+        //Generate and return new direction
+        return new Vector(x,y,z);
     }
 }

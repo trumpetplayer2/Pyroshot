@@ -25,6 +25,7 @@ import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.MapHandler.*;
+import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Grenade;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.MinigameEndEvent;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.MinigameStartEvent;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.MinigameTickEvent;
@@ -428,10 +429,22 @@ public class PyroshotMinigame {
    	    //Add raid pearl
    	    p.getInventory().addItem(new ItemStack(ConfigHandler.raidPearl));
    	    break;
+   	case GRENADIER:
+   	    giveGrenade(p, stats);
+   	    break;
    	default:
    	    //No special kits
    	    break;
    	}
+    }
+    
+    public void giveGrenade(Player p, PlayerStats stats) {
+        Grenade g = Grenade.randomGrenade();
+        if(!p.getInventory().containsAtLeast(g.getSymbol(), 3)) {
+            p.getInventory().addItem(g.getSymbol());
+        }
+        stats.specialCooldown = g.getCooldown();
+        stats.special = false;
     }
     
     
