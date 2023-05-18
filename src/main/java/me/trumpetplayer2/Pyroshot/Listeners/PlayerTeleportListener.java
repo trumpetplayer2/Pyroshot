@@ -137,6 +137,8 @@ public class PlayerTeleportListener implements Listener{
 	if(!(plugin.game.isActive)) {return;}
 	if(!(e.getEntity() instanceof Snowball)) {return;}
 	if(!(e.getEntity().getShooter() instanceof Player)) {return;}
+	//Check if player has special
+	if(!plugin.PlayerMap.get((Player) e.getEntity().getShooter()).special) {return;}
 	Player p = (Player) e.getEntity().getShooter();
 	//Get where snowball hit
 	Location loc = e.getEntity().getLocation().clone();

@@ -2,6 +2,7 @@ package me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -86,5 +87,6 @@ public class PlayerFireball {
 	p.launchProjectile(Fireball.class, direction).setYield(power);
 	plugin.PlayerMap.get(p).useSpecial = false;
 	plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(kit);
+	p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_SHOOT, 1, 1f); 
     }
 }

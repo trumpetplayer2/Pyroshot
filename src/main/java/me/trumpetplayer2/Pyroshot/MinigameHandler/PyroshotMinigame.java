@@ -10,8 +10,10 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
@@ -20,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
@@ -134,7 +137,7 @@ public class PyroshotMinigame {
 	}
 	timer = ConfigHandler.timer + 10;
 	//Activate pointer
-	isActive = true;
+	//isActive = true;
 	//Game is active, disable initalization.
 	isInitialized = false;
 	//Add team priority vote
@@ -173,6 +176,7 @@ public class PyroshotMinigame {
 	    PyroshotPlugin.PlayerMap.get(p).freeze = false;
 	    PyroshotPlugin.PlayerMap.get(p).useSpecial = false;
 	    PyroshotPlugin.PlayerMap.get(p).special = false;
+	    p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 1000000, 1, false, false, false));
 	}
 	for(Player p : PyroshotPlugin.PlayerMap.keySet()) {
 	    PyroshotPlugin.PlayerMap.get(p).specialCooldown = 30;
@@ -182,6 +186,35 @@ public class PyroshotMinigame {
 	map.getWorld().setGameRule(GameRule.DO_TILE_DROPS, false);
 	map.getWorld().setGameRule(GameRule.KEEP_INVENTORY, true);
 	map.getWorld().setGameRule(GameRule.DO_FIRE_TICK, false);
+	map.getWorld().setGameRule(GameRule.DO_MOB_SPAWNING, false);
+	map.getWorld().setDifficulty(Difficulty.NORMAL);
+	startCountdown();
+    }
+    
+    //Start countdown
+    public void startCountdown() {
+        //Temp disable game
+        isActive = false;
+        for(int i = 0; i<=10; i++) {
+            final int ti = 10 - i;
+            Bukkit.getScheduler().scheduleSyncDelayedTask(PyroshotMain.getInstance(), () -> countdown(ti), 20*i);
+        }
+    }
+    
+    public void countdown(int i) {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.sendTitle(ChatColor.RED + "Starting in", null, 0, 25, 0);
+            p.sendTitle(null, ChatColor.GOLD + "" + i, 0, 20, 0);
+            if(i > 0) {
+               p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1, 3f); 
+            }
+            if(i <= 0) {
+                p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1f); 
+            }
+        }
+        if(i <= 0) {
+            isActive = true;
+        }
     }
     
     //Minigame End

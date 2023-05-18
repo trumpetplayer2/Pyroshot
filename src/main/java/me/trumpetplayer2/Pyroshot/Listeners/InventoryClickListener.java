@@ -1,6 +1,7 @@
 package me.trumpetplayer2.Pyroshot.Listeners;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,6 +41,7 @@ public class InventoryClickListener implements Listener{
 	    kitClick(s, i, p);
 	}
 	if(e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Map Vote")){
+        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
 	    mapVote(p, e.getSlot(), i);
 	}
 	
@@ -58,10 +60,13 @@ public class InventoryClickListener implements Listener{
 	String kitName = i.getItemMeta().getDisplayName().substring(0, i.getItemMeta().getDisplayName().length()-4);
 	//If player has permission, save kit change, otherwise give invalid permission for kit
 	if(s.getKit().hasPermission(p)) {
-	p.sendMessage(ChatColor.GOLD + "Selected " + ChatColor.BOLD + kitName + ChatColor.RESET + "" + ChatColor.GOLD + " Kit!");
-	plugin.PlayerMap.put(p, s);
+	    p.sendMessage(ChatColor.GOLD + "Selected " + ChatColor.BOLD + kitName + ChatColor.RESET + "" + ChatColor.GOLD + " Kit!");
+        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
+	    plugin.PlayerMap.put(p, s);
 	}else {
 	    p.sendMessage(ChatColor.DARK_RED + "Invalid permissions for " + kitName + ChatColor.RESET + "" + ChatColor.DARK_RED + " Kit.");
+
+        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1, 3f); 
 	}
     }
     

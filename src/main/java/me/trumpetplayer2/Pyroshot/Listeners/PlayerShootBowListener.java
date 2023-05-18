@@ -1,5 +1,7 @@
 package me.trumpetplayer2.Pyroshot.Listeners;
 
+import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,10 +28,12 @@ public class PlayerShootBowListener implements Listener{
 	if(!plugin.game.isActive) {return;}
 	//Shoot fireball
 	Player p = (Player) e.getEntity();
+	if(p.getGameMode().equals(GameMode.SPECTATOR)) {e.setCancelled(true); return;}
 	if(plugin.PlayerMap.get(p).getKit().equals(Kit.WATER) && plugin.PlayerMap.get(p).useSpecial) {
 	    //Player is water kit and wants to use special
 	    PlayerFireball.LaunchSnowball(p, (Arrow) e.getProjectile(), plugin.PlayerMap.get(p), e.getForce());
 	    e.setCancelled(true);
+	    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_SPLASH_HIGH_SPEED, 1, 1f); 
 	    return;
 	}
 	if(plugin.PlayerMap.get(p).getKit().equals(Kit.SHOTGUN) && plugin.PlayerMap.get(p).useSpecial) {
@@ -39,5 +43,6 @@ public class PlayerShootBowListener implements Listener{
 	}
 	PlayerFireball.LaunchFireball(p, (Arrow) e.getProjectile(), plugin.PlayerMap.get(p), e.getForce());
 	e.setCancelled(true);
+    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_SHOOT, 1, 1f); 
     }
 }

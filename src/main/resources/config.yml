@@ -2,10 +2,11 @@
 #  Fireball Bow Minigame Config     #
 #####################################
 fireball-power:
-#Power based on how long you pull. 1 is very little, 3 is full, 2 is anything inbetween
+#Power based on how long you pull. 1 is very little, 3 is full, 2 is anything inbetween, Damage mult only changes entity explosion based damage (IE: Fireballs). This means it will not change TNT, potion, sword, or other forms of damage
   level-1: 0.3
   level-2: 3
   level-3: 2.5
+  damage-mult: 1
 bow-properties:
 #Bow given upon minigame starting
   name: "&6Fireball Bow"

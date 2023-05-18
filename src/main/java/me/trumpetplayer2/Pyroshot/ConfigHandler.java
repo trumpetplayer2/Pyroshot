@@ -30,6 +30,7 @@ public class ConfigHandler {
     public static float StageOneMult = StageOneMult();
     public static float StageTwoMult = StageTwoMult();
     public static float StageThreeMult = StageThreeMult();
+    public static float DamageMult = DamageMult();
     public static boolean waterLoss = waterLoss();
     public static boolean autostart = autostart();
     public static boolean enableDoubleJump = enableDoubleJump();
@@ -230,6 +231,18 @@ public class ConfigHandler {
 	}
 	return f;
     }
+    private static float DamageMult() {
+        //Create, fetch, and return a number from the config. See config for more info on what this is for
+        float f = 0;
+        if(p.getConfig().contains("fireball-power.damage-mult")) {
+        f = (float) p.getConfig().getDouble("fireball-power.damage-mult");
+        }
+        else {
+            f = 2.5f;
+            p.getConfig().set("fireball-power.damage-mult", 2);
+        }
+        return f;
+        }
     private static boolean waterLoss() {
 	//Create a boolean based on config, fetch value from config and return it. See config for more details
 	boolean lose = true;
