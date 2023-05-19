@@ -1,5 +1,7 @@
 package me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -11,7 +13,7 @@ public class MinigameEndEvent extends Event{
     private PyroshotMinigame game;
     private PyroshotTeam Winners;
     
-    public MinigameEndEvent(PyroshotMinigame g, PyroshotTeam win) {
+    public MinigameEndEvent(PyroshotMinigame g, @Nullable PyroshotTeam win) {
 	game = g;
 	Winners = win;
     }

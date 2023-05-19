@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -55,8 +56,18 @@ public class Savable {
 	    }
 	int wins = stat.getWins();
 	int loses = stat.getLoses();
+	int deaths = stat.getDeaths();
 	dataConfig.getConfigurationSection(dataPath).set("Wins", wins);
 	dataConfig.getConfigurationSection(dataPath).set("Loses", loses);
+	dataConfig.getConfigurationSection(dataPath).set("Deaths", deaths);
+	String kitPath = dataPath + ".Kits";
+	if(dataConfig.getConfigurationSection(kitPath) == null) {
+	    dataConfig.createSection(kitPath);
+	}
+	kitPath += ".";
+	for(Entry<Kit, Integer> entry : stat.getKitUseCount().entrySet()) {
+	    kitSave(kitPath, entry.getKey(), entry.getValue());
+	}
 	try {
 	this.dataConfig.save(dataFile);
 	}catch(Exception e) {
@@ -64,18 +75,47 @@ public class Savable {
 	}
     }
     
+    public void kitSave(String path, Kit k, int count) {
+        dataConfig.getConfigurationSection(path).set(k.toString(), count);
+    }
+    
+    public PlayerStats kitLoad(String path, String key, PlayerStats s) {
+        if(dataConfig.getString(path + "." + key) != null) {
+            int count = dataConfig.getInt(path + "." + key);
+            Kit k = Kit.valueOf(key);
+            if(k == null) {
+                k = Kit.kitFromString(key);
+            }
+            s.initializeKit(k, count);
+        }
+        return s;
+    }
+    
     public PlayerStats loadPlayerStats(Player p) {
 	String dataPath = dataPathS;
 	dataPath += "." + p.getUniqueId().toString();
 	int w = 0;
 	int l = 0;
+	int d = 0;
 	if(dataConfig.getString(dataPath + ".Wins") != null) {
 	    w = dataConfig.getInt(dataPath + ".Wins");
 	    }
 	if(dataConfig.getString(dataPath + ".Loses") != null) {
 	    l = dataConfig.getInt(dataPath + ".Loses");
 	    }
-	PlayerStats ps = new PlayerStats(Kit.DEFAULT, w, l);
+	if(dataConfig.getString(dataPath + ".Deaths") != null) {
+        d = dataConfig.getInt(dataPath + ".Deaths");
+        }
+	PlayerStats ps = new PlayerStats(Kit.DEFAULT, w, l, d);
+	if(dataConfig.getConfigurationSection(dataPath + ".Kits") != null) {
+	for(String s : dataConfig.getConfigurationSection(dataPath + ".Kits").getKeys(false)) {
+	    ps = kitLoad(dataPath + ".Kits", s, ps);
+	}
+	}else {
+	    for(Kit k : Kit.values()) {
+	        ps.initializeKit(k, 0);
+	    }
+	}
 	return ps;
     }
     

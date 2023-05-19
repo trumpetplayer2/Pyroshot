@@ -177,6 +177,10 @@ public class PyroshotMinigame {
 	    PyroshotPlugin.PlayerMap.get(p).useSpecial = false;
 	    PyroshotPlugin.PlayerMap.get(p).special = false;
 	    p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 1000000, 1, false, false, false));
+	    
+	    //Add kit to tracker
+	    PlayerStats s = PyroshotPlugin.PlayerMap.get(p);
+	    s.incrementKit();
 	}
 	for(Player p : PyroshotPlugin.PlayerMap.keySet()) {
 	    PyroshotPlugin.PlayerMap.get(p).specialCooldown = 30;
@@ -203,12 +207,20 @@ public class PyroshotMinigame {
     
     public void countdown(int i) {
         for(Player p : Bukkit.getOnlinePlayers()) {
-            p.sendTitle(ChatColor.RED + "Starting in", null, 0, 25, 0);
-            p.sendTitle(null, ChatColor.GOLD + "" + i, 0, 20, 0);
             if(i > 0) {
+               p.sendTitle(ChatColor.RED + "Starting in", null, 0, 25, 0);
+               p.sendTitle(null, ChatColor.GOLD + "" + i, 0, 20, 0);
                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1, 3f); 
             }
             if(i <= 0) {
+                p.sendTitle(ChatColor.RED + "Round Starting", null, 0, 25, 0);
+                String team = "";
+                PyroshotTeam t = map.getPlayerTeam(p);
+                team = t.teamColor + t.getName() + ": ";
+                for(String u : t.players) {
+                    team += Bukkit.getPlayer(UUID.fromString(u)).getName();
+                }
+                p.sendTitle(null, ChatColor.GOLD + "" + team, 0, 60, 10);
                 p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1f); 
             }
         }
@@ -224,6 +236,7 @@ public class PyroshotMinigame {
 	//Call end event
 	MinigameEndEvent e = new MinigameEndEvent(this, winner);
 	Bukkit.getPluginManager().callEvent(e);
+	if(winner != null) {
 	for(Player p : Bukkit.getOnlinePlayers()) {
 	    p.sendMessage(winner.teamColor + winner.getName() + " Team" + ChatColor.GOLD + " has won the game! GG!");
 	}
@@ -233,6 +246,7 @@ public class PyroshotMinigame {
 	    //Summon particles around winners
 	    PlayVictoryEffectEvent victory = new PlayVictoryEffectEvent(p);
 	    Bukkit.getPluginManager().callEvent(victory);
+	}
 	}
 	//Wait 10 secs to trigger return to spawn
 	Bukkit.getScheduler().scheduleSyncDelayedTask(PyroshotPlugin, () -> reset(),  200);

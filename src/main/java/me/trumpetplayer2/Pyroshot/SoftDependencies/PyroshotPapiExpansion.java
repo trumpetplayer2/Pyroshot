@@ -1,10 +1,12 @@
 package me.trumpetplayer2.Pyroshot.SoftDependencies;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
+import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 
 public class PyroshotPapiExpansion extends PlaceholderExpansion{
 
@@ -44,6 +46,17 @@ public class PyroshotPapiExpansion extends PlaceholderExpansion{
 	}
 	if(params.equalsIgnoreCase("loses")) {
 	    return PyroshotMain.getInstance().PlayerMap.get(p).getLoses() + "";
+	}
+	if(params.equalsIgnoreCase("deaths")) {
+	    return PyroshotMain.getInstance().PlayerMap.get(p).getDeaths() + "";
+	}
+	if(params.equalsIgnoreCase("mostusedkits")) {
+	    return WordUtils.capitalizeFully(PyroshotMain.getInstance().PlayerMap.get(p).mostUsedKit().toString());
+	}
+	for(Kit k : Kit.values()) {
+	    if(params.equalsIgnoreCase(k.toString().toLowerCase())) {
+	        return PyroshotMain.getInstance().PlayerMap.get(p).getKitUseCount(k) + "";
+	    }
 	}
 	return null;
     }

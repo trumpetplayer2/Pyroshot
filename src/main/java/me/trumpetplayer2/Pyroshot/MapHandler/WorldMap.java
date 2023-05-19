@@ -3,6 +3,8 @@ package me.trumpetplayer2.Pyroshot.MapHandler;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -135,5 +137,14 @@ public class WorldMap extends LocalGameMap{
 	    scores.get(i).setScore(scores.size()-i);;
 	}
 }
+    @Nullable
+    public PyroshotTeam getPlayerTeam(Player p) {
+        for(PyroshotTeam t : teams) {
+            if(t.players.contains(p.getUniqueId().toString())) {
+                return t;
+            }
+        }
+            return null;
+    }
     
 }

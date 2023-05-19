@@ -16,7 +16,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
-import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.PlayerEliminatedEvent;
 import me.trumpetplayer2.Pyroshot.PlayerStates.EliminationType;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
@@ -44,7 +43,6 @@ public class EliminationListeners implements Listener{
     
     @EventHandler
     public void onDamageEvent(EntityDamageEvent e) {
-        Debug.TellConsole(e.getCause().toString());
         if(!(e.getEntity() instanceof Player)) {return;}
         if(!plugin.game.isActive) {
             //If lobby pvp is off, disable damage
@@ -53,12 +51,6 @@ public class EliminationListeners implements Listener{
             }
             return;
         }
-    if(e.getCause().equals(DamageCause.ENTITY_EXPLOSION)) {
-        Debug.TellConsole("Before: " + "B:" + e.getDamage() +" F:" + e.getFinalDamage());
-        e.setDamage(e.getDamage() * ConfigHandler.DamageMult);
-        Debug.TellConsole("After: " + "B:" + e.getDamage() +" F:" + e.getFinalDamage());
-        
-    }
         //If player was struck by elimination lightning, cancel. Dont want players dying by winning
 	if(e.getCause().equals(DamageCause.LIGHTNING)) {e.setCancelled(true); return;}
 	Player p = (Player) e.getEntity();
@@ -165,6 +157,7 @@ public class EliminationListeners implements Listener{
 	    }
 	    Bukkit.broadcastMessage(eliminationMsg);
 	    plugin.game.map.updateBoard();
+	    PyroshotMain.getInstance().PlayerMap.get(p).incrementDeaths(1);
     }
     
     private String parsePlayer(Player p, String s) {

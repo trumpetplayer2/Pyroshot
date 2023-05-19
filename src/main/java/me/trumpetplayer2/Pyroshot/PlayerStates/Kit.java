@@ -31,7 +31,7 @@ public enum Kit {
     WITCH,
     SNIPER,
     MOSS,
-    MACHGUN,
+    MACHINEGUN,
     GRENADIER,
     GLOW,
     PYROMANIAC;
@@ -39,16 +39,13 @@ public enum Kit {
     public static int numberOfKits = getNumberOfKits();
     
     public static boolean isHidden(Kit k) {
-	boolean isHidden = false;
 	switch(k) {
-	case MACHGUN : 
+	case MACHINEGUN : 
 	    if(Debug.getNMSVersion() < 1.14) {
 	        return true;
 	    }
-	default: isHidden = false;
-	break;
+	default: return false;
 	}
-	return isHidden;
     }
     
     private static int getNumberOfKits() {
@@ -92,7 +89,7 @@ public enum Kit {
 	case "machine gun" :
 	case "machgun" :
 	case "machinegun" : 
-	    kit = MACHGUN;
+	    kit = MACHINEGUN;
 	    break;
 	case "grenadier" : kit = GRENADIER; 
 	    break;
@@ -127,7 +124,7 @@ public enum Kit {
 		break;
 	case 9 : kit = MOSS;
 		break;
-	case 10 : kit = MACHGUN;
+	case 10 : kit = MACHINEGUN;
 	    break;
 	case 11 : kit = GRENADIER;
 	    break;
@@ -154,7 +151,7 @@ public enum Kit {
 	case WITCH	 : cooldown = 300; break;
 	case SNIPER	 : cooldown = 7; break;
 	case MOSS	 : cooldown = 300; break;
-	case MACHGUN : cooldown = 300; break;
+	case MACHINEGUN : cooldown = 300; break;
     case GLOW: cooldown = 300; break;
     case GRENADIER:cooldown = 300; break;
     case PYROMANIAC: cooldown = 300; break;
@@ -166,7 +163,7 @@ public enum Kit {
 	float mult = 0f;
 	switch(k) {
 	case POWER : mult = 1.5f; break;
-	case MACHGUN : mult = .5f; break;
+	case MACHINEGUN : mult = .5f; break;
 	default: mult = 1.0f; break;
 	}
 	return mult;
@@ -221,7 +218,7 @@ public enum Kit {
 	case MOSS :
 	    s = "Moss";
 	    break;
-	case MACHGUN :
+	case MACHINEGUN :
 	    s = "Machine Gun";
 	    break;
 	case GRENADIER :
@@ -302,11 +299,21 @@ public enum Kit {
 	    wand.setItemMeta(wandMeta);
 	    i.setItem(1, wand);
 	    break;
-	case MACHGUN:
+	case MACHINEGUN:
 	    //Reset inv
 	    i = Bukkit.createInventory(null, InventoryType.PLAYER);
 	    i.setItem(17, new ItemStack(Material.ARROW, 64));
 	    i.setItem(0, Weapons.machineGun());
+	    break;
+	case SNIPER:
+	    if(Debug.getNMSVersion() > 1.17) {
+	        ItemStack scope = new ItemStack(Material.SPYGLASS);
+	        ItemMeta scopeMeta = scope.getItemMeta();
+	        scopeMeta.setDisplayName(ChatColor.GOLD + "Scope");
+	        scope.setItemMeta(scopeMeta);
+	        i.setItem(40, scope);
+	        break;
+	    }
 	default:
 	    break;
 	}
@@ -505,7 +512,7 @@ public enum Kit {
 		im.setLore(MossLore);
 		im.setDisplayName(ChatColor.GREEN + "" +  ChatColor.BOLD + "Moss Kit");
 		break;
-	case MACHGUN:
+	case MACHINEGUN:
         i = new ItemStack(Material.GOLDEN_CARROT);
         im = i.getItemMeta();
         

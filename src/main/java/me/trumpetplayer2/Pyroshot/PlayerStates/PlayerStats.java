@@ -1,15 +1,21 @@
 package me.trumpetplayer2.Pyroshot.PlayerStates;
 
+import java.util.HashMap;
+
+
 public class PlayerStats{
     //Player W/L
     int wins = 0;
     int loses = 0;
+    int deaths = 0;
     //Team and current kit
     public PyroshotTeam team;
     Kit kit;
+    private HashMap<Kit, Integer> kitUseCount = new HashMap<Kit,Integer>();
     //Retrieve the W/L count
     public int getWins() {return wins;}
     public int getLoses() {return loses;}
+    public int getDeaths() {return deaths;}
     //Is special prepped?
     public boolean special = false;
     public boolean useSpecial = false;
@@ -26,10 +32,11 @@ public class PlayerStats{
 	loses = l;
     }
     
-    public PlayerStats(Kit k, int w, int l) {
+    public PlayerStats(Kit k, int w, int l, int d) {
 	kit = k;
 	wins = w;
 	loses = l;
+	deaths = d;
     }
     
     public PlayerStats() {
@@ -75,5 +82,46 @@ public class PlayerStats{
     
     public Kit getKit() {
 	return kit;
+    }
+
+    public void incrementKit() {
+        if(!kitUseCount.containsKey(getKit())) {
+            kitUseCount.put(getKit(), 1);
+        }else {
+            kitUseCount.put(getKit(), kitUseCount.get(getKit()) + 1);
+        }
+    }
+    public HashMap<Kit, Integer> getKitUseCount(){
+        return kitUseCount;
+    }
+    public void initializeKit(Kit k, int count) {
+        kitUseCount.put(k, count);
+    }
+    public Kit mostUsedKit() {
+        if(kitUseCount.isEmpty()) {
+            return Kit.DEFAULT;
+        }
+        int highest = 0;
+        Kit kit = Kit.DEFAULT;
+        for(Kit k : Kit.values()) {
+            if(!kitUseCount.containsKey(k)) {
+                continue;
+            }
+            if(kitUseCount.get(k) > highest) {
+                kit = k;
+                highest = kitUseCount.get(k);
+            }
+        }
+        return kit;
+    }
+    public int getKitUseCount(Kit k) {
+        if(!kitUseCount.containsKey(k)) {
+            return 0;
+        }else {
+            return kitUseCount.get(k);
+        }
+    }
+    public void incrementDeaths(int amount) {
+        deaths += 1;
     }
 }
