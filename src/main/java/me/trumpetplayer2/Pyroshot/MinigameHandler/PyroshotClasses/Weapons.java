@@ -3,6 +3,7 @@ package me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses;
 import java.util.ArrayList;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -29,5 +30,19 @@ public class Weapons{
 	m.setLore(s);
 	i.setItemMeta(m);
 	return i;
+    }
+    public static final ItemStack Machinegun = machineGun();
+    public static ItemStack machineGun() {
+        ItemStack MachineGun = new ItemStack(Material.CROSSBOW);
+        ItemMeta MachMeta = MachineGun.getItemMeta();
+        MachMeta.setDisplayName(ChatColor.DARK_AQUA + "Machine Gun");
+        MachMeta.addEnchant(Enchantment.QUICK_CHARGE, 5, true);
+        ArrayList<String> s = new ArrayList<String>();
+        s.add(ChatColor.AQUA + "Standard Issue Machine Gun");
+        s.add(ChatColor.AQUA + "Sponsored by Zhop Corp");
+        s.add(ChatColor.AQUA + "Don't miss soldier");
+        MachMeta.setLore(s);
+        MachineGun.setItemMeta(MachMeta);
+        return MachineGun;
     }
 }

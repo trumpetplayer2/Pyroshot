@@ -38,15 +38,7 @@ public class PyroshotMain extends JavaPlugin{
 	    generateGame();
 	    //Grab listeners
 	    this.saveDefaultConfig();
-	    this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
-	    this.getServer().getPluginManager().registerEvents(new LeaveListener(this), this);
-	    this.getServer().getPluginManager().registerEvents(new InventoryClickListener(this), this);
-	    this.getServer().getPluginManager().registerEvents(new DoubleJumpListener(this), this);
-	    this.getServer().getPluginManager().registerEvents(new PlayerShootBowListener(this), this);
-	    this.getServer().getPluginManager().registerEvents(new EliminationListeners(this), this);
-	    this.getServer().getPluginManager().registerEvents(new ItemUseListener(this), this);
-	    this.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
-	    this.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), this);
+	    initializeListeners();
 	    //Register command
 	    getCommand("pyroshot").setExecutor(new PyroshotCommand());
 	    getCommand("pyroshot").setTabCompleter(new PyroshotCommand());
@@ -108,5 +100,17 @@ public class PyroshotMain extends JavaPlugin{
 		    p.setFallDistance(100);
 		}
 	    }
+	}
+	
+	private void initializeListeners() {
+	    this.getServer().getPluginManager().registerEvents(new JoinListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new LeaveListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new InventoryClickListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new DoubleJumpListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerShootBowListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new EliminationListeners(this), this);
+        this.getServer().getPluginManager().registerEvents(new ItemUseListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), this);
 	}
 }

@@ -1,16 +1,19 @@
 package me.trumpetplayer2.Pyroshot.Listeners;
 
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.inventory.ItemStack;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.PlayerFireball;
+import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Weapons;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 
 public class PlayerShootBowListener implements Listener{
@@ -23,7 +26,7 @@ public class PlayerShootBowListener implements Listener{
     public void EntityShootBowEvent(EntityShootBowEvent e) {
 	//Only Players can shoot fireballs, Make sure everything is in order to shoot
 	if(!(e.getEntity() instanceof Player)) {return;}
-	if(!e.getBow().getItemMeta().equals(ConfigHandler.bowMeta)) {return;}
+	if(!(e.getBow().getItemMeta().equals(ConfigHandler.bowMeta) || e.getBow().getItemMeta().getLore().equals(Weapons.Machinegun.getItemMeta().getLore()))) {return;}
 	if(!(e.getProjectile() instanceof Arrow)) {return;}
 	if(!plugin.game.isActive) {return;}
 	//Shoot fireball
@@ -44,5 +47,6 @@ public class PlayerShootBowListener implements Listener{
 	PlayerFireball.LaunchFireball(p, (Arrow) e.getProjectile(), plugin.PlayerMap.get(p), e.getForce());
 	e.setCancelled(true);
     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_SHOOT, 1, 1f); 
+    p.getInventory().setItem(17, new ItemStack(Material.ARROW));
     }
 }

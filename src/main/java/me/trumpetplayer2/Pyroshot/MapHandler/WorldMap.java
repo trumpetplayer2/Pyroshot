@@ -112,7 +112,7 @@ public class WorldMap extends LocalGameMap{
     public void createBoard() {
 	ScoreboardManager m = Bukkit.getScoreboardManager();
 	scoreboard = m.getNewScoreboard();
-	Objective obj = scoreboard.registerNewObjective("Pyroshot","dummy",ChatColor.translateAlternateColorCodes('&',"&6&lFire&4&lball &c&lBow Minigame"));
+	Objective obj = scoreboard.registerNewObjective("Pyroshot","dummy",ChatColor.translateAlternateColorCodes('&',"&6&lPyro&4&lshot &c&lPlayers Left"));
 	obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 	//Loop through the Team list and dynamically add the teams to the list
 	ArrayList<Score> scores = new ArrayList<Score>();

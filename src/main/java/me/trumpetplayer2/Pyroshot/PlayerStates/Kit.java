@@ -41,6 +41,10 @@ public enum Kit {
     public static boolean isHidden(Kit k) {
 	boolean isHidden = false;
 	switch(k) {
+	case MACHGUN : 
+	    if(Debug.getNMSVersion() < 1.14) {
+	        return true;
+	    }
 	default: isHidden = false;
 	break;
 	}
@@ -162,6 +166,7 @@ public enum Kit {
 	float mult = 0f;
 	switch(k) {
 	case POWER : mult = 1.5f; break;
+	case MACHGUN : mult = .5f; break;
 	default: mult = 1.0f; break;
 	}
 	return mult;
@@ -169,7 +174,7 @@ public enum Kit {
     public static float kitShotSpeedMult(Kit k) {
 	float mult = 0;
 	switch(k) {
-	case SNIPER : mult = 1.5f; break;
+	case SNIPER : mult = 2f; break;
 	default: mult = 1.0f; break;
 	}
 	return mult;
@@ -297,6 +302,11 @@ public enum Kit {
 	    wand.setItemMeta(wandMeta);
 	    i.setItem(1, wand);
 	    break;
+	case MACHGUN:
+	    //Reset inv
+	    i = Bukkit.createInventory(null, InventoryType.PLAYER);
+	    i.setItem(17, new ItemStack(Material.ARROW, 64));
+	    i.setItem(0, Weapons.machineGun());
 	default:
 	    break;
 	}
