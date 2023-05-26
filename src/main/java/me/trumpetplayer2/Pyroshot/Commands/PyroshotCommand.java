@@ -317,7 +317,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	
 	public void giveKit(Player p) {
 	    //Give the player the kit
-	    p.getInventory().setContents(PyroshotMain.instance.PlayerMap.get(p).getKit().getInventory().getContents());
+	    p.getInventory().setContents(PyroshotMain.instance.getPlayerStats(p).getKit().getInventory().getContents());
 	}
 	
 	public void help(CommandSender sender) {
@@ -484,7 +484,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 		return;   
 	    }
 	    //Get the players current stats
-	    PlayerStats stats = plugin.PlayerMap.get(p);
+	    PlayerStats stats = plugin.getPlayerStats(p);
 	    //Default to wins but will be changed later
 	    String modifyType = "Wins";
 	    int endNum = 0;
@@ -555,8 +555,8 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    k = Kit.kitFromString(kit);
 	    //Check if user has required permission for specific kit. By default all kits are available
 	    if(k.hasPermission(p)) {
-	    plugin.PlayerMap.get(p).setKit(k);
-	    p.sendMessage("Set kit to " + plugin.PlayerMap.get(p).getKit().kitToString());
+	    plugin.getPlayerStats(p).setKit(k);
+	    p.sendMessage("Set kit to " + plugin.getPlayerStats(p).getKit().kitToString());
 	    }else {
 		invalidPermission(p);
 	    }

@@ -42,20 +42,23 @@ public class PyroshotPapiExpansion extends PlaceholderExpansion{
 	    return "";
 	}
 	if(params.equalsIgnoreCase("wins")) {
-	    return PyroshotMain.getInstance().PlayerMap.get(p).getWins() + "";
+	    return PyroshotMain.getInstance().getPlayerStats(p).getWins() + "";
 	}
 	if(params.equalsIgnoreCase("loses")) {
-	    return PyroshotMain.getInstance().PlayerMap.get(p).getLoses() + "";
+	    return PyroshotMain.getInstance().getPlayerStats(p).getLoses() + "";
 	}
 	if(params.equalsIgnoreCase("deaths")) {
-	    return PyroshotMain.getInstance().PlayerMap.get(p).getDeaths() + "";
+	    return PyroshotMain.getInstance().getPlayerStats(p).getDeaths() + "";
 	}
+	if(params.equalsIgnoreCase("kills")) {
+        return PyroshotMain.getInstance().getPlayerStats(p).getKills() + "";
+    }
 	if(params.equalsIgnoreCase("mostusedkits")) {
-	    return WordUtils.capitalizeFully(PyroshotMain.getInstance().PlayerMap.get(p).mostUsedKit().toString());
+	    return WordUtils.capitalizeFully(PyroshotMain.getInstance().getPlayerStats(p).mostUsedKit().toString());
 	}
 	for(Kit k : Kit.values()) {
 	    if(params.equalsIgnoreCase(k.toString().toLowerCase())) {
-	        return PyroshotMain.getInstance().PlayerMap.get(p).getKitUseCount(k) + "";
+	        return PyroshotMain.getInstance().getPlayerStats(p).getKitUseCount(k) + "";
 	    }
 	}
 	return null;

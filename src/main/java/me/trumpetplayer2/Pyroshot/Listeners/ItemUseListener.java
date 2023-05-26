@@ -49,7 +49,7 @@ public class ItemUseListener implements Listener{
 		p.getInventory().remove(Material.GLASS_BOTTLE);
 	    }
 	}
-	Kit k = plugin.PlayerMap.get(p).getKit();
+	Kit k = plugin.getPlayerStats(p).getKit();
 	if(!(k.equals(Kit.WITCH) || k.equals(Kit.BUFFER))) {return;}
 	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> returnItem(p, i), 20 * 30);
     }
@@ -58,7 +58,7 @@ public class ItemUseListener implements Listener{
     public void PlayerItemConsume(PlayerItemConsumeEvent e) {
 	if(!plugin.game.isActive) {return;}
 	Player p = e.getPlayer();
-	Kit k = plugin.PlayerMap.get(p).getKit();
+	Kit k = plugin.getPlayerStats(p).getKit();
 	if(!(k.equals(Kit.WITCH) || k.equals(Kit.BUFFER))) {return;}
 	ItemStack i = e.getItem();
 	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> returnItem(p, i), 20 * 30);
@@ -72,7 +72,7 @@ public class ItemUseListener implements Listener{
         ThrownPotion potion  = (ThrownPotion) e.getEntity();
         Player p = (Player) potion.getShooter();
         if(p == null) {return;}
-        Kit k = plugin.PlayerMap.get(p).getKit();
+        Kit k = plugin.getPlayerStats(p).getKit();
         if(!k.equals(Kit.GRENADIER)) {return;}
         //VECTORS DOWN HERE
         double speedBoost = 10;
@@ -88,7 +88,7 @@ public class ItemUseListener implements Listener{
         ThrownPotion potion = e.getPotion();
         Player p = (Player) potion.getShooter();
         if(p == null) {return;}
-        Kit k = plugin.PlayerMap.get(p).getKit();
+        Kit k = plugin.getPlayerStats(p).getKit();
         if(!k.equals(Kit.GRENADIER)) {return;}
         ItemStack i = potion.getItem();
         Grenade g = Grenade.grenadeFromItem(i);
@@ -194,7 +194,7 @@ public class ItemUseListener implements Listener{
 //    }
 //    
 //    public void checkPearlLanded(Player p, ItemStack i) {
-//	if(!plugin.PlayerMap.get(p).special) {return;}
+//	if(!plugin.getPlayerStats(p).special) {return;}
 //	returnItem(p, i);
 //    }
     

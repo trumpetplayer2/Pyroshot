@@ -37,10 +37,10 @@ public class PlayerTeleportListener implements Listener{
 	if(!e.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL)) {return;}
 	Player  p = e.getPlayer();
 	//Player teleported with an enderpearl, check players kit
-	if(!plugin.PlayerMap.get(p).getKit().equals(Kit.ENDER)) {return;}
+	if(!plugin.getPlayerStats(p).getKit().equals(Kit.ENDER)) {return;}
 	e.setCancelled(true);
 	//Make sure special is not on cooldown
-	if(!plugin.PlayerMap.get(p).special) {return;}
+	if(!plugin.getPlayerStats(p).special) {return;}
 	//Check if location is safe
 	Location to = isSafeTeleport(e.getTo());
 	//If loc is air, its in void, if loc is in water, then its instant elimination
@@ -50,8 +50,8 @@ public class PlayerTeleportListener implements Listener{
 	//Move to up a block so they dont spawn in a block
 	to = to.add(0,1,0);
 	//Players kit was Ender
-	plugin.PlayerMap.get(p).special = false;
-	plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(Kit.ENDER);
+	plugin.getPlayerStats(p).special = false;
+	plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.ENDER);
 	p.teleport(to);
 	p.getInventory().setItem(0, Weapons.endSword);
 	//Remove all raid pearls
@@ -69,7 +69,7 @@ public class PlayerTeleportListener implements Listener{
     Player p = e.getPlayer();
     if(!(p.getGameMode() == GameMode.ADVENTURE || p.getGameMode() == GameMode.SURVIVAL)) {return;}
     //Determine if the kit is Sniper, if so, check if the player changed Position or just changed look direction
-    if(plugin.PlayerMap.get(p).getKit().equals(Kit.SNIPER)) {
+    if(plugin.getPlayerStats(p).getKit().equals(Kit.SNIPER)) {
         Location from = e.getFrom().clone();
         Location to = e.getTo().clone();
         from.setPitch(0f);
@@ -78,11 +78,14 @@ public class PlayerTeleportListener implements Listener{
         to.setYaw(0f);
         //Player moved, update their special
         if(!from.equals(to)) {
-        plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(Kit.SNIPER);
+            if(!(from.distance(to) <= 0.15) && plugin.getPlayerStats(p).specialCooldown <= Kit.baseCooldown(Kit.SNIPER)) {
+                plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.SNIPER);
+                plugin.getPlayerStats(p).shotsSinceReset = 0;
+            }
         }
     }
     //Check if player is frozen
-    if(plugin.PlayerMap.get(p).freeze) {
+    if(plugin.getPlayerStats(p).freeze) {
         //Check if player changed Loc or just looked around, if they changed location in a coordinal direction aside from vertical, prevent from moving.
         Location from = e.getFrom().clone();
         Location to = e.getTo().clone();
@@ -120,9 +123,9 @@ public class PlayerTeleportListener implements Listener{
 	if(!plugin.game.isActive) {return;}
 	if(!(e.getEntity() instanceof Player)) {return;}
 	Player p = (Player) e.getEntity();
-	if(!(plugin.PlayerMap.get(p).getKit().equals(Kit.POWER) || plugin.PlayerMap.get(p).getKit().equals(Kit.MOSS))) {return;}
+	if(!(plugin.getPlayerStats(p).getKit().equals(Kit.POWER) || plugin.getPlayerStats(p).getKit().equals(Kit.MOSS))) {return;}
 	double damage = e.getDamage();
-	if(plugin.PlayerMap.get(p).getKit().equals(Kit.POWER)) {
+	if(plugin.getPlayerStats(p).getKit().equals(Kit.POWER)) {
 	damage = damage/2;
 	if((p.getHealth() - damage) > 0) {
 	    e.setCancelled(true);
@@ -138,7 +141,7 @@ public class PlayerTeleportListener implements Listener{
 	if(!(e.getEntity() instanceof Snowball)) {return;}
 	if(!(e.getEntity().getShooter() instanceof Player)) {return;}
 	//Check if player has special
-	if(!plugin.PlayerMap.get((Player) e.getEntity().getShooter()).special) {return;}
+	if(!plugin.getPlayerStats((Player) e.getEntity().getShooter()).special) {return;}
 	Player p = (Player) e.getEntity().getShooter();
 	//Get where snowball hit
 	Location loc = e.getEntity().getLocation().clone();
@@ -162,9 +165,9 @@ public class PlayerTeleportListener implements Listener{
 	    tempt.setLevel(8);
 	    b.setBlockData(tempt);
 	}
-	plugin.PlayerMap.get(p).special = false;
-	plugin.PlayerMap.get(p).useSpecial = false;
-	plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(Kit.WATER);
+	plugin.getPlayerStats(p).special = false;
+	plugin.getPlayerStats(p).useSpecial = false;
+	plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.WATER);
     }
     
     @EventHandler
@@ -173,6 +176,6 @@ public class PlayerTeleportListener implements Listener{
 	if(!(e.getEntity() instanceof EnderPearl)) {return;}
 	if(!(e.getEntity().getShooter() instanceof Player)) {return;}
 	Player p = (Player) e.getEntity().getShooter();
-	plugin.PlayerMap.get(p).specialCooldown = 15;
+	plugin.getPlayerStats(p).specialCooldown = 15;
     }
 }

@@ -22,7 +22,7 @@ public class InventoryClickListener implements Listener{
     public void onInvClick(InventoryClickEvent e) {
 	//Determine who clicked
 	Player p = (Player) e.getWhoClicked();
-	PlayerStats s = plugin.PlayerMap.get(p);
+	PlayerStats s = plugin.getPlayerStats(p);
 	ItemStack i = e.getCurrentItem();
 	//No modifying inventories mid game
 	if(plugin.game.isActive) {e.setCancelled(true); return;}
@@ -62,7 +62,7 @@ public class InventoryClickListener implements Listener{
 	if(s.getKit().hasPermission(p)) {
 	    p.sendMessage(ChatColor.GOLD + "Selected " + ChatColor.BOLD + kitName + ChatColor.RESET + "" + ChatColor.GOLD + " Kit!");
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
-	    plugin.PlayerMap.put(p, s);
+	    plugin.addPlayer(p, s);
 	}else {
 	    p.sendMessage(ChatColor.DARK_RED + "Invalid permissions for " + kitName + ChatColor.RESET + "" + ChatColor.DARK_RED + " Kit.");
 

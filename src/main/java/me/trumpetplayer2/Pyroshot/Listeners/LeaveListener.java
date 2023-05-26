@@ -23,7 +23,7 @@ public class LeaveListener implements Listener{
     private void playerLeave(PlayerQuitEvent e) {
 	//Get player and their stats
 	Player p = e.getPlayer();
-	PlayerStats stats = plugin.PlayerMap.get(p);
+	PlayerStats stats = plugin.getPlayerStats(p);
 	s.Save(p, stats);
 	//If they are on a team remove them
 	if(stats.team != null) {
@@ -31,7 +31,7 @@ public class LeaveListener implements Listener{
 	}
 	//Remove their vote and their data
 	plugin.game.removeVote(p);
-	plugin.PlayerMap.remove(p);
+	plugin.removePlayer(p);
 	p.teleport(ConfigHandler.hubLocation);
     }
 }

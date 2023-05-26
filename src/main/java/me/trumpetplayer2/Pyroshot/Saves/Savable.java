@@ -57,9 +57,11 @@ public class Savable {
 	int wins = stat.getWins();
 	int loses = stat.getLoses();
 	int deaths = stat.getDeaths();
+	int kills = stat.getKills();
 	dataConfig.getConfigurationSection(dataPath).set("Wins", wins);
 	dataConfig.getConfigurationSection(dataPath).set("Loses", loses);
 	dataConfig.getConfigurationSection(dataPath).set("Deaths", deaths);
+	dataConfig.getConfigurationSection(dataPath).set("Kills", kills);
 	String kitPath = dataPath + ".Kits";
 	if(dataConfig.getConfigurationSection(kitPath) == null) {
 	    dataConfig.createSection(kitPath);
@@ -97,6 +99,7 @@ public class Savable {
 	int w = 0;
 	int l = 0;
 	int d = 0;
+	int kill = 0;
 	if(dataConfig.getString(dataPath + ".Wins") != null) {
 	    w = dataConfig.getInt(dataPath + ".Wins");
 	    }
@@ -106,7 +109,10 @@ public class Savable {
 	if(dataConfig.getString(dataPath + ".Deaths") != null) {
         d = dataConfig.getInt(dataPath + ".Deaths");
         }
-	PlayerStats ps = new PlayerStats(Kit.DEFAULT, w, l, d);
+	if(dataConfig.getString(dataPath + ".Deaths") != null) {
+	    kill = dataConfig.getInt(dataPath + ".Kills");
+        }
+	PlayerStats ps = new PlayerStats(Kit.DEFAULT, w, l, d, kill);
 	if(dataConfig.getConfigurationSection(dataPath + ".Kits") != null) {
 	for(String s : dataConfig.getConfigurationSection(dataPath + ".Kits").getKeys(false)) {
 	    ps = kitLoad(dataPath + ".Kits", s, ps);

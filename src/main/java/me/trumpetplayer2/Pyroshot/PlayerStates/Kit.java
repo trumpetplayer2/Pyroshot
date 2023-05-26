@@ -44,6 +44,12 @@ public enum Kit {
 	    if(Debug.getNMSVersion() < 1.14) {
 	        return true;
 	    }
+	    return false;
+//	case GLOW :
+//	    if(PyroshotMain.getInstance().getProtocolLibEnabled()) {
+//	        return false;
+//	    }
+//	    return true;
 	default: return false;
 	}
     }
@@ -152,9 +158,9 @@ public enum Kit {
 	case SNIPER	 : cooldown = 7; break;
 	case MOSS	 : cooldown = 300; break;
 	case MACHINEGUN : cooldown = 300; break;
-    case GLOW: cooldown = 300; break;
+    case GLOW: cooldown = 30; break;
     case GRENADIER:cooldown = 300; break;
-    case PYROMANIAC: cooldown = 300; break;
+    case PYROMANIAC: cooldown = 60; break;
 	}
 	return cooldown;
     }
@@ -164,6 +170,7 @@ public enum Kit {
 	switch(k) {
 	case POWER : mult = 1.5f; break;
 	case MACHINEGUN : mult = .5f; break;
+	case PYROMANIAC : mult = .75f; break;
 	default: mult = 1.0f; break;
 	}
 	return mult;
@@ -572,10 +579,8 @@ public enum Kit {
         PyroLore.add(ChatColor.GOLD + "Pyromaniac Kit");
         PyroLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
         PyroLore.add(ChatColor.GOLD + " + Double Jump");
-        PyroLore.add(ChatColor.GOLD + " + Bonus Damage while on fire");
-        PyroLore.add(ChatColor.GOLD + " + Bonus Fire on fireball hit");
+        PyroLore.add(ChatColor.GOLD + " + Bonus Damage while near fire");
         PyroLore.add(ChatColor.GOLD + " + Special - Light it Up");
-        PyroLore.add(ChatColor.GOLD + " - Needs Fire");
         PyroLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
         
         im.addEnchant(Enchantment.ARROW_FIRE, 3, true);
@@ -588,7 +593,7 @@ public enum Kit {
 	    List<String> UndefinedLore = new ArrayList<String>();
 	    	UndefinedLore.add(ChatColor.GOLD + "Undefined Kit");
 	    	UndefinedLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-	    	UndefinedLore.add(ChatColor.GOLD + " - This kit has not been Defined");
+	    	UndefinedLore.add(ChatColor.GOLD + " - This kit has not been properly Defined");
 	    	UndefinedLore.add(ChatColor.GOLD + " - If you see this, please contact the Dev");
 	    	UndefinedLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
 			

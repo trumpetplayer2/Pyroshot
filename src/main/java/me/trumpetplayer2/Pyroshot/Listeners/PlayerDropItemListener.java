@@ -2,19 +2,26 @@ package me.trumpetplayer2.Pyroshot.Listeners;
 
 import java.util.ArrayList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.SmallFireball;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.Debug.Debug;
+import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.TriggerUltimateEvent;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 
 public class PlayerDropItemListener implements Listener{
@@ -29,28 +36,35 @@ public class PlayerDropItemListener implements Listener{
 	e.setCancelled(true);
 	Player p = e.getPlayer();
 	//Check if special is ready
-	if(!plugin.PlayerMap.get(p).special) {return;}
+	if(!plugin.getPlayerStats(p).special) {return;}
+	TriggerUltimateEvent ev = new TriggerUltimateEvent(p, PyroshotMain.getInstance().getPlayerStats(p));
 	//Special is ready
-	switch(plugin.PlayerMap.get(p).getKit()) {
+	switch(plugin.getPlayerStats(p).getKit()) {
 	case WATER : 
-	    plugin.PlayerMap.get(p).useSpecial = true;
-	    plugin.PlayerMap.get(p).special = false;
+	    plugin.getPlayerStats(p).useSpecial = true;
+	    plugin.getPlayerStats(p).special = false;
 	    break;
 	case SHOTGUN :
-	    plugin.PlayerMap.get(p).useSpecial = true;
-	    plugin.PlayerMap.get(p).special = false;
+	    plugin.getPlayerStats(p).useSpecial = true;
+	    plugin.getPlayerStats(p).special = false;
 	    break;
 	case BUILDER:
+	    Bukkit.getPluginManager().callEvent(ev);
+	    if(ev.isCancelled()) {return;}
 	    Build(p);
-	    plugin.PlayerMap.get(p).special = false;
-	    plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(plugin.PlayerMap.get(p).getKit());
+	    plugin.getPlayerStats(p).special = false;
+	    plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit());
 	    break;
 	case MOSS:
+	    Bukkit.getPluginManager().callEvent(ev);
+	    if(ev.isCancelled()) {return;}
 	    replaceNearBlocks(p, Kit.MOSS.KitSymbol().getType());
-	    plugin.PlayerMap.get(p).special = false;
-	    plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(plugin.PlayerMap.get(p).getKit());
+	    plugin.getPlayerStats(p).special = false;
+	    plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit());
 	    break;
 	case POWER:
+	    Bukkit.getPluginManager().callEvent(ev);
+	    if(ev.isCancelled()) {return;}
 	    double power = Kit.kitPowerMult(Kit.POWER) * ConfigHandler.StageTwoMult;
 	    if(power > 99) {
 		power = 99;
@@ -60,9 +74,34 @@ public class PlayerDropItemListener implements Listener{
 	    tnt.setVelocity(p.getLocation().getDirection().normalize().multiply(2.5));
 	    tnt.setSource(p);
 	    tnt.setYield((float) power);
-	    plugin.PlayerMap.get(p).useSpecial = false;
-	    plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(plugin.PlayerMap.get(p).getKit());
+	    plugin.getPlayerStats(p).useSpecial = false;
+	    plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit());
 	    break;
+	case PYROMANIAC :
+	    Bukkit.getPluginManager().callEvent(ev);
+	    if(ev.isCancelled()) {return;}
+	    p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 30*20, 1, false, false, false));
+	    pyre(p);
+	    plugin.getPlayerStats(p).useSpecial = false;
+        plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit());
+	    break;
+	case GLOW :
+	    Bukkit.getPluginManager().callEvent(ev);
+        if(ev.isCancelled()) {return;}
+        String name = PyroshotMain.getInstance().game.map.getPlayerTeam(p).getName();
+        for(Player t : Bukkit.getOnlinePlayers()) {
+            if(PyroshotMain.getInstance().game.map.getPlayerTeam(t) != null) {
+            if(!PyroshotMain.getInstance().game.map.getPlayerTeam(t).getName().equalsIgnoreCase(name)) {
+                t.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 5 * 20, 1, false, false, false));
+            }
+            }
+        }
+        plugin.getPlayerStats(p).useSpecial = false;
+        plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit());
+        break;
+	case SNIPER :
+	    Bukkit.getPluginManager().callEvent(ev);
+	    quickSnipe(p);
 	default: break;
 	}
     }
@@ -86,6 +125,12 @@ public class PlayerDropItemListener implements Listener{
 	    if((!b.getType().isSolid()) && (!b.getType().equals(Material.WATER))) {continue;}
 	    b.setType(Block);
 	}
+    }
+    
+    private void quickSnipe(Player p) {
+        plugin.getPlayerStats(p).useSpecial = true;
+        plugin.getPlayerStats(p).special = false;
+        plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit()) * 100;
     }
     
 //    private void Build(Player p) {
@@ -171,7 +216,8 @@ public class PlayerDropItemListener implements Listener{
       //Build 3x3 walls
         for (int y = 0; y < 3; y++) {
             for (int i = 0; i < 3; i++) {
-                blockLocation.getBlock().setType(wallBlock.getType());
+                blockLocation.add(0, 1, 0);
+                blockLocation.getBlock().setType(Material.END_STONE_BRICKS);
                 blockLocation.add(rotation);
             }
          
@@ -179,6 +225,8 @@ public class PlayerDropItemListener implements Listener{
             blockLocation.setX(initialX);
             blockLocation.setZ(initialZ);
         }
+        //Go back 1
+        
     }
     
     private Vector ClosestStraight(float pitch, float yaw) {
@@ -208,5 +256,30 @@ public class PlayerDropItemListener implements Listener{
         double z = Math.cos(pitch);
         //Generate and return new direction
         return new Vector(x,y,z);
+    }
+
+    public void pyre(Player p) {
+        Location l = p.getLocation().clone();
+        l.setY(l.getY() + 2);
+        for(int i = 0; i < 50; i++) {
+            Vector direction = new Vector(0.0 + Math.random() - Math.random(), 0.0 + Math.random() - Math.random(), 0.0 + Math.random() - Math.random());
+            SmallFireball fire = (SmallFireball) l.getWorld().spawnEntity(l, EntityType.SMALL_FIREBALL);
+            fire.setGravity(true);
+            l.setDirection(direction);
+        }
+        
+        Location loc3 = l.clone();
+        for(double phi=0; phi<=Math.PI; phi+=Math.PI/15) {
+            for(double theta=0; theta<=2*Math.PI; theta+=Math.PI/30) {
+              double r = 4;
+              double x = r*Math.cos(theta)*Math.sin(phi);
+              double y = r*Math.cos(phi) + r;
+              double z = r*Math.sin(theta)*Math.sin(phi);
+              
+              loc3.add(x,y,z);
+              l.getWorld().spawnParticle(Particle.FLAME, loc3, 1, 0F, 0F, 0F, 0.001);
+              loc3.subtract(x, y, z);
+          }
+        }
     }
 }

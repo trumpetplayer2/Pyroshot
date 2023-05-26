@@ -22,7 +22,7 @@ public class DoubleJumpListener implements Listener {
     public void PlayerToggleFlightEvent(PlayerToggleFlightEvent e) {
 	Player p = e.getPlayer();
 	//Check if the double jump requirements are met. This includes Gamemode, Double Jump being enabled, if the player is flying, if the player is in the double jump map, and several other checks
-	if (!ConfigHandler.enableDoubleJump || !m.game.isActive || p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR || p.isFlying() || !m.PlayerMap.get(p).getKit().doubleJump()) {return;} else {
+	if (!ConfigHandler.enableDoubleJump || !m.game.isActive || p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR || p.isFlying() || !m.getPlayerStats(p).getKit().doubleJump()) {return;} else {
 	    //Disable flight, and allowed flight, cancel event, and fire in the direction they are looking.
 	    e.setCancelled(true);
  
@@ -41,7 +41,7 @@ public class DoubleJumpListener implements Listener {
         //If the player falls too far, cancel the damage and enable flight if the config allows it
 	if (e.getEntity() instanceof Player) {
 	    Player p = (Player) e.getEntity();
-	    if(e.getCause() == DamageCause.FALL && m.game.isActive && ConfigHandler.enableDoubleJump && m.PlayerMap.get(p).getKit().doubleJump()) {
+	    if(e.getCause() == DamageCause.FALL && m.game.isActive && ConfigHandler.enableDoubleJump && m.getPlayerStats(p).getKit().doubleJump()) {
 		e.setCancelled(true);
 		p.setAllowFlight(true);
 	    }

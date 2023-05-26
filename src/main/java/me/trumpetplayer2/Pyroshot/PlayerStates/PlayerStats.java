@@ -1,6 +1,7 @@
 package me.trumpetplayer2.Pyroshot.PlayerStates;
 
 import java.util.HashMap;
+import me.trumpetplayer2.Pyroshot.Effects.Effect;
 
 
 public class PlayerStats{
@@ -8,6 +9,10 @@ public class PlayerStats{
     int wins = 0;
     int loses = 0;
     int deaths = 0;
+    int kills = 0;
+    Effect winEffect;
+    Effect deathEffect;
+    public int shotsSinceReset = 0;
     //Team and current kit
     public PyroshotTeam team;
     Kit kit;
@@ -32,11 +37,12 @@ public class PlayerStats{
 	loses = l;
     }
     
-    public PlayerStats(Kit k, int w, int l, int d) {
+    public PlayerStats(Kit k, int w, int l, int d, int kill) {
 	kit = k;
 	wins = w;
 	loses = l;
 	deaths = d;
+	kills = kill;
     }
     
     public PlayerStats() {
@@ -122,6 +128,18 @@ public class PlayerStats{
         }
     }
     public void incrementDeaths(int amount) {
-        deaths += 1;
+        deaths += amount;
+    }
+    public void incrementKills(int amount) {
+        kills += amount;
+    }
+    public int getKills() {
+        return kills;
+    }
+    public Effect getWinEffect() {
+        return winEffect;
+    }
+    public Effect getDeathEffect() {
+        return deathEffect;
     }
 }

@@ -162,7 +162,7 @@ public class PyroshotMinigame {
 	}
 	//Teleport players to game
 	for(Player p : Bukkit.getOnlinePlayers()) {
-	    p.getInventory().setContents(PyroshotPlugin.PlayerMap.get(p).getKit().getInventory().getContents());
+	    p.getInventory().setContents(PyroshotPlugin.getPlayerStats(p).getKit().getInventory().getContents());
 	    for(PyroshotTeam t : map.teams) {
 		if(t.onTeam(p)) {
 		    p.getInventory().setChestplate(t.Chestplate());
@@ -173,17 +173,22 @@ public class PyroshotMinigame {
 		    }
 		}
 	    }
-	    PyroshotPlugin.PlayerMap.get(p).freeze = false;
-	    PyroshotPlugin.PlayerMap.get(p).useSpecial = false;
-	    PyroshotPlugin.PlayerMap.get(p).special = false;
+	    PyroshotPlugin.getPlayerStats(p).freeze = false;
+	    PyroshotPlugin.getPlayerStats(p).useSpecial = false;
+	    PyroshotPlugin.getPlayerStats(p).special = false;
 	    p.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 1000000, 1, false, false, false));
 	    
 	    //Add kit to tracker
-	    PlayerStats s = PyroshotPlugin.PlayerMap.get(p);
+	    PlayerStats s = PyroshotPlugin.getPlayerStats(p);
 	    s.incrementKit();
 	}
-	for(Player p : PyroshotPlugin.PlayerMap.keySet()) {
-	    PyroshotPlugin.PlayerMap.get(p).specialCooldown = 30;
+	for(Player p : PyroshotPlugin.getPlayerMap().keySet()) {
+	    if(!PyroshotPlugin.getPlayerStats(p).getKit().equals(Kit.SNIPER)) {
+	    PyroshotPlugin.getPlayerStats(p).specialCooldown = 30;
+	    }else {
+	        PyroshotPlugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.SNIPER);
+	    }
+	    
 	}
 	//Update Gamerules
 	map.getWorld().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
@@ -219,8 +224,9 @@ public class PyroshotMinigame {
                 team = t.teamColor + t.getName() + ": ";
                 for(String u : t.players) {
                     team += Bukkit.getPlayer(UUID.fromString(u)).getName();
+                    team += " ";
                 }
-                p.sendTitle(null, ChatColor.GOLD + "" + team, 0, 60, 10);
+                p.sendTitle(null, ChatColor.GOLD + "" + team + " ", 0, 60, 10);
                 p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1f); 
             }
         }
@@ -256,7 +262,7 @@ public class PyroshotMinigame {
 	//Update player stats
 	for(Player p : Bukkit.getOnlinePlayers()) {
 	    //Update players wins/loses
-	    PlayerStats s = PyroshotPlugin.PlayerMap.get(p);
+	    PlayerStats s = PyroshotPlugin.getPlayerStats(p);
 	    if(winner != null) {
 		if(winner.onTeam(p)) {
 		    s.addWins(1);
@@ -284,9 +290,9 @@ public class PyroshotMinigame {
 	    p.setAbsorptionAmount(0);
 	    p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
 	    p.setHealth(20);
-	    PyroshotPlugin.PlayerMap.get(p).freeze = false;
-	    PyroshotPlugin.PlayerMap.get(p).useSpecial = false;
-	    PyroshotPlugin.PlayerMap.get(p).special = false;
+	    PyroshotPlugin.getPlayerStats(p).freeze = false;
+	    PyroshotPlugin.getPlayerStats(p).useSpecial = false;
+	    PyroshotPlugin.getPlayerStats(p).special = false;
 	    if(p.hasPermission("pyroshot.minigame.vote")) {
 	        TextComponent voteMessage = new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + "Click here to vote for a map!" + ChatColor.RESET);
             voteMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pyroshot vote"));
@@ -453,16 +459,19 @@ public class PyroshotMinigame {
     }
     
     public void updateKitCooldowns() {
-   	for(Player p : PyroshotPlugin.PlayerMap.keySet()) {
-   	    int cooldown = PyroshotPlugin.PlayerMap.get(p).specialCooldown;
+   	for(Player p : PyroshotPlugin.getPlayerMap().keySet()) {
+   	    int cooldown = PyroshotPlugin.getPlayerStats(p).specialCooldown;
    	    if(cooldown > 0) {
-   		PyroshotPlugin.PlayerMap.get(p).specialCooldown = cooldown - 1;
+   		PyroshotPlugin.getPlayerStats(p).specialCooldown = cooldown - 1;
    	    }
    	    if(cooldown == 0) {
 		    //Fire off special checks
-		    updateSpecials(p, PyroshotPlugin.PlayerMap.get(p), PyroshotPlugin.PlayerMap.get(p).getKit());
+		    updateSpecials(p, PyroshotPlugin.getPlayerStats(p), PyroshotPlugin.getPlayerStats(p).getKit());
    	    }
    	    p.setLevel(cooldown);
+   	    if(PyroshotPlugin.getPlayerStats(p).getKit().equals(Kit.GLOW)) {
+   	     p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, false, false, false));
+   	    }
    	}
     }
        

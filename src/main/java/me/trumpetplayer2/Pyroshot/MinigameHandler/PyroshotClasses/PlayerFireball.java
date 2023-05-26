@@ -2,7 +2,10 @@ package me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
@@ -34,13 +37,33 @@ public class PlayerFireball {
 	//Modify power based on kit
 	power = force * stageMult * Kit.kitPowerMult(kit);
 	if(kit == Kit.SNIPER) {
+	    if(stat.useSpecial) {
+	        power = power*2;
+	    }else {
 	    //Sniper kit cooldown reduces damage
 	    if(stat.specialCooldown == 0) {
 		power = power*2;
 	    }else {
 		power = power * (1/stat.specialCooldown);
 	    }
-	    
+	    }
+	}else if(kit == Kit.PYROMANIAC) {
+	    //Count nearby fire
+	    final double radius = 5d;
+	    final double xCoord = p.getLocation().getX();
+	    final double yCoord = p.getLocation().getY();
+	    final double zCoord = p.getLocation().getZ();
+	    for (double x = xCoord - radius; x < xCoord + radius; x++) {
+	        for (double y = yCoord - radius; y < yCoord + radius; y++) {
+	            for (double z = zCoord - radius; z < zCoord + radius; z++) {
+	                final Block b = new Location(p.getWorld(), x, y, z).getBlock();
+	                if(!b.getType().equals(Material.FIRE)) {
+	                    continue;
+	                }
+	                power += 0.1;
+	            }
+	        }
+	    }
 	}
 	//Cap Power at 99.
 	if(power > 99) {
@@ -48,7 +71,22 @@ public class PlayerFireball {
 	}
 	p.launchProjectile(Fireball.class, temp.getVelocity().multiply(Kit.kitShotSpeedMult(kit))).setYield(power);
 	if(stat.getKit().equals(Kit.SNIPER)) {
-	    stat.specialCooldown = Kit.baseCooldown(Kit.SNIPER);
+	    if(stat.useSpecial) {
+	        stat.useSpecial = false;
+	        stat.specialCooldown = Kit.baseCooldown(Kit.SNIPER)*2;
+	    }else {
+	        int cooldown = Kit.baseCooldown(Kit.SNIPER);
+	        if(stat.specialCooldown == 0) {
+	            stat.shotsSinceReset += 1;
+	            cooldown -= stat.shotsSinceReset;
+	        }else {
+	            stat.shotsSinceReset = 0; 
+	        }
+	        if(cooldown < 3) {
+	            cooldown = 3;
+	        }
+	        stat.specialCooldown = cooldown;
+	    }
 	}
     }
     
@@ -57,14 +95,14 @@ public class PlayerFireball {
 	    //This will shoot 5 equal power "Shotgun" shots
 	    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> Shotgun(p, temp, plugin, force), 5*i);
 	}
-	plugin.PlayerMap.get(p).useSpecial = false;
-	plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(Kit.SHOTGUN);
+	plugin.getPlayerStats(p).useSpecial = false;
+	plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.SHOTGUN);
     }
     
     private static void Shotgun(Player p, Arrow temp, PyroshotMain plugin, float force) {
 	if(!plugin.game.isActive) {return;}
 	if(!(p.getGameMode().equals(GameMode.ADVENTURE) || p.getGameMode().equals(GameMode.SURVIVAL))) {return;}
-	Kit kit = plugin.PlayerMap.get(p).getKit();
+	Kit kit = plugin.getPlayerStats(p).getKit();
 	float power = 0;
 	float stageMult = 0;
 	if(force >= 0.2 && force != 1) {
@@ -85,8 +123,8 @@ public class PlayerFireball {
 	Vector skew = new Vector(Math.random()* accuracy-accuracy/2, Math.random()*accuracy-accuracy/2, Math.random()*accuracy-accuracy/2);
 	direction.add(skew);
 	p.launchProjectile(Fireball.class, direction).setYield(power);
-	plugin.PlayerMap.get(p).useSpecial = false;
-	plugin.PlayerMap.get(p).specialCooldown = Kit.baseCooldown(kit);
+	plugin.getPlayerStats(p).useSpecial = false;
+	plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(kit);
 	p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_SHOOT, 1, 1f); 
     }
 }

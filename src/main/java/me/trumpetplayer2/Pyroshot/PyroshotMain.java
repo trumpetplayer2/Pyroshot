@@ -22,14 +22,16 @@ import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotMinigame;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PlayerStats;
 import me.trumpetplayer2.Pyroshot.Saves.Savable;
 import me.trumpetplayer2.Pyroshot.SoftDependencies.PyroshotPapiExpansion;
+import me.trumpetplayer2.Pyroshot.SoftDependencies.ProtocolLibHandler;
 
 
 public class PyroshotMain extends JavaPlugin{
 	
-	public HashMap<Player, PlayerStats> PlayerMap = new HashMap<Player, PlayerStats>();
+	protected HashMap<Player, PlayerStats> PlayerMap = new HashMap<Player, PlayerStats>();
 	public PyroshotMinigame game;
-	
+	boolean ProtocolLibSupport = false;
 	public static PyroshotMain instance;
+	private ProtocolLibHandler plHandler;
 	
 	//Basic Enable
 	@Override
@@ -48,6 +50,12 @@ public class PyroshotMain extends JavaPlugin{
 		new PyroshotPapiExpansion().register();
 	    }else {
 		Bukkit.getServer().getConsoleSender().sendMessage(ConfigHandler.pluginAnnouncement + "Placeholder API was not found. Support disabled");
+	    }
+	    if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null){
+	        ProtocolLibSupport = true;
+	        plHandler = new ProtocolLibHandler();
+	    }else {
+	        Bukkit.getServer().getConsoleSender().sendMessage(ConfigHandler.pluginAnnouncement + "Protocol Lib was not found. Support disabled");
 	    }
 	    //Schedule
 	    schedule();
@@ -112,5 +120,29 @@ public class PyroshotMain extends JavaPlugin{
         this.getServer().getPluginManager().registerEvents(new ItemUseListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), this);
+	}
+	public boolean getProtocolLibEnabled() {
+	    return ProtocolLibSupport;
+	}
+	
+	public ProtocolLibHandler getProtocolLibHandler() {
+	    return plHandler;
+	}
+
+	public PlayerStats getPlayerStats(Player p) {
+	    return PlayerMap.get(p);
+	}
+	
+	public HashMap<Player, PlayerStats> getPlayerMap(){
+	    return PlayerMap;
+	}
+	
+	public void removePlayer(Player p) {
+	    if(PlayerMap.containsKey(p)) {
+	        PlayerMap.remove(p);
+	    }
+	}
+	public void addPlayer(Player p, PlayerStats s) {
+	    PlayerMap.put(p, s);
 	}
 }

@@ -29,7 +29,7 @@ public class JoinListener implements Listener{
 	Savable s = new Savable(plugin);
 	Player p = e.getPlayer();
 	PlayerStats stats = s.loadPlayerStats(e.getPlayer());
-	plugin.PlayerMap.put(p, stats);
+	plugin.addPlayer(p, stats);
 	if(plugin.game.isActive) {
 	    p.teleport(plugin.game.map.getSpectatorLocation());
 	}else {
