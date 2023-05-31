@@ -183,12 +183,7 @@ public class PyroshotMinigame {
 	    s.incrementKit();
 	}
 	for(Player p : PyroshotPlugin.getPlayerMap().keySet()) {
-	    if(!PyroshotPlugin.getPlayerStats(p).getKit().equals(Kit.SNIPER)) {
-	    PyroshotPlugin.getPlayerStats(p).specialCooldown = 30;
-	    }else {
-	        PyroshotPlugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.SNIPER);
-	    }
-	    
+	    PyroshotPlugin.getPlayerStats(p).specialCooldown = Kit.startCooldown(PyroshotPlugin.getPlayerStats(p).getKit());
 	}
 	//Update Gamerules
 	map.getWorld().setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);

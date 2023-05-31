@@ -144,6 +144,16 @@ public enum Kit {
 	
 	return kit;
     }
+    
+    public static int startCooldown(Kit k) {
+        switch(k) {
+        case SNIPER: return 7;
+        case BUILDER: return 15;
+        
+        default : return 30;
+        }
+    }
+    
     public static int baseCooldown(Kit k) {
 	int cooldown = 0;
 	switch(k) {
@@ -153,7 +163,7 @@ public enum Kit {
 	case SHOTGUN	 : cooldown = 15; break;
 	case ENDER	 : cooldown = 300; break;
 	case BUFFER	 : cooldown = 300; break;
-	case BUILDER	 : cooldown = 300; break;
+	case BUILDER	 : cooldown = 30; break;
 	case WITCH	 : cooldown = 300; break;
 	case SNIPER	 : cooldown = 7; break;
 	case MOSS	 : cooldown = 300; break;

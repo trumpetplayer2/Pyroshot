@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
@@ -114,7 +115,7 @@ public class WorldMap extends LocalGameMap{
     public void createBoard() {
 	ScoreboardManager m = Bukkit.getScoreboardManager();
 	scoreboard = m.getNewScoreboard();
-	Objective obj = scoreboard.registerNewObjective("Pyroshot","dummy",ChatColor.translateAlternateColorCodes('&',"&6&lPyro&4&lshot &c&lPlayers Left"));
+	Objective obj = scoreboard.registerNewObjective("Pyroshot",Criteria.DUMMY,ChatColor.translateAlternateColorCodes('&',"&6&lPyro&4&lshot &c&lPlayers Left"));
 	obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 	//Loop through the Team list and dynamically add the teams to the list
 	ArrayList<Score> scores = new ArrayList<Score>();
