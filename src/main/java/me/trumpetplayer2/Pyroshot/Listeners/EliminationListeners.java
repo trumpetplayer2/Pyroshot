@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
+import me.trumpetplayer2.Pyroshot.Effects.EffectType;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.PlayerEliminatedEvent;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.TriggerUltimateEvent;
 import me.trumpetplayer2.Pyroshot.PlayerStates.EliminationType;
@@ -181,13 +182,17 @@ public class EliminationListeners implements Listener{
 	        return;
 		    }
 		}
-		String eliminationMsg = parsePlayer(p, ChatColor.RED + "(player) has been eliminated by (killer)");
-        if(plugin.getPlayerStats(p).eliminationMessage != null) {
-            eliminationMsg = parsePlayer(p, plugin.getPlayerStats(p).eliminationMessage);
+		String eliminationMsg = parsePlayer(p, ChatColor.RED + "(player) was eliminated by (killer)");
+        if(plugin.getPlayerStats(p).getDeathMessage() != null) {
+            eliminationMsg = parsePlayer(p, plugin.getPlayerStats(p).getDeathMessage());
         }
         Bukkit.broadcastMessage(eliminationMsg);
-        
-		p.getLocation().getWorld().strikeLightning(p.getLocation());
+        if(plugin.getPlayerStats(p) != null && plugin.getPlayerStats(p).getDeathEffect() != null) {
+            //Play elimination effect
+            plugin.getPlayerStats(p).getDeathEffect().oneShotEffect(p, EffectType.DIE);
+        }else {
+            p.getLocation().getWorld().strikeLightning(p.getLocation());
+        }
 		Location spectator = new Location(plugin.game.map.getWorld(), ConfigHandler.getSpectators(plugin.game.map.getWorldName()).get(0), ConfigHandler.getSpectators(plugin.game.map.getWorldName()).get(1), ConfigHandler.getSpectators(plugin.game.map.getWorldName()).get(2));
 		p.teleport(spectator);
 		plugin.game.map.eliminatePlayer(p);
@@ -204,6 +209,7 @@ public class EliminationListeners implements Listener{
         playerName += p.getName();
         String temp = s.replace("(player)",  playerName + ChatColor.RED);
         temp = temp.replace("(killer)", ChatColor.DARK_AQUA + killer + ChatColor.RED);
+        temp = ChatColor.translateAlternateColorCodes('&', temp);
         return temp;
     }
     

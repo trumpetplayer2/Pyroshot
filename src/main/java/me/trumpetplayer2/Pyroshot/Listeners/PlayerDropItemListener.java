@@ -98,6 +98,7 @@ public class PlayerDropItemListener implements Listener{
             }
             }
         }
+        p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 10 * 20, 1, false, false, false));
         plugin.getPlayerStats(p).useSpecial = false;
         plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit());
         break;

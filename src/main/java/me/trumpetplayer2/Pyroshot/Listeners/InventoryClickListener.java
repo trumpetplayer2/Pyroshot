@@ -8,7 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
+import me.trumpetplayer2.Pyroshot.Commands.PyroshotCommand;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PlayerStats;
 
@@ -28,7 +30,10 @@ public class InventoryClickListener implements Listener{
 	if(plugin.game.isActive) {e.setCancelled(true); return;}
 	//Check if the title is valid, and if the item is valid
 	if(!(e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Kits") 
-		|| e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Map Vote"))) {
+		|| e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Map Vote") 
+		|| e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Elimination Messages")
+		|| e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Win Effect")
+		|| e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Death Effect"))) {
 		return;
 	}
 	if(e.getCurrentItem() == null) return;
@@ -44,7 +49,18 @@ public class InventoryClickListener implements Listener{
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
 	    mapVote(p, e.getSlot(), i);
 	}
-	
+	if(e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Elimination Messages")){
+	    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
+	    eliminationClick(p, e.getSlot(), i);
+	}
+	if(e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Win Effect")) {
+	    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
+	    winEffectClick(p, e.getSlot(), i);
+	}
+	if(e.getView().getTitle().equalsIgnoreCase(ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Death Effect")) {
+        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
+        deathEffectClick(p, e.getSlot(), i);
+    }
     }
     
     public void kitClick(PlayerStats s, ItemStack i, Player p) {
@@ -74,5 +90,28 @@ public class InventoryClickListener implements Listener{
 	//Add the vote to count
 	plugin.game.addVote(whoClicked, Slot);
 	whoClicked.sendMessage(ChatColor.DARK_AQUA + "Voted for " + item.getItemMeta().getDisplayName());
+    }
+
+    public void eliminationClick(Player whoClicked, int Slot, ItemStack item) {
+        PlayerStats s = plugin.getPlayerStats(whoClicked);
+        s.setDeathMessage(ConfigHandler.eliminationMsgs.get(Slot).getMsg());
+        plugin.addPlayer(whoClicked, s);
+        whoClicked.sendMessage(ChatColor.DARK_AQUA + "Selected Elimination Message " + item.getItemMeta().getDisplayName());
+    }
+    
+    public void deathEffectClick(Player whoClicked, int Slot, ItemStack item) {
+        if(!whoClicked.hasPermission("pyroshot.customization.effect.death." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(whoClicked); return;}
+        PlayerStats s = plugin.getPlayerStats(whoClicked);
+        s.setDeathEffect(plugin.getDeathEffect().get(Slot));;
+        plugin.addPlayer(whoClicked, s);
+        whoClicked.sendMessage(ChatColor.DARK_AQUA + "Selected Death Effect " + item.getItemMeta().getDisplayName());
+    }
+    
+    public void winEffectClick(Player whoClicked, int Slot, ItemStack item) {
+        if(!whoClicked.hasPermission("pyroshot.customization.effect.win." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(whoClicked); return;}
+        PlayerStats s = plugin.getPlayerStats(whoClicked);
+        s.setWinEffect(plugin.getWinEffect().get(Slot));;
+        plugin.addPlayer(whoClicked, s);
+        whoClicked.sendMessage(ChatColor.DARK_AQUA + "Selected Win Effect " + item.getItemMeta().getDisplayName());
     }
 }

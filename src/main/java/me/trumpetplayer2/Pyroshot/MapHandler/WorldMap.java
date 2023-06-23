@@ -14,6 +14,7 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
+import org.jetbrains.annotations.NotNull;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PyroshotTeam;
@@ -44,14 +45,14 @@ public class WorldMap extends LocalGameMap{
 	setSymbol(i);
     }
     
-    public WorldMap(File worldFolder, String clonedWorldName, boolean loadOnInit, ItemStack sym, ArrayList<PyroshotTeam> newTeams, ArrayList<Double> spectators) {
+    public WorldMap(File worldFolder, String clonedWorldName, boolean loadOnInit, ItemStack sym, @NotNull ArrayList<PyroshotTeam> newTeams, ArrayList<Double> spectators) {
 	super(worldFolder, clonedWorldName, loadOnInit);
 	symbol = sym;
 	teams = newTeams;
 	spectator = spectators;
     }
     
-    public WorldMap(File worldFolder, String clonedWorldName, boolean loadOnInit, ItemStack sym, int i, ArrayList<PyroshotTeam> newTeams) {
+    public WorldMap(File worldFolder, String clonedWorldName, boolean loadOnInit, ItemStack sym, int i, @NotNull ArrayList<PyroshotTeam> newTeams) {
 	super(worldFolder, clonedWorldName, loadOnInit);
 	symbol = sym;
 	id = i;
@@ -59,7 +60,7 @@ public class WorldMap extends LocalGameMap{
 	
     }
     
-    public WorldMap(File worldFolder, String clonedWorldName, boolean loadOnInit, ItemStack sym, int i, ArrayList<PyroshotTeam> newTeams, ArrayList<Double> spectators) {
+    public WorldMap(File worldFolder, String clonedWorldName, boolean loadOnInit, ItemStack sym, int i, @NotNull ArrayList<PyroshotTeam> newTeams, ArrayList<Double> spectators) {
 	super(worldFolder, clonedWorldName, loadOnInit);
 	symbol = sym;
 	id = i;
@@ -141,7 +142,7 @@ public class WorldMap extends LocalGameMap{
     @Nullable
     public PyroshotTeam getPlayerTeam(Player p) {
         for(PyroshotTeam t : teams) {
-            if(t.players.contains(p.getUniqueId().toString())) {
+            if(t.onTeam(p)) {
                 return t;
             }
         }

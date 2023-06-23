@@ -27,6 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.Debug.Debug;
+import me.trumpetplayer2.Pyroshot.Effects.EffectType;
 import me.trumpetplayer2.Pyroshot.MapHandler.*;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Grenade;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.MinigameEndEvent;
@@ -247,6 +248,12 @@ public class PyroshotMinigame {
 	    //Summon particles around winners
 	    PlayVictoryEffectEvent victory = new PlayVictoryEffectEvent(p);
 	    Bukkit.getPluginManager().callEvent(victory);
+	    //Loop through and play win effects
+	    PyroshotPlugin.getPlayerStats(p).getWinEffect().oneShotEffect(p, EffectType.WIN);
+	    for(int i = 0; i < 9; i++) {
+	        //This will shoot 5 equal power "Shotgun" shots
+	        Bukkit.getScheduler().scheduleSyncDelayedTask(PyroshotPlugin, () -> PyroshotPlugin.getPlayerStats(p).getWinEffect().loopEffect(p, EffectType.WIN), 20*i);
+	    }
 	}
 	}
 	//Wait 10 secs to trigger return to spawn
@@ -464,9 +471,9 @@ public class PyroshotMinigame {
 		    updateSpecials(p, PyroshotPlugin.getPlayerStats(p), PyroshotPlugin.getPlayerStats(p).getKit());
    	    }
    	    p.setLevel(cooldown);
-   	    if(PyroshotPlugin.getPlayerStats(p).getKit().equals(Kit.GLOW)) {
-   	     p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, false, false, false));
-   	    }
+//   	    if(PyroshotPlugin.getPlayerStats(p).getKit().equals(Kit.GLOW)) {
+//   	     p.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 200, 1, false, false, false));
+//   	    }
    	}
     }
        

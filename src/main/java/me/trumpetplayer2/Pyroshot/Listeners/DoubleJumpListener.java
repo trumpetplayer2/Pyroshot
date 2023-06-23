@@ -22,10 +22,12 @@ public class DoubleJumpListener implements Listener {
     public void PlayerToggleFlightEvent(PlayerToggleFlightEvent e) {
 	Player p = e.getPlayer();
 	//Check if the double jump requirements are met. This includes Gamemode, Double Jump being enabled, if the player is flying, if the player is in the double jump map, and several other checks
-	if (!ConfigHandler.enableDoubleJump || !m.game.isActive || p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR || p.isFlying() || !m.getPlayerStats(p).getKit().doubleJump()) {return;} else {
+	if (!ConfigHandler.enableDoubleJump || !m.game.isActive || p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR || p.isFlying()) {return;} else {
 	    //Disable flight, and allowed flight, cancel event, and fire in the direction they are looking.
 	    e.setCancelled(true);
- 
+	    if(!m.getPlayerStats(p).getKit().doubleJump()) {
+	        return;
+	    }
 	    p.setAllowFlight(false);
 	    p.setFlying(false);
 	    

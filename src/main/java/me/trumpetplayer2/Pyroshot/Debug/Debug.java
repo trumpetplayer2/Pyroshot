@@ -42,6 +42,8 @@ public class Debug {
             return 1.18;
         case "v1_19":
             return 1.19;
+        case "v1_20":
+            return 1.20;
         default:
             TellConsole("Verion " + nmsShort + " is an unknown version of spigot. Assuming the version is valid");
             nmsShort.replace('_', '.');

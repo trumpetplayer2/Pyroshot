@@ -29,6 +29,9 @@ public class JoinListener implements Listener{
 	Savable s = new Savable(plugin);
 	Player p = e.getPlayer();
 	PlayerStats stats = s.loadPlayerStats(e.getPlayer());
+	if(ConfigHandler.eliminationMsgs.size() > 0) {
+	    stats.eliminationMessage = ConfigHandler.eliminationMsgs.get(0).getMsg();
+	}
 	plugin.addPlayer(p, stats);
 	if(plugin.game.isActive) {
 	    p.teleport(plugin.game.map.getSpectatorLocation());

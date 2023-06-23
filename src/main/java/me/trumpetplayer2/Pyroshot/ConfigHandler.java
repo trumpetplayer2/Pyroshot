@@ -17,31 +17,33 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import me.trumpetplayer2.Pyroshot.MapHandler.WorldMap;
+import me.trumpetplayer2.Pyroshot.PlayerStates.EliminationMsg;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PyroshotTeam;
 
 public class ConfigHandler {
     //Static finals for all of the config values
     private static Plugin p = Bukkit.getPluginManager().getPlugin("Pyroshot");
     public static final ItemMeta bowMeta = bowMeta();
-    public static int minPlayers = minPlayers();
-    public static int timerMinPlayers = timerMinPlayers();
-    public static int timer = timer();
-    public static int initializeTimer = initializeTimer();
-    public static float StageOneMult = StageOneMult();
-    public static float StageTwoMult = StageTwoMult();
-    public static float StageThreeMult = StageThreeMult();
-    public static float DamageMult = DamageMult();
-    public static boolean waterLoss = waterLoss();
-    public static boolean autostart = autostart();
-    public static boolean enableDoubleJump = enableDoubleJump();
-    public static boolean LobbyPvp = LobbyPvp();
-    public static boolean isSpectators = isSpectators();
-    public static boolean returnToHub = returnToHub();
-    public static boolean debug = debug();
-    public static String pluginAnnouncement = ChatColor.RESET + "" + ChatColor.YELLOW + "[" + ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.YELLOW + "]" + ChatColor.RESET + ": ";
-    public static Location hubLocation = hubLocation();
-    public static HashMap<Integer, WorldMap> getWorldMap = getWorldMap();
-    public static ItemStack raidPearl = raidPearl();
+    public static final int minPlayers = minPlayers();
+    public static final int timerMinPlayers = timerMinPlayers();
+    public static final int timer = timer();
+    public static final int initializeTimer = initializeTimer();
+    public static final float StageOneMult = StageOneMult();
+    public static final float StageTwoMult = StageTwoMult();
+    public static final float StageThreeMult = StageThreeMult();
+    public static final float DamageMult = DamageMult();
+    public static final boolean waterLoss = waterLoss();
+    public static final boolean autostart = autostart();
+    public static final boolean enableDoubleJump = enableDoubleJump();
+    public static final boolean LobbyPvp = LobbyPvp();
+    public static final boolean isSpectators = isSpectators();
+    public static final boolean returnToHub = returnToHub();
+    public static final boolean debug = debug();
+    public static final String pluginAnnouncement = ChatColor.RESET + "" + ChatColor.YELLOW + "[" + ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.YELLOW + "]" + ChatColor.RESET + ": ";
+    public static final Location hubLocation = hubLocation();
+    public static final HashMap<Integer, WorldMap> getWorldMap = getWorldMap();
+    public static final ItemStack raidPearl = raidPearl();
+    public static final ArrayList<EliminationMsg> eliminationMsgs = getEliminationMsgs();
     
     
     //Methods share name with the public versions above. See config for more info on what each is used for.
@@ -398,8 +400,12 @@ public class ConfigHandler {
 		//Color on scoreboard
 		if(configContains("minigame.autoreset.world." + worldName + ".teams." + s + ".team-color")) {
 		    color = ChatColor.valueOf(p.getConfig().getString("minigame.autoreset.world." + worldName + ".teams." + s + ".team-color"));
+		    if(color == null) {
+		        color = ChatColor.GRAY;
+		    }
 		}else {
 		    p.getConfig().set("minigame.autoreset.world." + worldName + ".teams." + s + ".team-color", color.toString());
+		    color = ChatColor.GRAY;
 		}
 		if(configContains("minigame.autoreset.world." + worldName + ".teams." + s + ".spawn-loc.x")) {
 		    x = p.getConfig().getInt("minigame.autoreset.world." + worldName + ".teams." + s + ".spawn-loc.x");
@@ -476,5 +482,40 @@ public class ConfigHandler {
 	    debug = false;
 	}
 	return debug;
+    }
+    private static ArrayList<EliminationMsg> getEliminationMsgs(){
+        //Create the msg list
+        ArrayList<EliminationMsg> msgs = new ArrayList<EliminationMsg>();
+        //Make sure it contains the elimination group
+        if(p.getConfig().contains("minigame.elimination")) {
+            String workingLocation = "minigame.elimination";
+            for(String s : p.getConfig().getConfigurationSection("minigame.elimination").getKeys(false)){
+                workingLocation = "minigame.elimination." + s;
+                String tempMsg = "";
+                if(p.getConfig().contains(workingLocation + ".message")) {
+                    tempMsg = p.getConfig().getString(workingLocation + ".message");
+                }else {
+                    tempMsg = "(player) didn't set this up right in config and was eliminated by (killer)";
+                }
+                Material icon = Material.BARRIER;
+                if(p.getConfig().contains(workingLocation + ".icon")) {
+                    if(Material.valueOf(p.getConfig().getString(workingLocation + ".icon")) != null) {
+                    icon = Material.valueOf(p.getConfig().getString(workingLocation + ".icon"));
+                    }
+                }
+                ArrayList<String> loreList = new ArrayList<String>();
+                if(p.getConfig().contains(workingLocation + ".item")) {
+                    for(String lore : p.getConfig().getStringList(workingLocation + ".item")) {
+                        loreList.add(ChatColor.translateAlternateColorCodes('&', lore));
+                    }
+                }
+                if(loreList.size() < 1) {
+                    loreList.add("Invalid Config");
+                    loreList.add("Please check Config");
+                }
+                msgs.add(new EliminationMsg(icon, loreList, tempMsg));
+            }
+        }
+        return msgs;
     }
 }

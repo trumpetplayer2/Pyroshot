@@ -1,6 +1,7 @@
 package me.trumpetplayer2.Pyroshot;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -9,7 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.trumpetplayer2.Pyroshot.Commands.PyroshotCommand;
+import me.trumpetplayer2.Pyroshot.Debug.Debug;
+import me.trumpetplayer2.Pyroshot.Effects.Effect;
+import me.trumpetplayer2.Pyroshot.Effects.Nothing;
+import me.trumpetplayer2.Pyroshot.Effects.Smite;
 import me.trumpetplayer2.Pyroshot.Listeners.DoubleJumpListener;
+import me.trumpetplayer2.Pyroshot.Listeners.EffectRegistration;
 import me.trumpetplayer2.Pyroshot.Listeners.EliminationListeners;
 import me.trumpetplayer2.Pyroshot.Listeners.InventoryClickListener;
 import me.trumpetplayer2.Pyroshot.Listeners.ItemUseListener;
@@ -19,6 +25,7 @@ import me.trumpetplayer2.Pyroshot.Listeners.PlayerDropItemListener;
 import me.trumpetplayer2.Pyroshot.Listeners.PlayerShootBowListener;
 import me.trumpetplayer2.Pyroshot.Listeners.PlayerTeleportListener;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotMinigame;
+import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.RegisterEffectsEvents;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PlayerStats;
 import me.trumpetplayer2.Pyroshot.Saves.Savable;
 import me.trumpetplayer2.Pyroshot.SoftDependencies.PyroshotPapiExpansion;
@@ -32,7 +39,10 @@ public class PyroshotMain extends JavaPlugin{
 	boolean ProtocolLibSupport = false;
 	public static PyroshotMain instance;
 	private ProtocolLibHandler plHandler;
-	
+
+    private ArrayList<Effect> winEffects = new ArrayList<Effect>();
+    private ArrayList<Effect> deathEffects = new ArrayList<Effect>();
+    
 	//Basic Enable
 	@Override
 	public void onEnable() {
@@ -57,6 +67,8 @@ public class PyroshotMain extends JavaPlugin{
 	    }else {
 	        Bukkit.getServer().getConsoleSender().sendMessage(ConfigHandler.pluginAnnouncement + "Protocol Lib was not found. Support disabled");
 	    }
+	    //Register effects
+	    Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> registerEffects());
 	    //Schedule
 	    schedule();
 	}
@@ -120,6 +132,7 @@ public class PyroshotMain extends JavaPlugin{
         this.getServer().getPluginManager().registerEvents(new ItemUseListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new EffectRegistration(), this);
 	}
 	public boolean getProtocolLibEnabled() {
 	    return ProtocolLibSupport;
@@ -145,4 +158,35 @@ public class PyroshotMain extends JavaPlugin{
 	public void addPlayer(Player p, PlayerStats s) {
 	    PlayerMap.put(p, s);
 	}
+	@SuppressWarnings("unchecked")
+    public void registerEffects() {
+	    RegisterEffectsEvents e = new RegisterEffectsEvents();
+	    Bukkit.getPluginManager().callEvent(e);
+	    ArrayList<Effect> temp = new ArrayList<Effect>();
+	    //If size is < 1, something is wrong!
+	    if(e.getWinEffects() != null) {
+	        temp = e.getWinEffects();
+	    }
+	    if(temp.size() < 1) {
+	        Debug.TellConsole("No Win Effects found");
+	        temp.add(new Smite());
+	    }
+	    winEffects = (ArrayList<Effect>) temp.clone();
+	    temp.clear();
+	    if(e.getDeathEffects() != null) {
+	    temp = e.getDeathEffects();
+	    }
+	    if(temp.size() < 1) {
+	        Debug.TellConsole("No Death Effects found");
+	        temp.add(new Nothing());
+	    }
+	    deathEffects = (ArrayList<Effect>) temp.clone();
+	}
+	public ArrayList<Effect> getWinEffect(){
+	    return winEffects;
+	}
+	public ArrayList<Effect> getDeathEffect(){
+        return deathEffects;
+    }
+
 }

@@ -35,6 +35,7 @@ minigame:
   autoreset:
     #Worlds to Reset
     world:
+      #Maps must be downloaded seperatly! For Battle of Zephstorm go here: https://www.planetminecraft.com/project/battle-of-zephstorm-map/
       zephstorm:
         icon: "DARK_OAK_PLANKS"
         display: "&eBattle of Zephstorm"
@@ -67,7 +68,7 @@ minigame:
           x: 0
           y: 38
           z: 0
-          
+      #Maps must be downloaded seperatly! For Battle of Zephstorm go here: https://www.planetminecraft.com/project/battle-of-brothers/  
       steampunk:
         icon: "DARK_OAK_BOAT"
         display: "&5Battle of Brothers"
@@ -118,7 +119,24 @@ minigame:
           x: 0
           y: -17
           z: 0
-
+    #More maps can be found on the spigot page: https://www.spigotmc.org/resources/pyroshot-minigame.94284/
+    #Place elimination msgs here.
+    #You can use (player) for person who died, and (killer) for person or effect that killed (IE: trumpetplayer2, slipped off the edge, falling in water, etc.)
+    #You can also use & to signify a ChatColor color (Seeo above) for color codes, however anything after (player) or (killer) will be Red, and players will be team color
+  elimination:
+    #Generic unique key for backend, can be anything as long as no repeats
+    example:
+      #Msg that will occur on death
+      message: "(player) was eliminated by (killer)"
+      #Icon in UI (See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html)
+      icon: WOODEN_SWORD
+      item:
+          #Item Name (This is what the item will be displayed as in the menu)
+          - "&7Default Elimination"
+          #Item Lore (This is the information under the item name)
+          - "&8Nothing special for this msg"
+          #Death msg will show using the players name after all other lore lines. It will appear as follows:
+          #Preview: (player) was eliminated by (killer)
 autostart:
   #Should the game autostart
   enable: true

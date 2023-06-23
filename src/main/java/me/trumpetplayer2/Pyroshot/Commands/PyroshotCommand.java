@@ -36,6 +36,8 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
         //Create the args for tab completion, then depending on length and possible entries, fill the completion list and return it
         List<String> completions = new ArrayList<String>();
         if(args.length == 1) {
+            completions.add("deatheffect");
+            completions.add("elimination");
             completions.add("help");
             completions.add("initialize");
             completions.add("kit");
@@ -46,6 +48,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
             completions.add("unpause");
             completions.add("vote");
             completions.add("voteCount");
+            completions.add("wineffect");
             return completions;
         }else if(args.length == 2) {
             switch(args[0].toLowerCase()) {
@@ -118,6 +121,15 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 		//Get subcommand and determine which command to run
 		String subCommand = args[0];
 		switch(subCommand.toLowerCase()) {
+		case "elimination" : 
+		    if(!sender.hasPermission("pyroshot.customization.elimination.open")) {
+	            invalidPermission(sender);
+	            return true;
+	            }//If user is player continue, else tell user must be ran by player
+	            if(isPlayer) {
+	                p.openInventory(getEliminationInv());
+	            }
+		    break;
 		case "help" : help(sender); break;
 		case "team" : teamCommand(sender, args); break;
 		case "givekit" : 
@@ -233,6 +245,25 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 			startMatch(sender);
 		    }
 		    break;
+		case "wineffect" :
+		    if(!sender.hasPermission("pyroshot.customization.effect.win.open")) {
+                invalidPermission(sender);
+                return true;
+                }//If user is player continue, else tell user must be ran by player
+                if(isPlayer) {
+                    p.openInventory(getWinInv());
+                }
+		    break;
+		case "deatheffect" :
+		    if(!sender.hasPermission("pyroshot.customization.effect.death.open")) {
+                invalidPermission(sender);
+                return true;
+                }//If user is player continue, else tell user must be ran by player
+                if(isPlayer) {
+                    p.openInventory(getDeathInv());
+                }
+		    break;
+		    
 		default : 
 			help(sender);
 			break;
@@ -305,7 +336,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    }
 	}
 	
-    public void invalidPermission(CommandSender sender) {
+    public static void invalidPermission(CommandSender sender) {
         //Invalid permission error
 	    sender.sendMessage(ChatColor.DARK_RED + "You do not have permission for this command.");
 	}
@@ -597,4 +628,37 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    return MultOfNine*9;
 	}
 
+	public Inventory getEliminationInv() {
+        //Determine size based on how many visable kits
+        int size = getNearestNine((int) Math.ceil(ConfigHandler.eliminationMsgs.size()));
+        Inventory inv = Bukkit.createInventory(null, size, ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Elimination Messages");
+        //Fill inventory with kits, removing hidden kits
+        for(int i = 0; i < (ConfigHandler.eliminationMsgs.size()); i++) {
+        inv.setItem(i, ConfigHandler.eliminationMsgs.get(i).getIcon());
+        }
+        return inv;
+    }
+	
+	public Inventory getWinInv() {
+        //Determine size based on how many visable kits
+        int size = getNearestNine((int) Math.ceil(ConfigHandler.eliminationMsgs.size()));
+        Inventory inv = Bukkit.createInventory(null, size, ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Win Effect");
+        //Fill inventory with kits, removing hidden kits
+        for(int i = 0; i < (plugin.getWinEffect().size()); i++) {
+        inv.setItem(i, plugin.getWinEffect().get(i).getIcon());
+        }
+        return inv;
+    }
+	
+	public Inventory getDeathInv() {
+        //Determine size based on how many visable kits
+        int size = getNearestNine((int) Math.ceil(ConfigHandler.eliminationMsgs.size()));
+        Inventory inv = Bukkit.createInventory(null, size, ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Death Effect");
+        //Fill inventory with kits, removing hidden kits
+        for(int i = 0; i < (plugin.getDeathEffect().size()); i++) {
+        inv.setItem(i, plugin.getDeathEffect().get(i).getIcon());
+        }
+        return inv;
+    }
+	
 }

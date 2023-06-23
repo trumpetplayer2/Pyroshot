@@ -78,7 +78,9 @@ public enum Kit {
 		break;
 	case "water bomb" : kit = WATER;
 		break;
-	case "shotgun" : kit = SHOTGUN;
+	case "shotgun" : 
+	case "burst" : 
+	    kit = SHOTGUN;
 		break;
 	case "ender" : kit = ENDER;
 		break;
@@ -95,6 +97,7 @@ public enum Kit {
 	case "machine gun" :
 	case "machgun" :
 	case "machinegun" : 
+	case "barrage" :
 	    kit = MACHINEGUN;
 	    break;
 	case "grenadier" : kit = GRENADIER; 
@@ -385,15 +388,15 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> ShotgunLore = new ArrayList<String>();
-		ShotgunLore.add(ChatColor.GOLD + "Shotgun Kit");
+		ShotgunLore.add(ChatColor.GOLD + "Burst Kit");
 		ShotgunLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
 		ShotgunLore.add(ChatColor.GOLD + " + Double Jump");
-		ShotgunLore.add(ChatColor.GOLD + " + Special - Shotgun");
+		ShotgunLore.add(ChatColor.GOLD + " + Special - Burst");
 		ShotgunLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
 		
 		im.addEnchant(Enchantment.MULTISHOT, 5, true);
 		im.setLore(ShotgunLore);
-		im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Shotgun Kit");
+		im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Burst Kit");
 	    break;
 		
 	case ENDER :
@@ -480,12 +483,13 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> SniperLore = new ArrayList<String>();
-		SniperLore.add(ChatColor.GOLD + "Sniper Kit");
+		SniperLore.add(ChatColor.GOLD + "Scope Kit");
 		SniperLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
 		SniperLore.add(ChatColor.GOLD + " + Double Jump");
-		SniperLore.add(ChatColor.GOLD + " + Faster Shots");
+		SniperLore.add(ChatColor.GOLD + " + Faster Fireballs");
 		SniperLore.add(ChatColor.GOLD + " + More Powerful Base Damage");
-		SniperLore.add(ChatColor.GOLD + " - 7 sec cooldown when moving or firing");
+		SniperLore.add(ChatColor.GOLD + " - Shot Prep time");
+		SniperLore.add(ChatColor.GOLD + " + Special - Quick Snipe");
 		SniperLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
 		
 		im.addEnchant(Enchantment.ARROW_DAMAGE, 2, true);
@@ -534,7 +538,7 @@ public enum Kit {
         im = i.getItemMeta();
         
         List<String> MachLore = new ArrayList<String>();
-        MachLore.add(ChatColor.GOLD + "Machine Gun Kit");
+        MachLore.add(ChatColor.GOLD + "Barrage Kit");
         MachLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
         MachLore.add(ChatColor.GOLD + " + Double Jump");
         MachLore.add(ChatColor.GOLD + " + High Fire Rate");
@@ -543,7 +547,7 @@ public enum Kit {
         
         im.addEnchant(Enchantment.QUICK_CHARGE, 3, true);
         im.setLore(MachLore);
-        im.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Machine Gun Kit");
+        im.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + "Barrage Kit");
         break;
 	case GRENADIER:
 	    i = new ItemStack(Material.FIREWORK_STAR);
@@ -574,7 +578,7 @@ public enum Kit {
 	        GlowLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
 	        GlowLore.add(ChatColor.GOLD + " + Double Jump");
 	        GlowLore.add(ChatColor.GOLD + " + Special - Heat Vision");
-	        GlowLore.add(ChatColor.GOLD + " - Bioluminescent");
+	        GlowLore.add(ChatColor.GOLD + " - Special - Bioluminescent");
 	        GlowLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
 	        
 	        im.addEnchant(Enchantment.DAMAGE_UNDEAD, 2, true);

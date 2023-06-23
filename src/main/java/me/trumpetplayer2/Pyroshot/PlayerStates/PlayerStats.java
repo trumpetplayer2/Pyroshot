@@ -1,6 +1,8 @@
 package me.trumpetplayer2.Pyroshot.PlayerStates;
 
 import java.util.HashMap;
+
+import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.Effects.Effect;
 
 
@@ -10,8 +12,8 @@ public class PlayerStats{
     int loses = 0;
     int deaths = 0;
     int kills = 0;
-    Effect winEffect;
-    Effect deathEffect;
+    Effect winEffect = PyroshotMain.getInstance().getWinEffect().get(0);
+    Effect deathEffect = PyroshotMain.getInstance().getDeathEffect().get(0);
     public int shotsSinceReset = 0;
     //Team and current kit
     public PyroshotTeam team;
@@ -26,7 +28,7 @@ public class PlayerStats{
     public boolean useSpecial = false;
     public boolean freeze = false;
     //Elimination Message
-    public String eliminationMessage;
+    public String eliminationMessage = "(player) was eliminated by (killer)";
     //Cooldown for special
     public int specialCooldown = 0;
     //Grab player data from file and initialize
@@ -141,5 +143,20 @@ public class PlayerStats{
     }
     public Effect getDeathEffect() {
         return deathEffect;
+    }
+    public String getDeathMessage() {
+        return eliminationMessage;
+    }
+    
+    public void setDeathMessage(String msg) {
+        eliminationMessage = msg;
+    }
+    
+    public void setWinEffect(Effect e) {
+        winEffect = e;
+    }
+    
+    public void setDeathEffect(Effect e) {
+        deathEffect = e;
     }
 }

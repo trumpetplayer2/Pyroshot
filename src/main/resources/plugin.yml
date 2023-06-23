@@ -52,3 +52,12 @@ permissions:
     pyroshot.minigame.kits.*:
         description: Allows a player to select kit, Each kit has its own permission, wildcard allows all
         default: true
+    pyroshot.customization.elimination.*:
+        description: Allows a player to select an elimination/death message. Wildcard allows all
+        default: true
+    pyroshot.customization.effect.win.*:
+        description: Allows a player to select an win effect. Wildcard allows all
+        default: true
+    pyroshot.customization.effect.death.*:
+        description: Allows a player to select an death effect. Wildcard allows all
+        default: true
