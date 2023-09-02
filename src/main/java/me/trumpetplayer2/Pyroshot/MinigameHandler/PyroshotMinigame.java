@@ -53,6 +53,7 @@ public class PyroshotMinigame {
     public int timer = 120;
     public boolean isActive = false;
     public boolean isInitialized = false;
+    public boolean countdown = false;
     PyroshotTeam winner = null;
     HashMap<String, ItemStack[]> InventoryMap = new HashMap<String, ItemStack[]>();
     public boolean isPaused = false;
@@ -193,6 +194,7 @@ public class PyroshotMinigame {
 	map.getWorld().setGameRule(GameRule.DO_FIRE_TICK, false);
 	map.getWorld().setGameRule(GameRule.DO_MOB_SPAWNING, false);
 	map.getWorld().setDifficulty(Difficulty.NORMAL);
+	countdown = true;
 	startCountdown();
     }
     
@@ -228,6 +230,7 @@ public class PyroshotMinigame {
         }
         if(i <= 0) {
             isActive = true;
+            countdown = false;
         }
     }
     

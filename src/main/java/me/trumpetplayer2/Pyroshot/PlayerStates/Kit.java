@@ -212,7 +212,7 @@ public enum Kit {
 	    break;
 		
 	case SHOTGUN :
-	    s = "Shotgun";
+	    s = "Burst";
 	    break;
 		
 	case ENDER :
@@ -239,7 +239,7 @@ public enum Kit {
 	    s = "Moss";
 	    break;
 	case MACHINEGUN :
-	    s = "Machine Gun";
+	    s = "Barrage";
 	    break;
 	case GRENADIER :
 	    s = "Grenadier";

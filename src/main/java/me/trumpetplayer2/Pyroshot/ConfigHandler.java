@@ -123,7 +123,7 @@ public class ConfigHandler {
 	int x = 0;
 	int y = 0;
 	int z = 0;
-	World world;
+	World world = null;
 	//Fetch values from config and assign to local variables
 	if(p.getConfig().contains("match-end.x")) {
 	    x = p.getConfig().getInt("match-end.x");
@@ -145,9 +145,11 @@ public class ConfigHandler {
 	}
 	if(p.getConfig().contains("match-end.world")) {
 	    world = Bukkit.getWorld(p.getConfig().getString("match-end.world"));
-	}else {
+	    
+	}
+	if(world == null) {
 	    world = Bukkit.getWorlds().get(0);
-	    p.getConfig().set("match-end.world", "world");
+	    p.getConfig().set("match-end.world", world.getName());
 	}
 	//Create the location and return it
 	loc = new Location(world, x, y, z);

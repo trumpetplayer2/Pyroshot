@@ -5,8 +5,8 @@ description: A minigame involving fireballs and a bow.
 website: https://www.spigotmc.org/resources/pyroshot-minigame-v2-0.94284/
 author: Trumpetplayer2
 api-version: 1.16
-
-softdepend: [PlaceholderAPI,ProtocolLib]
+load: POSTWORLD
+softdepend: [PlaceholderAPI,ProtocolLib,Multiverse-Core]
 
 commands:
   Pyroshot:
