@@ -26,7 +26,6 @@ public enum Kit {
     WATER,
     SHOTGUN,
     ENDER,
-    BUFFER,
     BUILDER,
     WITCH,
     SNIPER,
@@ -84,8 +83,6 @@ public enum Kit {
 		break;
 	case "ender" : kit = ENDER;
 		break;
-	case "buffer" : kit = BUFFER;
-		break;
 	case "builder" : kit = BUILDER;
 		break;
 	case "witch" : kit = WITCH;
@@ -123,23 +120,21 @@ public enum Kit {
 		break;
 	case 4 : kit = ENDER;
 		break;
-	case 5 : kit = BUFFER;
+	case 5 : kit = BUILDER;
 		break;
-	case 6 : kit = BUILDER;
+	case 6 : kit = WITCH;
 		break;
-	case 7 : kit = WITCH;
+	case 7 : kit = SNIPER;
 		break;
-	case 8 : kit = SNIPER;
+	case 8 : kit = MOSS;
 		break;
-	case 9 : kit = MOSS;
-		break;
-	case 10 : kit = MACHINEGUN;
+	case 9 : kit = MACHINEGUN;
 	    break;
-	case 11 : kit = GRENADIER;
+	case 10 : kit = GRENADIER;
 	    break;
-	case 12 : kit = GLOW;
+	case 11 : kit = GLOW;
 	    break;
-	case 13 : kit = PYROMANIAC;
+	case 12 : kit = PYROMANIAC;
 	    break;
 	default: kit = DEFAULT;
 		break;
@@ -165,7 +160,6 @@ public enum Kit {
 	case WATER	 : cooldown = 300; break;
 	case SHOTGUN	 : cooldown = 15; break;
 	case ENDER	 : cooldown = 300; break;
-	case BUFFER	 : cooldown = 300; break;
 	case BUILDER	 : cooldown = 30; break;
 	case WITCH	 : cooldown = 300; break;
 	case SNIPER	 : cooldown = 7; break;
@@ -217,10 +211,6 @@ public enum Kit {
 		
 	case ENDER :
 	    s = "Ender";
-	    break;
-		
-	case BUFFER :
-	    s = "Buffer";
 	    break;
 		
 	case BUILDER :
@@ -279,23 +269,6 @@ public enum Kit {
 	case POWER : 
 	    i.setItem(40, new ItemStack(Material.SHIELD));
 		break;
-	case BUFFER :
-	    ItemStack SpeedPotion = new ItemStack(Material.POTION);
-	    ItemStack JumpPotion = new ItemStack(Material.POTION);
-	    PotionMeta SpeedMeta = (PotionMeta) SpeedPotion.getItemMeta();
-	    PotionMeta JumpMeta = (PotionMeta) JumpPotion.getItemMeta();
-	    SpeedMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 60*20, 2), true);
-	    JumpMeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP, 60*20, 2), true);
-	    SpeedMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Speed Potion");
-	    SpeedMeta.setColor(Color.WHITE);
-	    JumpMeta.setDisplayName(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Jumpboost Potion");
-	    JumpMeta.setColor(Color.AQUA);
-	    SpeedPotion.setItemMeta(SpeedMeta);
-	    JumpPotion.setItemMeta(JumpMeta);
-	    i.setItem(1, SpeedPotion);
-	    i.setItem(2, SpeedPotion);
-	    i.setItem(3, JumpPotion);
-	    break;
 	case WITCH :
 	    ItemStack HealthPotion = new ItemStack(Material.SPLASH_POTION);
 	    ItemStack PoisonPotion = new ItemStack(Material.SPLASH_POTION);
@@ -318,6 +291,22 @@ public enum Kit {
 	    wandMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.MAGIC + "uheih" + ChatColor.RESET + "" + ChatColor.DARK_PURPLE + "Wand" + ChatColor.DARK_PURPLE + "" + ChatColor.MAGIC + "uheih");
 	    wand.setItemMeta(wandMeta);
 	    i.setItem(1, wand);
+
+        ItemStack SpeedPotion = new ItemStack(Material.POTION);
+        ItemStack JumpPotion = new ItemStack(Material.POTION);
+        PotionMeta SpeedMeta = (PotionMeta) SpeedPotion.getItemMeta();
+        PotionMeta JumpMeta = (PotionMeta) JumpPotion.getItemMeta();
+        SpeedMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 60*20, 2), true);
+        JumpMeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP, 60*20, 2), true);
+        SpeedMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Speed Potion");
+        SpeedMeta.setColor(Color.WHITE);
+        JumpMeta.setDisplayName(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Jumpboost Potion");
+        JumpMeta.setColor(Color.AQUA);
+        SpeedPotion.setItemMeta(SpeedMeta);
+        JumpPotion.setItemMeta(JumpMeta);
+        i.setItem(5, SpeedPotion);
+        i.setItem(6, SpeedPotion);
+        i.setItem(7, JumpPotion);
 	    break;
 	case MACHINEGUN:
 	    //Reset inv
@@ -416,28 +405,28 @@ public enum Kit {
 		
 	    break;
 		
-	case BUFFER :
-	    if(Debug.getNMSVersion() < 1.8) {
-	    i = new ItemStack(Material.RABBIT_FOOT);
-	    }else {
-	        i = new ItemStack(Material.BLAZE_POWDER);
-	    }
-	    im = i.getItemMeta();
-	    
-	    List<String> BufferLore = new ArrayList<String>();
-		BufferLore.add(ChatColor.GOLD + "Buffer Kit");
-		BufferLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		BufferLore.add(ChatColor.GOLD + " + Double Jump");
-		BufferLore.add(ChatColor.GOLD + " + 2x Speed Potion");
-		BufferLore.add(ChatColor.GOLD + " + 1x Jumpboost Potion");
-		BufferLore.add(ChatColor.GOLD + " + Potions regen 30 seconds after use");
-		BufferLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		
-		im.addEnchant(Enchantment.SOUL_SPEED, 3, true);
-		im.setLore(BufferLore);
-		im.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Buffer Kit");
-		
-	    break;
+//	case BUFFER :
+//	    if(Debug.getNMSVersion() < 1.8) {
+//	    i = new ItemStack(Material.RABBIT_FOOT);
+//	    }else {
+//	        i = new ItemStack(Material.BLAZE_POWDER);
+//	    }
+//	    im = i.getItemMeta();
+//	    
+//	    List<String> BufferLore = new ArrayList<String>();
+//		BufferLore.add(ChatColor.GOLD + "Buffer Kit");
+//		BufferLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+//		BufferLore.add(ChatColor.GOLD + " + Double Jump");
+//		BufferLore.add(ChatColor.GOLD + " + 2x Speed Potion");
+//		BufferLore.add(ChatColor.GOLD + " + 1x Jumpboost Potion");
+//		BufferLore.add(ChatColor.GOLD + " + Potions regen 30 seconds after use");
+//		BufferLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+//		
+//		im.addEnchant(Enchantment.SOUL_SPEED, 3, true);
+//		im.setLore(BufferLore);
+//		im.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Buffer Kit");
+//		
+//	    break;
 		
 	case BUILDER :
 	    i = new ItemStack(Material.OAK_PLANKS);

@@ -2,6 +2,7 @@ package me.trumpetplayer2.Pyroshot.PlayerStates;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -145,11 +146,15 @@ public class PyroshotTeam{
     }
     
     public void confirmTeams() {
+        ArrayList<String> temp = new ArrayList<String>();
         for(String player : players) {
-            if(Bukkit.getPlayer(player) == null) {
-                players.remove(player);
+            if(Bukkit.getPlayer(UUID.fromString(player)) == null) {
+                temp.add(player);
                 Bukkit.getLogger().log(Level.INFO, player);
             }
+        }
+        for(String player : temp) {
+            players.remove(player);
         }
     }
     

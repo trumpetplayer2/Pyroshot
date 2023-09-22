@@ -50,7 +50,7 @@ public class ItemUseListener implements Listener{
 	    }
 	}
 	Kit k = plugin.getPlayerStats(p).getKit();
-	if(!(k.equals(Kit.WITCH) || k.equals(Kit.BUFFER))) {return;}
+	if(!(k.equals(Kit.WITCH))) {return;}
 	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> returnItem(p, i), 20 * 30);
     }
     
@@ -59,7 +59,7 @@ public class ItemUseListener implements Listener{
 	if(!plugin.game.isActive) {return;}
 	Player p = e.getPlayer();
 	Kit k = plugin.getPlayerStats(p).getKit();
-	if(!(k.equals(Kit.WITCH) || k.equals(Kit.BUFFER))) {return;}
+	if(!(k.equals(Kit.WITCH))) {return;}
 	ItemStack i = e.getItem();
 	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> returnItem(p, i), 20 * 30);
     }
