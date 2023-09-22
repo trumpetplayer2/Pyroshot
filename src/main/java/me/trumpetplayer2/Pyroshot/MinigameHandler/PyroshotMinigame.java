@@ -57,6 +57,7 @@ public class PyroshotMinigame {
     PyroshotTeam winner = null;
     HashMap<String, ItemStack[]> InventoryMap = new HashMap<String, ItemStack[]>();
     public boolean isPaused = false;
+    public boolean grace = false;
     
     //If no map list provided, go with default
     public PyroshotMinigame(PyroshotMain plugin) {
@@ -140,8 +141,6 @@ public class PyroshotMinigame {
 	timer = ConfigHandler.timer + 10;
 	//Activate pointer
 	//isActive = true;
-	//Game is active, disable initalization.
-	isInitialized = false;
 	//Add team priority vote
 	assignTeams();
 	//Update Scoreboard
@@ -216,6 +215,8 @@ public class PyroshotMinigame {
                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1, 3f); 
             }
             if(i <= 0) {
+                //Game is active, disable initalization.
+                isInitialized = false;
                 p.sendTitle(ChatColor.RED + "Round Starting", null, 0, 25, 0);
                 String team = "";
                 PyroshotTeam t = map.getPlayerTeam(p);
@@ -231,11 +232,20 @@ public class PyroshotMinigame {
         if(i <= 0) {
             isActive = true;
             countdown = false;
+            
+            Bukkit.getScheduler().scheduleSyncDelayedTask(PyroshotPlugin, ()-> checkPlayers(), 1);
         }
+    }
+    
+    //Team Check
+    public void checkPlayers() {
+        map.confirmTeams();
+        updateScoreboard();
     }
     
     //Minigame End
     public void MinigameEnd() {
+        grace = true;
 	//Disable minigame
 	isActive = false;
 	//Call end event
@@ -310,6 +320,7 @@ public class PyroshotMinigame {
 	clearVotes();
 	map.resetAllTeams();
 	winner = null;
+	grace = false;
 	//Unload map
 	map.unload();
     }
@@ -421,7 +432,7 @@ public class PyroshotMinigame {
 	    //Disable if requirements not met
 	    if(isPaused) {return;}
 	    if(!ConfigHandler.autostart) {return;}
-	    if(Bukkit.getOnlinePlayers().size() < ConfigHandler.minPlayers) {timer = ConfigHandler.timer;}
+	    if(Bukkit.getOnlinePlayers().size() < ConfigHandler.minPlayers && !grace && !countdown) {timer = ConfigHandler.timer;}
 	    if(timer == ConfigHandler.initializeTimer) {InitializeMinigame();}
 	    if(timer == 0) {MinigameStart(); return;}
 	    for(Player p : Bukkit.getOnlinePlayers()) {

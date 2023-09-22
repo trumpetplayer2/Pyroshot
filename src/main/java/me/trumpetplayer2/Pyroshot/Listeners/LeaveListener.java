@@ -32,6 +32,7 @@ public class LeaveListener implements Listener{
 	//Remove their vote and their data
 	plugin.game.removeVote(p);
 	plugin.removePlayer(p);
+	p.getInventory().clear();
 	p.teleport(ConfigHandler.hubLocation);
     }
 }

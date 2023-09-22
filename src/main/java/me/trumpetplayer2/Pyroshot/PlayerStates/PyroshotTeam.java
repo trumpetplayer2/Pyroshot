@@ -2,6 +2,7 @@ package me.trumpetplayer2.Pyroshot.PlayerStates;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -142,6 +143,16 @@ public class PyroshotTeam{
 	    team.addEntry(uuid);
 	}
     }
+    
+    public void confirmTeams() {
+        for(String player : players) {
+            if(Bukkit.getPlayer(player) == null) {
+                players.remove(player);
+                Bukkit.getLogger().log(Level.INFO, player);
+            }
+        }
+    }
+    
     public ItemStack Chestplate() {
 	ItemStack i = new ItemStack(Material.LEATHER_CHESTPLATE);
 	LeatherArmorMeta im = (LeatherArmorMeta) i.getItemMeta();

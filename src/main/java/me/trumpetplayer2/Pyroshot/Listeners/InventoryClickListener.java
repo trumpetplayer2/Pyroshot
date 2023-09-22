@@ -70,13 +70,13 @@ public class InventoryClickListener implements Listener{
 	String n = i.getItemMeta().getDisplayName();
 	n = ChatColor.stripColor(n);
 	n = n.substring(0, n.length()-4);
-	//Set the players kit
-	s.setKit(Kit.kitFromString(n));
 	//Determine the kit name WITH color
 	String kitName = i.getItemMeta().getDisplayName().substring(0, i.getItemMeta().getDisplayName().length()-4);
 	//If player has permission, save kit change, otherwise give invalid permission for kit
 	if(s.getKit().hasPermission(p)) {
 	    p.sendMessage(ChatColor.GOLD + "Selected " + ChatColor.BOLD + kitName + ChatColor.RESET + "" + ChatColor.GOLD + " Kit!");
+	  //Set the players kit
+	    s.setKit(Kit.kitFromString(n));
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
 	    plugin.addPlayer(p, s);
 	}else {

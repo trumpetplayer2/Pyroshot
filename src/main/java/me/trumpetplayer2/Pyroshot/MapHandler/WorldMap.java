@@ -139,6 +139,13 @@ public class WorldMap extends LocalGameMap{
 	    scores.get(i).setScore(scores.size()-i);;
 	}
 }
+    
+    public void confirmTeams() {
+        for(PyroshotTeam t : teams) {
+            t.confirmTeams();
+        }
+    }
+    
     @Nullable
     public PyroshotTeam getPlayerTeam(Player p) {
         for(PyroshotTeam t : teams) {
