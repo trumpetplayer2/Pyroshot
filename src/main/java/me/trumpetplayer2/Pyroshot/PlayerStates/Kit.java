@@ -17,6 +17,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Weapons;
 
@@ -279,10 +280,12 @@ public enum Kit {
 	    PotionMeta PoisonMeta = (PotionMeta) PoisonPotion.getItemMeta();
 	    HealthMeta.addCustomEffect(new PotionEffect(PotionEffectType.HEAL, 3*20, 1), true);
 	    PoisonMeta.addCustomEffect(new PotionEffect(PotionEffectType.POISON, 60*20, 2), true);
-	    HealthMeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Health Potion");
+	    
+	    HealthMeta.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchhealth"));
 	    HealthMeta.setColor(Color.RED);
-	    PoisonMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Splash Poison");
+	    PoisonMeta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchpoison"));
 	    PoisonMeta.setColor(Color.GREEN);
+	    
 	    HealthPotion.setItemMeta(HealthMeta);
 	    PoisonPotion.setItemMeta(PoisonMeta);
 	    i.setItem(2, HealthPotion);
@@ -291,7 +294,8 @@ public enum Kit {
 	    ItemStack wand = new ItemStack(Material.STICK);
 	    ItemMeta wandMeta = wand.getItemMeta();
 	    wandMeta.addEnchant(Enchantment.KNOCKBACK, 5, true);
-	    wandMeta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.MAGIC + "uheih" + ChatColor.RESET + "" + ChatColor.DARK_PURPLE + "Wand" + ChatColor.DARK_PURPLE + "" + ChatColor.MAGIC + "uheih");
+	    
+	    wandMeta.setDisplayName(PyroshotMain.getInstance().getLocalizedText(p, "witchkbstick"));
 	    wand.setItemMeta(wandMeta);
 	    i.setItem(1, wand);
 
@@ -301,9 +305,10 @@ public enum Kit {
         PotionMeta JumpMeta = (PotionMeta) JumpPotion.getItemMeta();
         SpeedMeta.addCustomEffect(new PotionEffect(PotionEffectType.SPEED, 60*20, 2), true);
         JumpMeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP, 60*20, 2), true);
-        SpeedMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Speed Potion");
+        
+        SpeedMeta.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchspeed"));
         SpeedMeta.setColor(Color.WHITE);
-        JumpMeta.setDisplayName(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Jumpboost Potion");
+        JumpMeta.setDisplayName(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchjump"));
         JumpMeta.setColor(Color.AQUA);
         SpeedPotion.setItemMeta(SpeedMeta);
         JumpPotion.setItemMeta(JumpMeta);
@@ -321,7 +326,7 @@ public enum Kit {
 	    if(Debug.getNMSVersion() > 1.17) {
 	        ItemStack scope = new ItemStack(Material.SPYGLASS);
 	        ItemMeta scopeMeta = scope.getItemMeta();
-	        scopeMeta.setDisplayName(ChatColor.GOLD + "Scope");
+	        scopeMeta.setDisplayName(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "sniperscope"));
 	        scope.setItemMeta(scopeMeta);
 	        i.setItem(40, scope);
 	        break;
@@ -342,17 +347,17 @@ public enum Kit {
     	    im = i.getItemMeta();
     	
     	    List<String> PowerShotLore = new ArrayList<String>();
-    	    PowerShotLore.add(ChatColor.GOLD + "Power Shot Kit");
-    	    PowerShotLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-    	    PowerShotLore.add(ChatColor.GOLD + " + 1x Shield");
-    	    PowerShotLore.add(ChatColor.GOLD + " + Bonus Defense");
-    	    PowerShotLore.add(ChatColor.GOLD + " + Bonus Power on Regular Shot");
-    	    PowerShotLore.add(ChatColor.GOLD + " + Immune to Normal Knockback");
-    	    PowerShotLore.add(ChatColor.GOLD + " - Melts in Fire");
-    	    PowerShotLore.add(ChatColor.GOLD + " - No Invulnerability");
-    	    PowerShotLore.add(ChatColor.GOLD + " - Cannot Double Jump");
-    	    PowerShotLore.add(ChatColor.GOLD + " + Special - TNT Fling");
-    	    PowerShotLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymbolname"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymbolshield"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymboldefense"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymboldamage"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymbolknockback"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymbolflamable"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymboliframes"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "nodoublejump"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "powersymbolspecial"));
+    	    PowerShotLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 	
     	    im.addEnchant(Enchantment.ARROW_DAMAGE, 5, true);
     	    im.setLore(PowerShotLore);
@@ -364,11 +369,11 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> WaterBombLore = new ArrayList<String>();
-		WaterBombLore.add(ChatColor.GOLD + "Water Bomb Kit");
-		WaterBombLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		WaterBombLore.add(ChatColor.GOLD + " + Double Jump");
-		WaterBombLore.add(ChatColor.GOLD + " + Special - Water Shot");
-		WaterBombLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+		WaterBombLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "waterbombsymbolname"));
+		WaterBombLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+		WaterBombLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+		WaterBombLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "waterbombsymbolspecial"));
+		WaterBombLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 		
 		im.addEnchant(Enchantment.WATER_WORKER, 1, true);
 		im.setLore(WaterBombLore);
@@ -380,11 +385,11 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> ShotgunLore = new ArrayList<String>();
-		ShotgunLore.add(ChatColor.GOLD + "Burst Kit");
-		ShotgunLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		ShotgunLore.add(ChatColor.GOLD + " + Double Jump");
-		ShotgunLore.add(ChatColor.GOLD + " + Special - Burst");
-		ShotgunLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+		ShotgunLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "burstsymbolname"));
+		ShotgunLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+		ShotgunLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+		ShotgunLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "burstsymbolspecial"));
+		ShotgunLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 		
 		im.addEnchant(Enchantment.MULTISHOT, 5, true);
 		im.setLore(ShotgunLore);
@@ -396,11 +401,11 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> EPearlLore = new ArrayList<String>();
-		EPearlLore.add(ChatColor.GOLD + "Ender Kit");
-		EPearlLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		EPearlLore.add(ChatColor.GOLD + " + Double Jump");
-		EPearlLore.add(ChatColor.GOLD + " + Special - Ender Pillage");
-		EPearlLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+		EPearlLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "endersymbolname"));
+		EPearlLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+		EPearlLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+		EPearlLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "endersymbolspecial"));
+		EPearlLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 		
 		im.addEnchant(Enchantment.DAMAGE_ALL, 5, true);
 		im.setLore(EPearlLore);
@@ -436,11 +441,11 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> BuildLore = new ArrayList<String>();
-		BuildLore.add(ChatColor.GOLD + "Builder Kit");
-		BuildLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		BuildLore.add(ChatColor.GOLD + " + Double Jump");
-		BuildLore.add(ChatColor.GOLD + " + Special - Wall");
-		BuildLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+		BuildLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "buildersymbolname"));
+		BuildLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+		BuildLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+		BuildLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "buildersymbolspecial"));
+		BuildLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 		
 		im.addEnchant(Enchantment.DIG_SPEED, 5, true);
 		im.setLore(BuildLore);
@@ -452,14 +457,14 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> WitchLore = new ArrayList<String>();
-		WitchLore.add(ChatColor.GOLD + "Witch Kit");
-		WitchLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		WitchLore.add(ChatColor.GOLD + " + Double Jump");
-		WitchLore.add(ChatColor.GOLD + " + 2x Healing Splash Potions");
-		WitchLore.add(ChatColor.GOLD + " + 1x Poison Splash Potions");
-		WitchLore.add(ChatColor.GOLD + " + 1x Knockback Wand");
-		WitchLore.add(ChatColor.GOLD + " + Potions regen 30 secs after use");
-		WitchLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchsymbolname"));
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchsymbolhealing"));
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchsymbolpoison"));
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchsymbolkbwand"));
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "witchsymbolpotionrefresh"));
+		WitchLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 		
 		im.addEnchant(Enchantment.KNOCKBACK, 3, true);
 		im.setLore(WitchLore);
@@ -475,14 +480,14 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> SniperLore = new ArrayList<String>();
-		SniperLore.add(ChatColor.GOLD + "Scope Kit");
-		SniperLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		SniperLore.add(ChatColor.GOLD + " + Double Jump");
-		SniperLore.add(ChatColor.GOLD + " + Faster Fireballs");
-		SniperLore.add(ChatColor.GOLD + " + More Powerful Base Damage");
-		SniperLore.add(ChatColor.GOLD + " - Shot Prep time");
-		SniperLore.add(ChatColor.GOLD + " + Special - Quick Snipe");
-		SniperLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "snipersymbolname"));
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "snipersymbolshotspeed"));
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "snipersymbolbonusdamage"));
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "snipersymbolslowfirerate"));
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "snipersymbolspecial"));
+		SniperLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 		
 		im.addEnchant(Enchantment.ARROW_DAMAGE, 2, true);
 		im.setLore(SniperLore);
@@ -494,11 +499,11 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> DefaultLore = new ArrayList<String>();
-		DefaultLore.add(ChatColor.GOLD + "Default Kit");
-		DefaultLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-		DefaultLore.add(ChatColor.GOLD + " + Double Jump");
-		DefaultLore.add(ChatColor.GOLD + " - Nothing Special");
-		DefaultLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+		DefaultLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "defaultsymbolname"));
+		DefaultLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+		DefaultLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+		DefaultLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "defaultsymbolnothing"));
+		DefaultLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 			
 		im.setLore(DefaultLore);
 		im.setDisplayName(ChatColor.GRAY + "Default Kit");
@@ -513,13 +518,13 @@ public enum Kit {
 	    im = i.getItemMeta();
 	    
 	    List<String> MossLore = new ArrayList<String>();
-	    	MossLore.add(ChatColor.GOLD + "Moss Kit");
-	    	MossLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-	    	MossLore.add(ChatColor.GOLD + " + Double Jump");
-	    	MossLore.add(ChatColor.GOLD + " + Tough Enviornments");
-	    	MossLore.add(ChatColor.GOLD + " - Flammable");
-	    	MossLore.add(ChatColor.GOLD + " + Special - Water Absorption");
-	    	MossLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+	    	MossLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "mosssymbolname"));
+	    	MossLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+	    	MossLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+	    	MossLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "mosssymboltough"));
+	    	MossLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "mosssymbolflamable"));
+	    	MossLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "mosssymbolspecial"));
+	    	MossLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 			
 	    	im.addEnchant(Enchantment.MENDING, 2, true);
 		im.setLore(MossLore);
@@ -530,12 +535,12 @@ public enum Kit {
         im = i.getItemMeta();
         
         List<String> MachLore = new ArrayList<String>();
-        MachLore.add(ChatColor.GOLD + "Barrage Kit");
-        MachLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-        MachLore.add(ChatColor.GOLD + " + Double Jump");
-        MachLore.add(ChatColor.GOLD + " + High Fire Rate");
-        MachLore.add(ChatColor.GOLD + " - Lower per fireball damage");
-        MachLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        MachLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "barragesymbolname"));
+        MachLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+        MachLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+        MachLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "barragesymbolfirerate"));
+        MachLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "barragesymbollowdamage"));
+        MachLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
         
         im.addEnchant(Enchantment.QUICK_CHARGE, 3, true);
         im.setLore(MachLore);
@@ -546,12 +551,12 @@ public enum Kit {
         im = i.getItemMeta();
         
         List<String> GrenadierLore = new ArrayList<String>();
-        GrenadierLore.add(ChatColor.GOLD + "Grenadier Kit");
-        GrenadierLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-        GrenadierLore.add(ChatColor.GOLD + " + Double Jump");
-        GrenadierLore.add(ChatColor.GOLD + " + Gains Mid-range Grenades over time");
-        GrenadierLore.add(ChatColor.GOLD + " + Grenades have different effects");
-        GrenadierLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        GrenadierLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "grenadiersymbolname"));
+        GrenadierLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+        GrenadierLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+        GrenadierLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "grenadiersymbolmidrange"));
+        GrenadierLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "grenadiersymboleffects"));
+        GrenadierLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
         
         im.addEnchant(Enchantment.KNOCKBACK, 3, true);
         im.setLore(GrenadierLore);
@@ -566,12 +571,12 @@ public enum Kit {
 	        im = i.getItemMeta();
 	        
 	        List<String> GlowLore = new ArrayList<String>();
-	        GlowLore.add(ChatColor.GOLD + "Glow Kit");
-	        GlowLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-	        GlowLore.add(ChatColor.GOLD + " + Double Jump");
-	        GlowLore.add(ChatColor.GOLD + " + Special - Heat Vision");
-	        GlowLore.add(ChatColor.GOLD + " - Special - Bioluminescent");
-	        GlowLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+	        GlowLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "glowkitname"));
+	        GlowLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+	        GlowLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+	        GlowLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "glowspecialhv"));
+	        GlowLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "glowspecialbl"));
+	        GlowLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
 	        
 	        im.addEnchant(Enchantment.DAMAGE_UNDEAD, 2, true);
 	        im.setLore(GlowLore);
@@ -582,12 +587,12 @@ public enum Kit {
         im = i.getItemMeta();
         
         List<String> PyroLore = new ArrayList<String>();
-        PyroLore.add(ChatColor.GOLD + "Pyromaniac Kit");
-        PyroLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-        PyroLore.add(ChatColor.GOLD + " + Double Jump");
-        PyroLore.add(ChatColor.GOLD + " + Bonus Damage while near fire");
-        PyroLore.add(ChatColor.GOLD + " + Special - Light it Up");
-        PyroLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
+        PyroLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "pyromaniacsymbolname"));
+        PyroLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+        PyroLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+        PyroLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "pyromaniacsymbolpyro"));
+        PyroLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "pyromaniacsymbolspecial"));
+        PyroLore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
         
         im.addEnchant(Enchantment.ARROW_FIRE, 3, true);
         im.setLore(PyroLore);
