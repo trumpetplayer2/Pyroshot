@@ -10,8 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -23,7 +21,6 @@ import me.trumpetplayer2.Pyroshot.PlayerStates.PyroshotTeam;
 public class ConfigHandler {
     //Static finals for all of the config values
     private static Plugin p = Bukkit.getPluginManager().getPlugin("Pyroshot");
-    public static final ItemMeta bowMeta = bowMeta();
     public static final int minPlayers = minPlayers();
     public static final int timerMinPlayers = timerMinPlayers();
     public static final int timer = timer();
@@ -42,65 +39,57 @@ public class ConfigHandler {
     public static final String pluginAnnouncement = ChatColor.RESET + "" + ChatColor.YELLOW + "[" + ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.YELLOW + "]" + ChatColor.RESET + ": ";
     public static final Location hubLocation = hubLocation();
     public static final HashMap<Integer, WorldMap> getWorldMap = getWorldMap();
-    public static final ItemStack raidPearl = raidPearl();
     public static final ArrayList<EliminationMsg> eliminationMsgs = getEliminationMsgs();
     
     
     //Methods share name with the public versions above. See config for more info on what each is used for.
-    private static ItemMeta bowMeta() {
-	//Get Bow Item Meta
-	ItemStack bow = new ItemStack(Material.BOW);
-	ItemMeta m = bow.getItemMeta();
-	//Set to be unbreakable
-	if(p.getConfig().contains("bow-properties.unbreakable")) {
-	m.setUnbreakable(p.getConfig().getBoolean("bow-properties.unbreakable"));
-	}else {
-	    m.setUnbreakable(true);
-	    p.getConfig().set("bow-properties.unbreakable", true);
-	}
-	//Create and add Display Name
-	if(p.getConfig().contains("bow-properties.name")) {
-	    m.setDisplayName(ChatColor.translateAlternateColorCodes('&', p.getConfig().getString("bow-properties.name")));
-	}else {
-	    m.setUnbreakable(true);
-	    p.getConfig().set("bow-properties.name", "&6Fireball Bow");
-	}
-	//Enchant with infinity and hide enchants
-	m.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-	m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-	//Create and add lore
-	List<String> lore = new ArrayList<String>();
-	if(p.getConfig().contains("bow-properties.lore")) {
-	List<String> TempLore = new ArrayList<String>();
-	TempLore = (p.getConfig().getStringList("bow-properties.lore"));
-	for(String s : TempLore) {
-	    lore.add(ChatColor.translateAlternateColorCodes('&', s));
-	}
-	}else {
-	    lore.add(ChatColor.RED + "Official Fireball Bow");
-	    lore.add(ChatColor.RED + "Not for resale");
-	    lore.add(ChatColor.RED + "Pyroshot Inc");
-	    p.getConfig().set("bow-properties.lore", lore);
-	}
-	//Set the lore
-	m.setLore(lore);
-	return m;
-    }
-    private static ItemStack raidPearl() {
-	//Create the Item and meta for Enderpearl
-	ItemStack pearl = new ItemStack(Material.ENDER_PEARL);
-	ItemMeta m = pearl.getItemMeta();
-	//Set up the name and lore of the pearl
-	m.setDisplayName(ChatColor.DARK_AQUA + "Raid Pearl");
-	List<String> lore = new ArrayList<String>();
-	lore.add(ChatColor.AQUA + "Standard Issue Raid PEARL Device");
-	lore.add(ChatColor.AQUA + "Precise Endergetic Automatic Relocation Lob Device");
-	lore.add(ChatColor.AQUA + "Just a small toss away!");
-	m.setLore(lore);
-	//Set the items meta to the meta and return the itemstack
-	pearl.setItemMeta(m);
-	return pearl;
-    }
+//    private static ItemMeta bowMeta() {
+//	//Get Bow Item Meta
+//	ItemStack bow = new ItemStack(Material.BOW);
+//	ItemMeta m = bow.getItemMeta();
+//	//Create and add Display Name
+//	if(p.getConfig().contains("bow-properties.name")) {
+//	    m.setDisplayName(ChatColor.translateAlternateColorCodes('&', p.getConfig().getString("bow-properties.name")));
+//	}else {
+//	    m.setUnbreakable(true);
+//	    p.getConfig().set("bow-properties.name", "&6Fireball Bow");
+//	}
+//	//Enchant with infinity and hide enchants
+//	m.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+//	m.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+//	//Create and add lore
+//	List<String> lore = new ArrayList<String>();
+//	if(p.getConfig().contains("bow-properties.lore")) {
+//	List<String> TempLore = new ArrayList<String>();
+//	TempLore = (p.getConfig().getStringList("bow-properties.lore"));
+//	for(String s : TempLore) {
+//	    lore.add(ChatColor.translateAlternateColorCodes('&', s));
+//	}
+//	}else {
+//	    lore.add(ChatColor.RED + "Official Fireball Bow");
+//	    lore.add(ChatColor.RED + "Not for resale");
+//	    lore.add(ChatColor.RED + "Pyroshot Inc");
+//	    p.getConfig().set("bow-properties.lore", lore);
+//	}
+//	//Set the lore
+//	m.setLore(lore);
+//	return m;
+//    }
+//    private static ItemStack raidPearl() {
+//	//Create the Item and meta for Enderpearl
+//	ItemStack pearl = new ItemStack(Material.ENDER_PEARL);
+//	ItemMeta m = pearl.getItemMeta();
+//	//Set up the name and lore of the pearl
+//	m.setDisplayName(ChatColor.DARK_AQUA + "Raid Pearl");
+//	List<String> lore = new ArrayList<String>();
+//	lore.add(ChatColor.AQUA + "Standard Issue Raid PEARL Device");
+//	lore.add(ChatColor.AQUA + "Precise Endergetic Automatic Relocation Lob Device");
+//	lore.add(ChatColor.AQUA + "Just a small toss away!");
+//	m.setLore(lore);
+//	//Set the items meta to the meta and return the itemstack
+//	pearl.setItemMeta(m);
+//	return pearl;
+//    }
     private static int initializeTimer() {
 	//Create Timer Benchmark
 	int initializeTimer = 90;

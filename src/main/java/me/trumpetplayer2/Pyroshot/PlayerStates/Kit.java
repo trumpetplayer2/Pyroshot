@@ -194,6 +194,7 @@ public enum Kit {
 	//Dynamically check kit permission
 	return p.hasPermission("Pyroshot.Minigame.Kits." + k.kitToString());
     }
+    
     public static String kitToString(Kit k) {
 	String s = "default";
 	switch(k) {
@@ -245,6 +246,8 @@ public enum Kit {
 	}
 	return s;
     }
+    
+    
     public static boolean doubleJump(Kit k) {
 	boolean canDoubleJump = true;
 	
@@ -260,9 +263,9 @@ public enum Kit {
 	return (kitToString(this));
     }
     
-    public Inventory getInventory() {
+    public Inventory getInventory(Player p) {
 	Inventory i = Bukkit.createInventory(null, InventoryType.PLAYER);
-	i.setItem(0, Weapons.bow);
+	i.setItem(0, Weapons.bow(p));
 	    i.setItem(17, new ItemStack(Material.ARROW));
 	//Create each inventory
 	switch(this) {
@@ -312,7 +315,7 @@ public enum Kit {
 	    //Reset inv
 	    i = Bukkit.createInventory(null, InventoryType.PLAYER);
 	    i.setItem(17, new ItemStack(Material.ARROW, 64));
-	    i.setItem(0, Weapons.machineGun());
+	    i.setItem(0, Weapons.machineGun(p));
 	    break;
 	case SNIPER:
 	    if(Debug.getNMSVersion() > 1.17) {
@@ -329,7 +332,7 @@ public enum Kit {
 	return i;
     }
 
-    public ItemStack KitSymbol() {
+    public ItemStack KitSymbol(Player p) {
 	ItemStack i;
 	ItemMeta im;
 	//Create each kits symbol

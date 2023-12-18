@@ -74,44 +74,55 @@ public class InventoryClickListener implements Listener{
 	String kitName = i.getItemMeta().getDisplayName().substring(0, i.getItemMeta().getDisplayName().length()-4);
 	//If player has permission, save kit change, otherwise give invalid permission for kit
 	if(s.getKit().hasPermission(p)) {
-	    p.sendMessage(ChatColor.GOLD + "Selected " + ChatColor.BOLD + kitName + ChatColor.RESET + "" + ChatColor.GOLD + " Kit!");
-	  //Set the players kit
+	    String translatedKit = plugin.getLocalizedText(p, "kitselect");
+        translatedKit.replace("(Kit)", plugin.getPlayerStats(p).getKit().kitToString());
+        p.sendMessage(translatedKit + plugin.getPlayerStats(p).getKit().kitToString());
+        //Set the players kit
 	    s.setKit(Kit.kitFromString(n));
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 3f); 
 	    plugin.addPlayer(p, s);
 	}else {
-	    p.sendMessage(ChatColor.DARK_RED + "Invalid permissions for " + kitName + ChatColor.RESET + "" + ChatColor.DARK_RED + " Kit.");
-
+	    String translatedKit = plugin.getLocalizedText(p, "invalidkitpermission");
+        translatedKit.replace("(Kit)", kitName);
+        p.sendMessage(translatedKit);
         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1, 3f); 
 	}
     }
     
-    public void mapVote(Player whoClicked, int Slot, ItemStack item) {
+    public void mapVote(Player p, int Slot, ItemStack item) {
 	//Add the vote to count
-	plugin.game.addVote(whoClicked, Slot);
-	whoClicked.sendMessage(ChatColor.DARK_AQUA + "Voted for " + item.getItemMeta().getDisplayName());
+	plugin.game.addVote(p, Slot);
+	String mapVote = plugin.getLocalizedText(p, "mapvote");
+	mapVote.replace("(Map)", item.getItemMeta().getDisplayName());
+	p.sendMessage(ChatColor.DARK_AQUA + mapVote);
     }
 
-    public void eliminationClick(Player whoClicked, int Slot, ItemStack item) {
-        PlayerStats s = plugin.getPlayerStats(whoClicked);
+    public void eliminationClick(Player p, int Slot, ItemStack item) {
+        PlayerStats s = plugin.getPlayerStats(p);
         s.setDeathMessage(ConfigHandler.eliminationMsgs.get(Slot).getMsg());
-        plugin.addPlayer(whoClicked, s);
-        whoClicked.sendMessage(ChatColor.DARK_AQUA + "Selected Elimination Message " + item.getItemMeta().getDisplayName());
+        plugin.addPlayer(p, s);
+        String effect = plugin.getLocalizedText(p, "selecteliminationmsg");
+        effect.replace("(Effect)", item.getItemMeta().getDisplayName());
+        p.sendMessage(ChatColor.DARK_AQUA + effect);
     }
     
-    public void deathEffectClick(Player whoClicked, int Slot, ItemStack item) {
-        if(!whoClicked.hasPermission("pyroshot.customization.effect.death." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(whoClicked); return;}
-        PlayerStats s = plugin.getPlayerStats(whoClicked);
+    public void deathEffectClick(Player p, int Slot, ItemStack item) {
+        if(!p.hasPermission("pyroshot.customization.effect.death." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(p); return;}
+        PlayerStats s = plugin.getPlayerStats(p);
         s.setDeathEffect(plugin.getDeathEffect().get(Slot));;
-        plugin.addPlayer(whoClicked, s);
-        whoClicked.sendMessage(ChatColor.DARK_AQUA + "Selected Death Effect " + item.getItemMeta().getDisplayName());
+        plugin.addPlayer(p, s);
+        String effect = plugin.getLocalizedText(p, "selectdeatheffect");
+        effect.replace("(Effect)", item.getItemMeta().getDisplayName());
+        p.sendMessage(ChatColor.DARK_AQUA + effect);
     }
     
-    public void winEffectClick(Player whoClicked, int Slot, ItemStack item) {
-        if(!whoClicked.hasPermission("pyroshot.customization.effect.win." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(whoClicked); return;}
-        PlayerStats s = plugin.getPlayerStats(whoClicked);
+    public void winEffectClick(Player p, int Slot, ItemStack item) {
+        if(!p.hasPermission("pyroshot.customization.effect.win." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(p); return;}
+        PlayerStats s = plugin.getPlayerStats(p);
         s.setWinEffect(plugin.getWinEffect().get(Slot));;
-        plugin.addPlayer(whoClicked, s);
-        whoClicked.sendMessage(ChatColor.DARK_AQUA + "Selected Win Effect " + item.getItemMeta().getDisplayName());
+        plugin.addPlayer(p, s);
+        String effect = plugin.getLocalizedText(p, "selectwineffect");
+        effect.replace("(Effect)", item.getItemMeta().getDisplayName());
+        p.sendMessage(ChatColor.DARK_AQUA + effect);
     }
 }

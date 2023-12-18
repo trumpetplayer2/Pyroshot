@@ -7,16 +7,6 @@ fireball-power:
   level-2: 3
   level-3: 2.5
   damage-mult: 1
-bow-properties:
-#Bow given upon minigame starting
-  name: "&6Fireball Bow"
-#Is the bow unbreakable?
-  unbreakable: true
-#Custom Lore
-  lore:
-    - "&cOfficial Fireball Bow"
-    - "&cNot for Resale"
-    - "&cPyroshot Inc"
 minigame:
 #Minimum players to start the game
   minimum-players: 2

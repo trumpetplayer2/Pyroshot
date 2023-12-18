@@ -38,9 +38,9 @@ public class JoinListener implements Listener{
 	}else {
 	    p.teleport(ConfigHandler.hubLocation);
 	    if(p.hasPermission("pyroshot.minigame.vote")) {
-	        TextComponent voteMessage = new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + "Click here to vote for a map!" + ChatColor.RESET);
+	        TextComponent voteMessage = new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + plugin.getLocalizedText(p, "mapvotereminder") + ChatColor.RESET);
 	        voteMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pyroshot vote"));
-	        voteMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to vote!")));
+	        voteMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(plugin.getLocalizedText(p, "mapvotehoverreminder"))));
 	        BaseComponent[] component = new ComponentBuilder().append(voteMessage).create();
 	        p.spigot().sendMessage(component);
 	    }

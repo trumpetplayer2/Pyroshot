@@ -53,7 +53,7 @@ public class PlayerTeleportListener implements Listener{
 	plugin.getPlayerStats(p).special = false;
 	plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.ENDER);
 	p.teleport(to);
-	p.getInventory().setItem(0, Weapons.endSword);
+	p.getInventory().setItem(0, Weapons.endSword(p));
 	//Remove all raid pearls
 	while(p.getInventory().contains(Material.ENDER_PEARL)) {
 	    p.getInventory().remove(Material.ENDER_PEARL);
@@ -106,7 +106,7 @@ public class PlayerTeleportListener implements Listener{
     public void teleportBack(Player p, Location back) {
 	if(!plugin.game.isActive) {return;}
 	p.teleport(back);
-	p.getInventory().setItem(0, Weapons.bow);
+	p.getInventory().setItem(0, Weapons.bow(p));
     }
     
     public Location isSafeTeleport(Location loc) {

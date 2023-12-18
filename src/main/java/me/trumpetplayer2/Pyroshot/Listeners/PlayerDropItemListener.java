@@ -60,7 +60,7 @@ public class PlayerDropItemListener implements Listener{
 	case MOSS:
 	    Bukkit.getPluginManager().callEvent(ev);
 	    if(ev.isCancelled()) {return;}
-	    replaceNearBlocks(p, Kit.MOSS.KitSymbol().getType());
+	    replaceNearBlocks(p, Kit.MOSS.KitSymbol(p).getType());
 	    plugin.getPlayerStats(p).special = false;
 	    plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit());
 	    break;

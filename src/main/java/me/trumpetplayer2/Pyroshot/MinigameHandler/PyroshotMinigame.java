@@ -30,6 +30,7 @@ import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.Effects.EffectType;
 import me.trumpetplayer2.Pyroshot.MapHandler.*;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Grenade;
+import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Weapons;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.MinigameEndEvent;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.MinigameStartEvent;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.MinigameTickEvent;
@@ -163,7 +164,7 @@ public class PyroshotMinigame {
 	}
 	//Teleport players to game
 	for(Player p : Bukkit.getOnlinePlayers()) {
-	    p.getInventory().setContents(PyroshotPlugin.getPlayerStats(p).getKit().getInventory().getContents());
+	    p.getInventory().setContents(PyroshotPlugin.getPlayerStats(p).getKit().getInventory(p).getContents());
 	    for(PyroshotTeam t : map.teams) {
 		if(t.onTeam(p)) {
 		    p.getInventory().setChestplate(t.Chestplate());
@@ -210,14 +211,14 @@ public class PyroshotMinigame {
     public void countdown(int i) {
         for(Player p : Bukkit.getOnlinePlayers()) {
             if(i > 0) {
-               p.sendTitle(ChatColor.RED + "Starting in", null, 0, 25, 0);
+               p.sendTitle(ChatColor.RED + PyroshotPlugin.getLocalizedText(p, "startingin"), null, 0, 25, 0);
                p.sendTitle(null, ChatColor.GOLD + "" + i, 0, 20, 0);
                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 1, 3f); 
             }
             if(i <= 0) {
                 //Game is active, disable initalization.
                 isInitialized = false;
-                p.sendTitle(ChatColor.RED + "Round Starting", null, 0, 25, 0);
+                p.sendTitle(ChatColor.RED + PyroshotPlugin.getLocalizedText(p, "roundstarted"), null, 0, 25, 0);
                 String team = "";
                 PyroshotTeam t = map.getPlayerTeam(p);
                 team = t.teamColor + t.getName() + ": ";
@@ -253,7 +254,7 @@ public class PyroshotMinigame {
 	Bukkit.getPluginManager().callEvent(e);
 	if(winner != null) {
 	for(Player p : Bukkit.getOnlinePlayers()) {
-	    p.sendMessage(winner.teamColor + winner.getName() + " Team" + ChatColor.GOLD + " has won the game! GG!");
+	    p.sendMessage(winner.teamColor + winner.getName() + " "  + PyroshotPlugin.getLocalizedText(p, "winner"));
 	}
 	
 	for(String uuid : winner.players) {
@@ -309,9 +310,9 @@ public class PyroshotMinigame {
 	    PyroshotPlugin.getPlayerStats(p).useSpecial = false;
 	    PyroshotPlugin.getPlayerStats(p).special = false;
 	    if(p.hasPermission("pyroshot.minigame.vote")) {
-	        TextComponent voteMessage = new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + "Click here to vote for a map!" + ChatColor.RESET);
+	        TextComponent voteMessage = new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + PyroshotPlugin.getLocalizedText(p, "mapvotereminder") + ChatColor.RESET);
             voteMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pyroshot vote"));
-            voteMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to vote!")));
+            voteMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(PyroshotPlugin.getLocalizedText(p, "mapvotehoverreminder"))));
             BaseComponent[] component = new ComponentBuilder().append(voteMessage).create();
             p.spigot().sendMessage(component);
         }
@@ -327,13 +328,14 @@ public class PyroshotMinigame {
     
     public void initializationInform() {
 	for(Player p : Bukkit.getOnlinePlayers()) {
-	    p.sendMessage(ChatColor.GOLD + "Votes have been tallied! Map " + map.getSymbol().getItemMeta().getDisplayName() + ChatColor.RESET + "" + ChatColor.GOLD + " has won!");
-	    TextComponent kitMessage = new TextComponent(ChatColor.YELLOW + "" + ChatColor.BOLD + "Don't forget to grab a " + ChatColor.ITALIC + "kit!"+ ChatColor.RESET);
+	    
+	    p.sendMessage(ChatColor.GOLD + PyroshotPlugin.getLocalizedText(p, "mapannounce").replace("(Map)", map.getSymbol().getItemMeta().getDisplayName()));
+	    TextComponent kitMessage = new TextComponent(ChatColor.YELLOW + "" + ChatColor.BOLD + PyroshotPlugin.getLocalizedText(p, "kitreminder"));
 	    kitMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pyroshot kit"));
-	    kitMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to select a kit")));
-	    TextComponent teamMessage = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + ChatColor.ITALIC + "Team " + ChatColor.RESET + "" + ChatColor.GREEN + "" + ChatColor.BOLD + "requests are now open!" + ChatColor.RESET + " ");
+	    kitMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(PyroshotPlugin.getLocalizedText(p, "Click to select a kit"))));
+	    TextComponent teamMessage = new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + ChatColor.ITALIC + PyroshotPlugin.getLocalizedText(p, "teamjoinreminder") + ChatColor.RESET + " ");
 	    teamMessage.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/pyroshot team join "));
-	    teamMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Click to request to join a team")));
+	    teamMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(PyroshotPlugin.getLocalizedText(p, "teamjoinhoverreminder"))));
 	    BaseComponent[] component = new ComponentBuilder().append(teamMessage).append("\n").append(kitMessage).create();
 	    p.spigot().sendMessage(component);
 	}
@@ -497,9 +499,9 @@ public class PyroshotMinigame {
    	//Based on players kit
    	switch(k) {
    	case ENDER:
-   	    if(p.getInventory().contains(ConfigHandler.raidPearl)) {return;}
+   	    if(p.getInventory().contains(Weapons.raidPearl(p))) {return;}
    	    //Add raid pearl
-   	    p.getInventory().addItem(new ItemStack(ConfigHandler.raidPearl));
+   	    p.getInventory().addItem(new ItemStack(Weapons.raidPearl(p)));
    	    break;
    	case GRENADIER:
    	    giveGrenade(p, stats);

@@ -24,17 +24,20 @@ import me.trumpetplayer2.Pyroshot.Listeners.LeaveListener;
 import me.trumpetplayer2.Pyroshot.Listeners.PlayerDropItemListener;
 import me.trumpetplayer2.Pyroshot.Listeners.PlayerShootBowListener;
 import me.trumpetplayer2.Pyroshot.Listeners.PlayerTeleportListener;
+import me.trumpetplayer2.Pyroshot.Localization.Localizations;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotMinigame;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.RegisterEffectsEvents;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PlayerStats;
 import me.trumpetplayer2.Pyroshot.Saves.Savable;
 import me.trumpetplayer2.Pyroshot.SoftDependencies.PyroshotPapiExpansion;
+import net.md_5.bungee.api.ChatColor;
 import me.trumpetplayer2.Pyroshot.SoftDependencies.ProtocolLibHandler;
 
 
 public class PyroshotMain extends JavaPlugin{
 	
 	protected HashMap<Player, PlayerStats> PlayerMap = new HashMap<Player, PlayerStats>();
+	protected HashMap<String, Localizations> LocalizationRegistry = new HashMap<String, Localizations>();
 	public PyroshotMinigame game;
 	boolean ProtocolLibSupport = false;
 	public static PyroshotMain instance;
@@ -189,4 +192,19 @@ public class PyroshotMain extends JavaPlugin{
         return deathEffects;
     }
 
+	public String getLocalizedText(Player p, String key) {
+	    //Define a variable that will store the text the player looked up
+	    String text = "";
+	    //Get the players lang, IE: en_us
+	    String lang = p.getLocale();
+	    //Check if its already loaded into cache
+	    if(!LocalizationRegistry.containsKey(lang)) {
+	        //If not, load into cache
+	        LocalizationRegistry.put(lang, new Localizations(lang));
+	    }
+	    //Query the localization to retrieve text
+	    LocalizationRegistry.get(key).getLocalization(key);
+	    //Return the text given
+	    return ChatColor.translateAlternateColorCodes('&', text);
+	}
 }

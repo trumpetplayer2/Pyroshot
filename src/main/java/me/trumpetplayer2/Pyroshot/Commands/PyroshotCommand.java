@@ -272,11 +272,21 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	}
 
     public void pauseMinigame(CommandSender sender) {
+        
 	    //Send required message based on if the minigame was paused, then pause the minigame
 	    if(game.isPaused) {
-		sender.sendMessage("The game is already paused");
+	        if(sender instanceof Player) {
+	            plugin.getLocalizedText((Player) sender, "commandalreadypaused");
+	        }else {
+	            sender.sendMessage("The game is already paused");
+	        }
+		
 	    }else {
-		sender.sendMessage("The game is now paused");
+	           if(sender instanceof Player) {
+	               plugin.getLocalizedText((Player) sender, "commandpause");
+	           }else {
+	               sender.sendMessage("The game is now paused");
+	           }
 	    }
 	    game.isPaused = true;
 	}
@@ -284,9 +294,17 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
     public void unpauseMinigame(CommandSender sender) {
         //Unpause the minigame and send user appropriate messages
 	    if(game.isPaused) {
-		sender.sendMessage("The game is no longer paused");
+	        if(sender instanceof Player) {
+                plugin.getLocalizedText((Player) sender, "commandunpause");
+            }else {
+                sender.sendMessage("The game is no longer paused");
+            }
 	    }else {
-		sender.sendMessage("The game is not paused");
+	        if(sender instanceof Player) {
+                plugin.getLocalizedText((Player) sender, "commandnotpaused");
+            }else {
+                sender.sendMessage("The game is not paused");
+            }
 	    }
 	    game.isPaused = false;
 	}
@@ -295,9 +313,17 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
         //Toggle the pause state of the game
 	    game.isPaused = !game.isPaused;
 	    if(game.isPaused) {
-		sender.sendMessage("The game is now paused");
+	        if(sender instanceof Player) {
+                plugin.getLocalizedText((Player) sender, "commandpause");
+            }else {
+                sender.sendMessage("The game is now paused");
+            }
 	    }else {
-		sender.sendMessage("The game is no longer paused");
+	        if(sender instanceof Player) {
+                plugin.getLocalizedText((Player) sender, "commandunpause");
+            }else {
+                sender.sendMessage("The game is no longer paused");
+            }
 	    }
 	}
     
@@ -306,15 +332,23 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    if(!game.isInitialized) {
 	    game.timer = ConfigHandler.initializeTimer;
 	    }else {
-	        //If match is already initialize inform player
-	        sender.sendMessage("The match has already been initialized!");
+	        if(sender instanceof Player) {
+                plugin.getLocalizedText((Player) sender, "commandinitializefail");
+            }else {
+                //If match is already initialize inform player
+                sender.sendMessage("The match has already been initialized!");
+            }
 	    }
 	}
 	
     public void startMatch(CommandSender sender) {
         //Determine if match is active, if so, tell user so
 	    if(game.isActive) {
-	        sender.sendMessage("There is already a match in play.");
+	        if(sender instanceof Player) {
+                plugin.getLocalizedText((Player) sender, "commandstartfail");
+            }else {
+                sender.sendMessage("There is already a match in play.");
+            }
 	        return;
 	    }
 	    //Check if the game is initialized and initialize if not
@@ -325,10 +359,18 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    if(game.isInitialized) {
 	        game.timer = 0;
 	        game.MinigameStart();
-	        sender.sendMessage("Game Started");
+	           if(sender instanceof Player) {
+	                plugin.getLocalizedText((Player) sender, "commandstart");
+	            }else {
+	                sender.sendMessage("Game Started");
+	            }
 	    }else {
+	        if(sender instanceof Player) {
+                plugin.getLocalizedText((Player) sender, "commandstarterror");
+            }else {
 	        //If there was an issue with initialization, end game. This prevents map failure attempted loading
 	        sender.sendMessage("An issue has occured while initializing the game.");
+            }
 	    }
 	    if(game.isPaused) {
 	        //Unpause the game
@@ -337,18 +379,22 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	}
 	
     public static void invalidPermission(CommandSender sender) {
-        //Invalid permission error
-	    sender.sendMessage(ChatColor.DARK_RED + "You do not have permission for this command.");
+        if(sender instanceof Player) {
+            PyroshotMain.getInstance().getLocalizedText((Player) sender, "invalidpermission");
+        }else {
+            //Invalid permission error
+            sender.sendMessage(ChatColor.DARK_RED + "You do not have permission for this command.");
+        }
 	}
 	
     public void giveKit(Player p, String kit) {
 	    //Give the player the kit
-	    p.getInventory().setContents(Kit.kitFromString(kit).getInventory().getContents());
+	    p.getInventory().setContents(Kit.kitFromString(kit).getInventory(p).getContents());
 	}
 	
 	public void giveKit(Player p) {
 	    //Give the player the kit
-	    p.getInventory().setContents(PyroshotMain.instance.getPlayerStats(p).getKit().getInventory().getContents());
+	    p.getInventory().setContents(PyroshotMain.instance.getPlayerStats(p).getKit().getInventory(p).getContents());
 	}
 	
 	public void help(CommandSender sender) {
@@ -373,7 +419,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    if(args.length > 1) {
 		String subcommand = args[1];
 		if(!game.isInitialized) {
-		    sender.sendMessage(ChatColor.RED + "Map has not been decided. Please wait before joining teams.");
+		    p.sendMessage(ChatColor.RED + plugin.getLocalizedText(p, "commandteamerror"));
 		}
 		//Team commands
 		switch(subcommand.toLowerCase()) {
@@ -407,9 +453,10 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    
 	    //If player is on team, tell them
 	    for(PyroshotTeam team : game.map.teams) {
-		p.sendMessage(ChatColor.GOLD + "Team " + team.getName() + ": " + team.getPlayersLeft());
+		p.sendMessage(ChatColor.GOLD + plugin.getLocalizedText(p, "team") 
+		+ " " + team.getName() + ": " + team.getPlayersLeft());
 		if(team.onTeam(p)) {
-		    p.sendMessage(ChatColor.GREEN + "Team " + team.getName() + " is selected.");
+		    p.sendMessage(ChatColor.GREEN + plugin.getLocalizedText(p, "team") + " " + team.getName());
 		}
 	    }
 	}
@@ -419,12 +466,12 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    boolean onTeam = false;
 	    //Check to make sure the game is initialized
 	    if(!game.isInitialized) {
-		p.sendMessage(ChatColor.GOLD + "Please wait for minigame to initialize before choosing a team");
+		p.sendMessage(ChatColor.RED + plugin.getLocalizedText(p, "commandteamerror"));
 	    }
-	    if(game.timer <= 3 || game.isActive) {p.sendMessage(ChatColor.GOLD + "You cannot join or leave a team now");return;}
+	    if(game.timer <= 3 || game.isActive) {p.sendMessage(ChatColor.GOLD + plugin.getLocalizedText(p, "commandteamlate")); return;}
 	    //Check that a team was provided, if none, send valid teams and return
 	    if(args.length < 2) {
-		p.sendMessage(ChatColor.GOLD + "Please enter a valid team name. The teams are:");
+		p.sendMessage(ChatColor.GOLD + plugin.getLocalizedText(p, "commandteaminvalid"));
 		for(PyroshotTeam team : game.map.teams) {p.sendMessage(ChatColor.GOLD + team.getName());}
 		return;
 	    }else {
@@ -434,7 +481,8 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 		        team.removePlayer(p);
 		    }
 		    if(team.getName().equalsIgnoreCase(args[2].toLowerCase())) {
-		        p.sendMessage(ChatColor.GOLD + "Joined team " + team.teamColor + team.name);
+		        p.sendMessage(ChatColor.GOLD + plugin.getLocalizedText(p, "joinedteam") + " "
+		                + team.teamColor + team.name);
 			team.addPlayer(p);
 			onTeam = true;
 		    }else {
@@ -443,7 +491,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    }
 	    if(!onTeam) {
 	        //Team did not exist, tell user they couldnt find the team
-		p.sendMessage("Could not find team " + args[2]);
+		p.sendMessage(plugin.getLocalizedText(p, "commandteamlost") + " " + args[2]);
 	    }
 	}
 	
@@ -451,7 +499,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    for(PyroshotTeam team : game.map.teams) {
 		if(team.onTeam(p)) {
 		    team.removePlayer(p);
-		    p.sendMessage("You have left " + team.getName());
+		    p.sendMessage(plugin.getLocalizedText(p, "commandteamleave") + " " + team.getName());
 		}
 	    }
 	}
@@ -559,10 +607,10 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	
 	public void kit(Player p) {
 	    //Open the kit inventory
-	    p.openInventory(getKitInv());
+	    p.openInventory(getKitInv(p));
 	}
 	
-	public Inventory getKitInv() {
+	public Inventory getKitInv(Player p) {
 	    //Determine size based on how many visable kits
 	    int size = getNearestNine((int) Math.ceil(Kit.numberOfKits));
 	    Inventory inv = Bukkit.createInventory(null, size, ChatColor.DARK_RED + "Pyro" + ChatColor.GOLD + "shot" + ChatColor.RESET + " Kits");
@@ -570,7 +618,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    int invisible = 0;
 	    for(int i = 0; i < (Kit.values().length); i++) {
 		if(Kit.isHidden(Kit.kitFromInt(i))) { invisible += 1; continue;}
-		inv.setItem(i - invisible, Kit.kitFromInt(i).KitSymbol());
+		inv.setItem(i - invisible, Kit.kitFromInt(i).KitSymbol(p));
 	    }
 	    return inv;
 	}
@@ -587,7 +635,9 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    //Check if user has required permission for specific kit. By default all kits are available
 	    if(k.hasPermission(p)) {
 	    plugin.getPlayerStats(p).setKit(k);
-	    p.sendMessage("Set kit to " + plugin.getPlayerStats(p).getKit().kitToString());
+	    String translatedKit = plugin.getLocalizedText(p, "kitselect");
+	    translatedKit.replace("(Kit)", plugin.getPlayerStats(p).getKit().kitToString());
+	    p.sendMessage(translatedKit);
 	    }else {
 		invalidPermission(p);
 	    }
