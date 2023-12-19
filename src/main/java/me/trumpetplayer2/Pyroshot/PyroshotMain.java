@@ -196,14 +196,14 @@ public class PyroshotMain extends JavaPlugin{
 	    //Define a variable that will store the text the player looked up
 	    String text = "";
 	    //Get the players lang, IE: en_us
-	    String lang = p.getLocale();
+	    String lang = p.getLocale().toString();
 	    //Check if its already loaded into cache
 	    if(!LocalizationRegistry.containsKey(lang)) {
 	        //If not, load into cache
 	        LocalizationRegistry.put(lang, new Localizations(lang));
 	    }
 	    //Query the localization to retrieve text
-	    LocalizationRegistry.get(key).getLocalization(key);
+	    text = LocalizationRegistry.get(lang).getLocalization(key);
 	    //Return the text given
 	    return ChatColor.translateAlternateColorCodes('&', text);
 	}

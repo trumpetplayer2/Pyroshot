@@ -2,6 +2,7 @@ package me.trumpetplayer2.Pyroshot.MinigameHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -329,7 +330,7 @@ public class PyroshotMinigame {
     public void initializationInform() {
 	for(Player p : Bukkit.getOnlinePlayers()) {
 	    
-	    p.sendMessage(ChatColor.GOLD + PyroshotPlugin.getLocalizedText(p, "mapannounce").replace("(Map)", map.getSymbol().getItemMeta().getDisplayName()));
+	    p.sendMessage(ChatColor.GOLD + MessageFormat.format(PyroshotPlugin.getLocalizedText(p, "mapannounce"), map.getSymbol().getItemMeta().getDisplayName()));
 	    TextComponent kitMessage = new TextComponent(ChatColor.YELLOW + "" + ChatColor.BOLD + PyroshotPlugin.getLocalizedText(p, "kitreminder"));
 	    kitMessage.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pyroshot kit"));
 	    kitMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(PyroshotPlugin.getLocalizedText(p, "Click to select a kit"))));

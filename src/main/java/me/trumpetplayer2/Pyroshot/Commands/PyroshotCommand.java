@@ -1,5 +1,6 @@
 package me.trumpetplayer2.Pyroshot.Commands;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -635,8 +636,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	    //Check if user has required permission for specific kit. By default all kits are available
 	    if(k.hasPermission(p)) {
 	    plugin.getPlayerStats(p).setKit(k);
-	    String translatedKit = plugin.getLocalizedText(p, "kitselect");
-	    translatedKit.replace("(Kit)", plugin.getPlayerStats(p).getKit().kitToString());
+	    String translatedKit = MessageFormat.format(plugin.getLocalizedText(p, "kitselect"), plugin.getPlayerStats(p).getKit().kitToString());
 	    p.sendMessage(translatedKit);
 	    }else {
 		invalidPermission(p);

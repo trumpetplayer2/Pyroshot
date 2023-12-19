@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.trumpetplayer2.Pyroshot.Debug.Debug;
+
 public class LanguageFiles {
     private FileConfiguration dataConfig;
     private File directory;
@@ -16,22 +18,24 @@ public class LanguageFiles {
     private String lang;
     private JavaPlugin plugin;
     
-    public LanguageFiles(String lang, FileConfiguration config, File file, JavaPlugin main) {
+    public LanguageFiles(String langfile, FileConfiguration config, File file, JavaPlugin main) {
     dataConfig = config;
     dataFile = file;
+    lang = langfile;
     plugin = main;
     getData();
     }
     
-    public LanguageFiles(JavaPlugin main, String lang) {
+    public LanguageFiles(JavaPlugin main, String langfile) {
     plugin = main;
+    lang = langfile;
     getData();
     }
     
     public HashMap<String, String> loadKeys() {
         //Place to store the Keys
         HashMap<String, String> localizationValues = new HashMap<String, String>();
-        for(String k : dataConfig.getKeys(false)) {
+        for(String k : dataConfig.getKeys(true)) {
             if(dataConfig.getString(k) != null) {
                 localizationValues.put(k, dataConfig.getString(k));
             }else {
@@ -55,7 +59,8 @@ public class LanguageFiles {
             }
         }
         if(this.dataFile == null) {
-            this.dataFile = new File(plugin.getDataFolder(), lang + ".yml");
+            this.dataFile = new File(directory, lang + ".yml");
+            Debug.TellConsole(lang + ".yml");
         }
         dataConfig = YamlConfiguration.loadConfiguration(dataFile);
         InputStream inStream = plugin.getResource(lang + ".yml");

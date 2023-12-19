@@ -3,6 +3,7 @@ package me.trumpetplayer2.Pyroshot.Localization;
 import java.util.HashMap;
 
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
+import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.Saves.LanguageFiles;
 
 public class Localizations {
@@ -10,14 +11,17 @@ public class Localizations {
     HashMap<String, String> translationValues = new HashMap<String, String>();
     LanguageFiles langRef = null;
     
-    public Localizations(String key) {
-        language = key;
+    public Localizations(String lang) {
+        language = lang;
         updateLocalizations();
     }
     
     private void updateLocalizations() {
         LanguageFiles lang = new LanguageFiles(PyroshotMain.getInstance(), language);
         translationValues = lang.loadKeys();
+        for(String key : translationValues.keySet()) {
+            Debug.TellConsole(key + ": " + translationValues.get(key));
+        }
         langRef = lang;
     }
     
