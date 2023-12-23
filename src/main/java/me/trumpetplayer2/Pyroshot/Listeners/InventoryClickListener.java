@@ -68,6 +68,7 @@ public class InventoryClickListener implements Listener{
     public void kitClick(PlayerStats s, ItemStack i, Player p) {
 	//Check if user has permission
 	if(!p.hasPermission("Pyroshot.Minigame.SelectKit")) {return;}
+	if(PyroshotMain.getInstance().game.isActive) {p.closeInventory(); return;}
 	//Determine kit by removing the " kit" at the end
 	String n = i.getItemMeta().getDisplayName();
 	n = ChatColor.stripColor(n);
@@ -76,7 +77,7 @@ public class InventoryClickListener implements Listener{
 	String kitName = i.getItemMeta().getDisplayName().substring(0, i.getItemMeta().getDisplayName().length()-4);
 	//If player has permission, save kit change, otherwise give invalid permission for kit
 	if(s.getKit().hasPermission(p)) {
-	    String translatedKit = MessageFormat.format(plugin.getLocalizedText(p, "kitselect"), plugin.getPlayerStats(p).getKit().kitToString());
+	    String translatedKit = MessageFormat.format(plugin.getLocalizedText(p, "kitselect"), kitName);
         p.sendMessage(translatedKit);
         //Set the players kit
 	    s.setKit(Kit.kitFromString(n));
@@ -90,14 +91,16 @@ public class InventoryClickListener implements Listener{
     }
     
     public void mapVote(Player p, int Slot, ItemStack item) {
-	//Add the vote to count
-	plugin.game.addVote(p, Slot);
-	String mapVote = MessageFormat.format(plugin.getLocalizedText(p, "mapvote"), item.getItemMeta().getDisplayName());
-	//mapVote.replace("(Map)", item.getItemMeta().getDisplayName());
-	p.sendMessage(ChatColor.DARK_AQUA + mapVote);
+        if(PyroshotMain.getInstance().game.isActive) {p.closeInventory(); return;}
+        //Add the vote to count
+        plugin.game.addVote(p, Slot);
+        String mapVote = MessageFormat.format(plugin.getLocalizedText(p, "mapvote"), item.getItemMeta().getDisplayName());
+        //mapVote.replace("(Map)", item.getItemMeta().getDisplayName());
+        p.sendMessage(ChatColor.DARK_AQUA + mapVote);
     }
 
     public void eliminationClick(Player p, int Slot, ItemStack item) {
+        if(PyroshotMain.getInstance().game.isActive) {p.closeInventory(); return;}
         PlayerStats s = plugin.getPlayerStats(p);
         s.setDeathMessage(ConfigHandler.eliminationMsgs.get(Slot).getMsg());
         plugin.addPlayer(p, s);
@@ -106,6 +109,7 @@ public class InventoryClickListener implements Listener{
     }
     
     public void deathEffectClick(Player p, int Slot, ItemStack item) {
+        if(PyroshotMain.getInstance().game.isActive) {p.closeInventory(); return;}
         if(!p.hasPermission("pyroshot.customization.effect.death." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(p); return;}
         PlayerStats s = plugin.getPlayerStats(p);
         s.setDeathEffect(plugin.getDeathEffect().get(Slot));;
@@ -115,6 +119,7 @@ public class InventoryClickListener implements Listener{
     }
     
     public void winEffectClick(Player p, int Slot, ItemStack item) {
+        if(PyroshotMain.getInstance().game.isActive) {p.closeInventory(); return;}
         if(!p.hasPermission("pyroshot.customization.effect.win." + ChatColor.stripColor(plugin.getWinEffect().get(Slot).getName()))) {PyroshotCommand.invalidPermission(p); return;}
         PlayerStats s = plugin.getPlayerStats(p);
         s.setWinEffect(plugin.getWinEffect().get(Slot));;

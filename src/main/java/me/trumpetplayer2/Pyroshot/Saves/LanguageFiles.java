@@ -1,15 +1,19 @@
 package me.trumpetplayer2.Pyroshot.Saves;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.logging.Level;
 
+import org.apache.commons.io.FileUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.trumpetplayer2.Pyroshot.Debug.Debug;
+import me.trumpetplayer2.Pyroshot.PyroshotMain;
 
 public class LanguageFiles {
     private FileConfiguration dataConfig;
@@ -60,7 +64,22 @@ public class LanguageFiles {
         }
         if(this.dataFile == null) {
             this.dataFile = new File(directory, lang + ".yml");
-            Debug.TellConsole(lang + ".yml");
+        }
+        if(!dataFile.exists()) {
+            try {
+                //Check if the file is provided, if it is
+                FileUtils.copyInputStreamToFile(PyroshotMain.getInstance().getResource(lang + ".yml"), dataFile);
+            }catch(IOException e){
+                Bukkit.getLogger().log(Level.INFO, "Translation " + lang + ".yml does not exist. Defaulting to en_us");
+                this.dataFile = new File(directory, "en_us.yml");
+                if(!dataFile.exists()) {
+                    try {
+                        FileUtils.copyInputStreamToFile(PyroshotMain.getInstance().getResource("en_us.yml"), dataFile);
+                    } catch (IOException ex) {
+                        Bukkit.getLogger().log(Level.SEVERE, "Failed to load default en_us file from plugin");
+                    }
+                }
+            }
         }
         dataConfig = YamlConfiguration.loadConfiguration(dataFile);
         InputStream inStream = plugin.getResource(lang + ".yml");

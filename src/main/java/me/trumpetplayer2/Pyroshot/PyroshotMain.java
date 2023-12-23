@@ -14,16 +14,7 @@ import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.Effects.Effect;
 import me.trumpetplayer2.Pyroshot.Effects.Nothing;
 import me.trumpetplayer2.Pyroshot.Effects.Smite;
-import me.trumpetplayer2.Pyroshot.Listeners.DoubleJumpListener;
-import me.trumpetplayer2.Pyroshot.Listeners.EffectRegistration;
-import me.trumpetplayer2.Pyroshot.Listeners.EliminationListeners;
-import me.trumpetplayer2.Pyroshot.Listeners.InventoryClickListener;
-import me.trumpetplayer2.Pyroshot.Listeners.ItemUseListener;
-import me.trumpetplayer2.Pyroshot.Listeners.JoinListener;
-import me.trumpetplayer2.Pyroshot.Listeners.LeaveListener;
-import me.trumpetplayer2.Pyroshot.Listeners.PlayerDropItemListener;
-import me.trumpetplayer2.Pyroshot.Listeners.PlayerShootBowListener;
-import me.trumpetplayer2.Pyroshot.Listeners.PlayerTeleportListener;
+import me.trumpetplayer2.Pyroshot.Listeners.*;
 import me.trumpetplayer2.Pyroshot.Localization.Localizations;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotMinigame;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.RegisterEffectsEvents;
@@ -136,6 +127,8 @@ public class PyroshotMain extends JavaPlugin{
         this.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), this);
         this.getServer().getPluginManager().registerEvents(new EffectRegistration(), this);
+        this.getServer().getPluginManager().registerEvents(new OwlKitListeners(), this);
+        this.getServer().getPluginManager().registerEvents(new IllusionKitListeners(), this);
 	}
 	public boolean getProtocolLibEnabled() {
 	    return ProtocolLibSupport;

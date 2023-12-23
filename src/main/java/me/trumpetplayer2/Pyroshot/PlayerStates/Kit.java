@@ -34,7 +34,9 @@ public enum Kit {
     MACHINEGUN,
     GRENADIER,
     GLOW,
-    PYROMANIAC;
+    PYROMANIAC,
+    OWLET,
+    ILLUSION;
     
     public static int numberOfKits = getNumberOfKits();
     
@@ -104,6 +106,10 @@ public enum Kit {
 	    break;
 	case "pyromaniac" : kit = PYROMANIAC;
 	    break;
+	case "owlet" : kit = OWLET;
+	    break;
+	case "illusion" : kit = ILLUSION;
+	    break;
 	default: kit = DEFAULT;
 		break;
 	}
@@ -137,6 +143,10 @@ public enum Kit {
 	    break;
 	case 12 : kit = PYROMANIAC;
 	    break;
+	case 13 : kit = OWLET;
+	    break;
+	case 14 : kit = ILLUSION;
+	    break;
 	default: kit = DEFAULT;
 		break;
 	}
@@ -169,6 +179,8 @@ public enum Kit {
     case GLOW: cooldown = 30; break;
     case GRENADIER:cooldown = 300; break;
     case PYROMANIAC: cooldown = 60; break;
+    case OWLET : cooldown = 10; break;
+    case ILLUSION : cooldown = 120; break;
 	}
 	return cooldown;
     }
@@ -242,6 +254,12 @@ public enum Kit {
 	case PYROMANIAC:
 	    s = "Pyromaniac";
 	    break;
+	case OWLET:
+	    s = "Owlet";
+	    break;
+	case ILLUSION:
+	    s = "Illusion";
+	    break;
 	default: 
 	    s = "Default";
 	}
@@ -267,7 +285,7 @@ public enum Kit {
     public Inventory getInventory(Player p) {
 	Inventory i = Bukkit.createInventory(null, InventoryType.PLAYER);
 	i.setItem(0, Weapons.bow(p));
-	    i.setItem(17, new ItemStack(Material.ARROW));
+	i.setItem(17, new ItemStack(Material.ARROW));
 	//Create each inventory
 	switch(this) {
 	case POWER : 
@@ -598,6 +616,38 @@ public enum Kit {
         im.setLore(PyroLore);
         im.setDisplayName(ChatColor.RED + "" + ChatColor.BOLD + "Pyromaniac Kit");
         break;
+	case OWLET:
+	    i = new ItemStack(Material.EGG);
+	    im = i.getItemMeta();
+	    
+	    List<String> Owlore = new ArrayList<String>();
+	    Owlore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "owlsymbolname"));
+	    Owlore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+
+        Owlore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+	    Owlore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "owlsymbolegg"));
+	    Owlore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+	    
+	    im.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 3, true);
+	    im.setLore(Owlore);
+	    im.setDisplayName(ChatColor.WHITE + "" + ChatColor.BOLD + "Owlet Kit");
+	    break;
+	case ILLUSION :
+	    i = new ItemStack(Material.OAK_LOG);
+	    im = i.getItemMeta();
+	    
+	    List<String> Ilore = new ArrayList<String>();
+	    Ilore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "illusionsymbolname"));
+	    Ilore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+        Ilore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "doublejump"));
+	    Ilore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "illusionsymbolsneak"));
+	    Ilore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "illusionsymbolspecial"));
+	    Ilore.add(ChatColor.GOLD + PyroshotMain.getInstance().getLocalizedText(p, "line"));
+	    
+	    im.addEnchant(Enchantment.CHANNELING, 2, true);
+	    im.setLore(Ilore);
+	    im.setDisplayName(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Illusion Kit");
+	    break;
 	default:
 	    i = new ItemStack(Material.BARRIER);
 	    im = i.getItemMeta();

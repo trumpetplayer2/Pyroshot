@@ -128,6 +128,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	            return true;
 	            }//If user is player continue, else tell user must be ran by player
 	            if(isPlayer) {
+	                if(PyroshotMain.getInstance().game.isActive) {break;}
 	                p.openInventory(getEliminationInv());
 	            }
 		    break;
@@ -252,6 +253,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
                 return true;
                 }//If user is player continue, else tell user must be ran by player
                 if(isPlayer) {
+                    if(PyroshotMain.getInstance().game.isActive) {break;}
                     p.openInventory(getWinInv());
                 }
 		    break;
@@ -261,6 +263,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
                 return true;
                 }//If user is player continue, else tell user must be ran by player
                 if(isPlayer) {
+                    if(PyroshotMain.getInstance().game.isActive) {break;}
                     p.openInventory(getDeathInv());
                 }
 		    break;
@@ -607,6 +610,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	}
 	
 	public void kit(Player p) {
+	    if(PyroshotMain.getInstance().game.isActive) {return;}
 	    //Open the kit inventory
 	    p.openInventory(getKitInv(p));
 	}
@@ -625,6 +629,7 @@ public class PyroshotCommand implements TabCompleter, CommandExecutor{
 	}
 	
 	public void kit(Player p, String kit) {
+	    if(PyroshotMain.getInstance().game.isActive) {return;}
 	    //Kits was provided, select the provided kit
 	    Kit k;
 	    //If kit was not valid, open GUI

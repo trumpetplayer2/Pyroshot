@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -22,6 +23,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -307,6 +309,7 @@ public class PyroshotMinigame {
 	    p.setAbsorptionAmount(0);
 	    p.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
 	    p.setHealth(20);
+	    p.setInvisible(false);
 	    PyroshotPlugin.getPlayerStats(p).freeze = false;
 	    PyroshotPlugin.getPlayerStats(p).useSpecial = false;
 	    PyroshotPlugin.getPlayerStats(p).special = false;
@@ -506,6 +509,18 @@ public class PyroshotMinigame {
    	    break;
    	case GRENADIER:
    	    giveGrenade(p, stats);
+   	    break;
+   	case OWLET:
+   	    ItemStack egg = new ItemStack(Material.EGG);
+   	    ItemMeta em = egg.getItemMeta();
+   	    em.setDisplayName(PyroshotPlugin.getLocalizedText(p, "owleggname"));
+   	    ArrayList<String> eglore = new ArrayList<String>();
+   	    eglore.add(PyroshotPlugin.getLocalizedText(p, "owlegglore"));
+   	    em.setLore(eglore);
+   	    egg.setItemMeta(em);
+   	    p.getInventory().addItem(egg);
+   	    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_CHICKEN_EGG, 1, 1);
+   	    stats.specialCooldown = Kit.baseCooldown(k);
    	    break;
    	default:
    	    //No special kits

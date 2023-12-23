@@ -161,6 +161,7 @@ public class PyroshotTeam{
     public ItemStack Chestplate() {
 	ItemStack i = new ItemStack(Material.LEATHER_CHESTPLATE);
 	LeatherArmorMeta im = (LeatherArmorMeta) i.getItemMeta();
+	im.setUnbreakable(true);
 	int Red = 255;
 	int Green = 255;
 	int Blue = 255;

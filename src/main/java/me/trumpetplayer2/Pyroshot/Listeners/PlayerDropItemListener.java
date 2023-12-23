@@ -40,6 +40,8 @@ public class PlayerDropItemListener implements Listener{
 	//Check if special is ready
 	if(!plugin.getPlayerStats(p).special) {return;}
 	TriggerUltimateEvent ev = new TriggerUltimateEvent(p, PyroshotMain.getInstance().getPlayerStats(p));
+	Bukkit.getPluginManager().callEvent(ev);
+	if(ev.isCancelled()) return;
 	//Special is ready
 	switch(plugin.getPlayerStats(p).getKit()) {
 	case WATER : 
