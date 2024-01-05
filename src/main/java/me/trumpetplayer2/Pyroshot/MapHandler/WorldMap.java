@@ -17,6 +17,7 @@ import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
+import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PyroshotTeam;
 
 import org.bukkit.Bukkit;
@@ -113,10 +114,16 @@ public class WorldMap extends LocalGameMap{
     }
     
     //Scoreboard Stuff
+    @SuppressWarnings("deprecation")
     public void createBoard() {
 	ScoreboardManager m = Bukkit.getScoreboardManager();
 	scoreboard = m.getNewScoreboard();
-	Objective obj = scoreboard.registerNewObjective("Pyroshot",Criteria.DUMMY,ChatColor.translateAlternateColorCodes('&',"&6&lPyro&4&lshot &c&lPlayers Left"));
+	Objective obj;
+	if(Debug.getNMSVersion() >= 1.20) {
+	    obj = scoreboard.registerNewObjective("Pyroshot",Criteria.DUMMY,ChatColor.translateAlternateColorCodes('&',"&6&lPyro&4&lshot &c&lPlayers Left"));
+	}else {
+	    obj = scoreboard.registerNewObjective("Pyroshot","dummy",ChatColor.translateAlternateColorCodes('&',"&6&lPyro&4&lshot &c&lPlayers Left"));
+	}
 	obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 	//Loop through the Team list and dynamically add the teams to the list
 	ArrayList<Score> scores = new ArrayList<Score>();

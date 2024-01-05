@@ -22,7 +22,7 @@ public class Weapons{
 	ItemMeta m = i.getItemMeta();
 	
 	NamespacedKey key = new NamespacedKey(PyroshotMain.getInstance(), "Pyroshot");
-	m.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
+	m.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
 	m.setUnbreakable(true);
 	
 	m.setDisplayName(ChatColor.DARK_RED + Localize(p, "bowdisplayname"));

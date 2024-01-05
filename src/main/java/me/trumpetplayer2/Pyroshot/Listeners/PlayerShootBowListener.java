@@ -32,8 +32,8 @@ public class PlayerShootBowListener implements Listener{
 	if(e.getBow().getItemMeta() == null) {return;}
 	if(e.getBow().getItemMeta().getPersistentDataContainer() == null) {return;}
 	NamespacedKey key = new NamespacedKey(PyroshotMain.getInstance(), "Pyroshot");
-	if(e.getBow().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN) == null) {return;}
-	if(!e.getBow().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN)) {return;}
+	if(e.getBow().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == null) {return;}
+	if(!(e.getBow().getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == 1)) {return;}
 	if(!(e.getProjectile() instanceof Arrow)) {return;}
 	if(!plugin.game.isActive) {return;}
 	//Shoot fireball
