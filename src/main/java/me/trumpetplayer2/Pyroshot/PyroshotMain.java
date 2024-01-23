@@ -26,7 +26,7 @@ import me.trumpetplayer2.Pyroshot.SoftDependencies.ProtocolLibHandler;
 
 
 public class PyroshotMain extends JavaPlugin{
-	
+	//Discord Test Comment
 	protected HashMap<Player, PlayerStats> PlayerMap = new HashMap<Player, PlayerStats>();
 	protected HashMap<String, Localizations> LocalizationRegistry = new HashMap<String, Localizations>();
 	public PyroshotMinigame game;
