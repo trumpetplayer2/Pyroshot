@@ -63,7 +63,7 @@ public class Weapons{
         ItemMeta m = MachineGun.getItemMeta();
 
         NamespacedKey key = new NamespacedKey(PyroshotMain.getInstance(), "Pyroshot");
-        m.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
+        m.getPersistentDataContainer().set(key, PersistentDataType.INTEGER, 1);
         
         m.setUnbreakable(true);
         
