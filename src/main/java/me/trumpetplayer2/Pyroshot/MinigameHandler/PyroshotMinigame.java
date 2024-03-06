@@ -160,14 +160,13 @@ public class PyroshotMinigame {
 	//Display scoreboard for all players
 	for(Player p : Bukkit.getOnlinePlayers()) {
 	    p.setScoreboard(map.scoreboard);
-	    InventoryMap.put(p.getUniqueId().toString(), p.getInventory().getContents());
-	    for(PotionEffect eff : p.getActivePotionEffects()) {
-	        p.removePotionEffect(eff.getType());
-	    }
+        InventoryMap.put(p.getUniqueId().toString(), p.getInventory().getContents());
+        for(PotionEffect eff : p.getActivePotionEffects()) {
+            p.removePotionEffect(eff.getType());
+        }
 	}
 	//Teleport players to game
 	for(Player p : Bukkit.getOnlinePlayers()) {
-	    p.getInventory().setContents(PyroshotPlugin.getPlayerStats(p).getKit().getInventory(p).getContents());
 	    for(PyroshotTeam t : map.teams) {
 		if(t.onTeam(p)) {
 		    p.getInventory().setChestplate(t.Chestplate());
@@ -228,6 +227,7 @@ public class PyroshotMinigame {
                 for(String u : t.players) {
                     team += Bukkit.getPlayer(UUID.fromString(u)).getName();
                     team += " ";
+                    p.getInventory().setContents(PyroshotPlugin.getPlayerStats(p).getKit().getInventory(p).getContents());
                 }
                 p.sendTitle(null, ChatColor.GOLD + "" + team + " ", 0, 60, 10);
                 p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1, 1f); 

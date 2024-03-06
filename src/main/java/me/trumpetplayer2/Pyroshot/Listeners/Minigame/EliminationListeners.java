@@ -1,4 +1,4 @@
-package me.trumpetplayer2.Pyroshot.Listeners;
+package me.trumpetplayer2.Pyroshot.Listeners.Minigame;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -80,7 +80,7 @@ public class EliminationListeners implements Listener{
 	        p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 	        p.setAbsorptionAmount(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 	        //Cause Moss to sprout around player
-	        PlayerDropItemListener.replaceNearBlocks(p, Kit.MOSS.KitSymbol(p).getType());
+	        SpecialUse.replaceNearBlocks(p, Kit.MOSS.KitSymbol(p).getType());
 	        plugin.getPlayerStats(p).freeze = true;
 	        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> unfreeze(p), 20*30);
 	        return;
@@ -121,7 +121,7 @@ public class EliminationListeners implements Listener{
                 plugin.getPlayerStats(p).useSpecial = true;
                 p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
                 p.setAbsorptionAmount(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-                PlayerDropItemListener.replaceNearBlocks(p, Kit.MOSS.KitSymbol(p).getType());
+                SpecialUse.replaceNearBlocks(p, Kit.MOSS.KitSymbol(p).getType());
                 plugin.getPlayerStats(p).freeze = true;
                 Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> unfreeze(p), 20*30);
                 return;
@@ -174,7 +174,7 @@ public class EliminationListeners implements Listener{
 	    	e.setCancelled(true);
 	    	p.setHealth(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
 	    	p.setAbsorptionAmount(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-	    	PlayerDropItemListener.replaceNearBlocks(p, Kit.MOSS.KitSymbol(p).getType());
+	    	SpecialUse.replaceNearBlocks(p, Kit.MOSS.KitSymbol(p).getType());
 	    	plugin.getPlayerStats(p).freeze = true;
 	    	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> unfreeze(p), 20*30);
 	    	//Mark that the player has used their special

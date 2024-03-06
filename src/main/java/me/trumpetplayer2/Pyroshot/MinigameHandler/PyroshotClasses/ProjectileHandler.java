@@ -17,10 +17,11 @@ import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 import me.trumpetplayer2.Pyroshot.PlayerStates.PlayerStats;
 
-public class PlayerFireball {
+public class ProjectileHandler {
     
     public static void LaunchSnowball(Player p, Arrow temp, PlayerStats stat, float force) {
-	p.launchProjectile(Snowball.class, temp.getVelocity().multiply(Kit.kitShotSpeedMult(Kit.WATER)));
+	Snowball s = p.launchProjectile(Snowball.class, temp.getVelocity().multiply(Kit.kitShotSpeedMult(Kit.WATER)));
+	s.setGravity(false);
     }
     
     public static void LaunchFireball(Player p, Arrow temp, PlayerStats stat, float force) {
@@ -69,7 +70,10 @@ public class PlayerFireball {
 	if(power > 99) {
 	    power = 99;
 	}
-	p.launchProjectile(Fireball.class, temp.getVelocity().multiply(Kit.kitShotSpeedMult(kit))).setYield(power);
+	Fireball shot = p.launchProjectile(Fireball.class, temp.getVelocity().normalize().multiply(Kit.kitShotSpeedMult(kit)));
+	shot.setYield(power);
+	shot.setShooter(p);
+	shot.setGravity(false);
 	if(stat.getKit().equals(Kit.SNIPER)) {
 	    if(stat.useSpecial) {
 	        stat.useSpecial = false;
@@ -122,7 +126,10 @@ public class PlayerFireball {
 	Vector direction = temp.getVelocity().clone();
 	Vector skew = new Vector(Math.random()* accuracy-accuracy/2, Math.random()*accuracy-accuracy/2, Math.random()*accuracy-accuracy/2);
 	direction.add(skew);
-	p.launchProjectile(Fireball.class, direction).setYield(power);
+	Fireball shot = p.launchProjectile(Fireball.class, direction);
+	shot.setYield(power);
+    shot.setShooter(p);
+    shot.setGravity(false);
 	plugin.getPlayerStats(p).useSpecial = false;
 	plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(kit);
 	p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_SHOOT, 1, 1f); 

@@ -1,4 +1,4 @@
-package me.trumpetplayer2.Pyroshot.Listeners;
+package me.trumpetplayer2.Pyroshot.Listeners.Minigame;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -15,7 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import me.trumpetplayer2.Pyroshot.ConfigHandler;
 import me.trumpetplayer2.Pyroshot.PyroshotMain;
-import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.PlayerFireball;
+import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.ProjectileHandler;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.TriggerUltimateEvent;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 
@@ -45,7 +45,7 @@ public class PlayerShootBowListener implements Listener{
 	    e.setCancelled(true);
 	    if(ev.isCancelled()) {return;}
 	    //Player is water kit and wants to use special
-	    PlayerFireball.LaunchSnowball(p, (Arrow) e.getProjectile(), plugin.getPlayerStats(p), e.getForce());
+	    ProjectileHandler.LaunchSnowball(p, (Arrow) e.getProjectile(), plugin.getPlayerStats(p), e.getForce());
 	    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_SPLASH_HIGH_SPEED, 1, 1f); 
 	    return;
 	}
@@ -53,10 +53,10 @@ public class PlayerShootBowListener implements Listener{
 	    Bukkit.getPluginManager().callEvent(ev);
 	    e.setCancelled(true);
 	    if(ev.isCancelled()) {return;}
-	    PlayerFireball.ShotgunFireball(p, (Arrow) e.getProjectile(), plugin, e.getForce());
+	    ProjectileHandler.ShotgunFireball(p, (Arrow) e.getProjectile(), plugin, e.getForce());
 	    return;
 	}
-	PlayerFireball.LaunchFireball(p, (Arrow) e.getProjectile(), plugin.getPlayerStats(p), e.getForce());
+	ProjectileHandler.LaunchFireball(p, (Arrow) e.getProjectile(), plugin.getPlayerStats(p), e.getForce());
 	e.setCancelled(true);
     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_GHAST_SHOOT, 1, 1f); 
     p.getInventory().setItem(17, new ItemStack(Material.ARROW));

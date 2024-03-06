@@ -1,4 +1,4 @@
-package me.trumpetplayer2.Pyroshot.Listeners;
+package me.trumpetplayer2.Pyroshot.Listeners.Minigame;
 
 import org.bukkit.GameMode;
 import org.bukkit.Sound;

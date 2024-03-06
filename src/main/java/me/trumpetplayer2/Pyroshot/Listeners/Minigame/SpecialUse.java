@@ -1,4 +1,4 @@
-package me.trumpetplayer2.Pyroshot.Listeners;
+package me.trumpetplayer2.Pyroshot.Listeners.Minigame;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,13 +8,19 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Levelled;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.SmallFireball;
+import org.bukkit.entity.Snowball;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -26,9 +32,9 @@ import me.trumpetplayer2.Pyroshot.Debug.Debug;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.TriggerUltimateEvent;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 
-public class PlayerDropItemListener implements Listener{
+public class SpecialUse implements Listener{
     PyroshotMain plugin;
-    public PlayerDropItemListener(PyroshotMain main) {
+    public SpecialUse(PyroshotMain main) {
 	plugin = main;
     }
     
@@ -138,52 +144,51 @@ public class PlayerDropItemListener implements Listener{
         plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(plugin.getPlayerStats(p).getKit()) * 100;
     }
     
-//    private void Build(Player p) {
-//	Location underPlayer = p.getLocation().clone().subtract(0, 1, 0);
-//	Block wallBlock = underPlayer.getBlock();
-//	do {
-//		underPlayer.subtract(0, 1, 0);
-//		if(Debug.getNMSVersion() < 1.18) {
-//		    if(underPlayer.getY() < -64) {
-//            //Player is above void
-//            wallBlock.setType(Material.OAK_WOOD);}
-//		}
-//		else if(underPlayer.getY() < 1) {
-//			//Player is above void
-//			wallBlock.setType(Material.OAK_WOOD);
-//		}
-//		wallBlock = underPlayer.getBlock();
-//	}while(wallBlock.getType() == Material.AIR);
-//	
-//	//Determine middle block in front of player
-//	Location origin = p.getEyeLocation();
-//	Vector direction = origin.getDirection();
-//	Location centerLocation = origin.clone().add(direction);
-//	
-//	//Determine corner
-//	Location rotated = origin.clone();
-//	rotated.setPitch(0);
-//	rotated.setYaw(origin.getYaw() - 90);
-//	Vector rotation = rotated.getDirection();
-//	Location blockLocation = centerLocation.clone().add(rotation).subtract(0, 3 / 2, 0);
-//	rotation.multiply(-1);
-//	int initialX = blockLocation.getBlockX();
-//	int initialZ = blockLocation.getBlockZ();
-//	
-//	//Build 3x3 walls
-//	for (int y = 0; y < 3; y++) {
-//	    for (int i = 0; i < 3; i++) {
-//	        blockLocation.getBlock().setType(wallBlock.getType());
-//	        blockLocation.add(rotation);
-//	    }
-//	 
-//	    blockLocation.add(0, 1, 0); // Increase the height by 1
-//	    blockLocation.setX(initialX);
-//	    blockLocation.setZ(initialZ);
-//	}
-//	
-//    }
+  //Water Bomber
+    @EventHandler
+    public void ProjectileHit(ProjectileHitEvent e) {
+    if(!(plugin.game.isActive)) {return;}
+    if(!(e.getEntity() instanceof Snowball)) {return;}
+    if(!(e.getEntity().getShooter() instanceof Player)) {return;}
+    //Check if player has special
+    if(!plugin.getPlayerStats((Player) e.getEntity().getShooter()).special) {return;}
+    Player p = (Player) e.getEntity().getShooter();
+    //Get where snowball hit
+    Location loc = e.getEntity().getLocation().clone();
+    int radius = 3;
+    ArrayList<Block> blocks = new ArrayList<Block>();
     
+    for (int x = (loc.getBlockX()-radius); x <= (loc.getBlockX()+radius); x++) {
+        for (int y = (loc.getBlockY()-radius); y <= (loc.getBlockY()+radius); y++) {
+        for (int z = (loc.getBlockZ()-radius); z <= (loc.getBlockZ()+radius); z++) {
+            Location l = new Location(loc.getWorld(), x, y, z);
+            if (l.distance(loc) <= radius) {
+            blocks.add(l.getBlock());
+            }
+        }
+        }
+    }
+    for(Block b : blocks) {
+        b.setType(Material.WATER);
+        BlockData bData = b.getBlockData();
+        Levelled tempt = (Levelled) bData;
+        tempt.setLevel(8);
+        b.setBlockData(tempt);
+    }
+    plugin.getPlayerStats(p).special = false;
+    plugin.getPlayerStats(p).useSpecial = false;
+    plugin.getPlayerStats(p).specialCooldown = Kit.baseCooldown(Kit.WATER);
+    }
+    
+    @EventHandler
+    public void ProjectileThrown(ProjectileLaunchEvent e) {
+    if(!plugin.game.isActive) {return;}
+    if(!(e.getEntity() instanceof EnderPearl)) {return;}
+    if(!(e.getEntity().getShooter() instanceof Player)) {return;}
+    Player p = (Player) e.getEntity().getShooter();
+    plugin.getPlayerStats(p).specialCooldown = 15;
+    }
+
     private void Build(Player p) {
         
         //Determine middle block in front of player

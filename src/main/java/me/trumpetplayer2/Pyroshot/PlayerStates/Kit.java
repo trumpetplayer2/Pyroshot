@@ -36,7 +36,10 @@ public enum Kit {
     GLOW,
     PYROMANIAC,
     OWLET,
-    ILLUSION;
+    ILLUSION,
+    TEA,
+    POUTINE,
+    ARCHDEMON;
     
     public static int numberOfKits = getNumberOfKits();
     
@@ -47,6 +50,8 @@ public enum Kit {
 	        return true;
 	    }
 	    return false;
+	case TEA,POUTINE,ARCHDEMON:
+	    return true;
 //	case GLOW :
 //	    if(PyroshotMain.getInstance().getProtocolLibEnabled()) {
 //	        return false;
@@ -94,10 +99,7 @@ public enum Kit {
 		break;
 	case "moss" : kit = MOSS;
 		break;
-	case "machine gun" :
-	case "machgun" :
-	case "machinegun" : 
-	case "barrage" :
+	case "machine gun", "machgun", "machinegun", "barrage" :
 	    kit = MACHINEGUN;
 	    break;
 	case "grenadier" : kit = GRENADIER; 
@@ -109,6 +111,12 @@ public enum Kit {
 	case "owlet" : kit = OWLET;
 	    break;
 	case "illusion" : kit = ILLUSION;
+	    break;
+	case "tea" : kit = TEA;
+	    break;
+	case "poutine","pirate","poutinepirate", "poutine pirate" : kit = POUTINE;
+	    break;
+	case "archdemon","demon","arch", "arch demon" : kit = ARCHDEMON;
 	    break;
 	default: kit = DEFAULT;
 		break;
@@ -147,6 +155,8 @@ public enum Kit {
 	    break;
 	case 14 : kit = ILLUSION;
 	    break;
+	case 15 : kit = TEA;
+	    break;
 	default: kit = DEFAULT;
 		break;
 	}
@@ -167,20 +177,23 @@ public enum Kit {
 	int cooldown = 0;
 	switch(k) {
 	case DEFAULT	 : cooldown = 5; break;
-	case POWER	 : cooldown = 300; break;
-	case WATER	 : cooldown = 300; break;
+	case POWER	 : cooldown = 30; break;
+	case WATER	 : cooldown = 45; break;
 	case SHOTGUN	 : cooldown = 15; break;
-	case ENDER	 : cooldown = 300; break;
+	case ENDER	 : cooldown = 90; break;
 	case BUILDER	 : cooldown = 30; break;
 	case WITCH	 : cooldown = 300; break;
 	case SNIPER	 : cooldown = 7; break;
-	case MOSS	 : cooldown = 300; break;
+	case MOSS	 : cooldown = 30; break;
 	case MACHINEGUN : cooldown = 300; break;
     case GLOW: cooldown = 30; break;
-    case GRENADIER:cooldown = 300; break;
+    case GRENADIER: cooldown = 300; break;
     case PYROMANIAC: cooldown = 60; break;
     case OWLET : cooldown = 10; break;
     case ILLUSION : cooldown = 120; break;
+    case TEA : cooldown = 30; break;
+    case POUTINE: cooldown = 30; break;
+    case ARCHDEMON: cooldown = 15; break;
 	}
 	return cooldown;
     }
@@ -209,61 +222,70 @@ public enum Kit {
     }
     
     public static String kitToString(Kit k) {
-	String s = "default";
-	switch(k) {
-    	case POWER : 
-    	    s = "Power";
-    	    break;
-	
-	case WATER :
-	    s = "Water";
-	    break;
+        String s = "default";
+        switch(k) {
+        case POWER : 
+            s = "Power";
+            break;
+            
+        case WATER :
+            s = "Water";
+            break;
+            
+        case SHOTGUN :
+            s = "Burst";
+            break;
+            
+        case ENDER :
+            s = "Ender";
+            break;
+            
+        case BUILDER :
+            s = "Builder";
+            break;
+            
+        case WITCH :
+            s = "Witch";
+            break;
 		
-	case SHOTGUN :
-	    s = "Burst";
-	    break;
-		
-	case ENDER :
-	    s = "Ender";
-	    break;
-		
-	case BUILDER :
-	    s = "Builder";
-	    break;
-		
-	case WITCH :
-	    s = "Witch";
-	    break;
-		
-	case SNIPER :
-	    s = "Sniper";
-	    break;
-	
-	case MOSS :
-	    s = "Moss";
-	    break;
-	case MACHINEGUN :
-	    s = "Barrage";
-	    break;
-	case GRENADIER :
-	    s = "Grenadier";
-	    break;
-	case GLOW :
-	    s = "Glow";
-	    break;
-	case PYROMANIAC:
-	    s = "Pyromaniac";
-	    break;
-	case OWLET:
-	    s = "Owlet";
-	    break;
-	case ILLUSION:
-	    s = "Illusion";
-	    break;
-	default: 
-	    s = "Default";
-	}
-	return s;
+        case SNIPER :
+            s = "Sniper";
+            break;
+            
+        case MOSS :
+            s = "Moss";
+            break;
+        case MACHINEGUN :
+            s = "Barrage";
+            break;
+        case GRENADIER :
+            s = "Grenadier";
+            break;
+        case GLOW :
+            s = "Glow";
+            break;
+        case PYROMANIAC:
+            s = "Pyromaniac";
+            break;
+        case OWLET:
+            s = "Owlet";
+            break;
+        case ILLUSION:
+            s = "Illusion";
+            break;
+        case TEA:
+            s = "Tea";
+            break;
+        case POUTINE:
+            s = "Poutine Pirate";
+            break;
+        case ARCHDEMON:
+            s = "Archdemon";
+            break;
+        default: 
+            s = "Default";
+        }
+        return s;
     }
     
     
@@ -279,7 +301,7 @@ public enum Kit {
     }
     
     public String kitToString() {
-	return (kitToString(this));
+        return (kitToString(this));
     }
     
     public Inventory getInventory(Player p) {
@@ -349,6 +371,15 @@ public enum Kit {
 	        i.setItem(40, scope);
 	        break;
 	    }
+	case TEA:
+	    ItemStack tea = new ItemStack(Material.POTION);
+	    PotionMeta teaMeta = (PotionMeta) tea.getItemMeta();
+	    //Drinking this will trigger "Special" for check
+	    teaMeta.setDisplayName(ChatColor.RED + PyroshotMain.getInstance().getLocalizedText(p, "hottea"));
+	    teaMeta.setColor(Color.RED);
+	    tea.setItemMeta(teaMeta);
+	    i.setItem(1, tea);
+        break;
 	default:
 	    break;
 	}
@@ -430,29 +461,6 @@ public enum Kit {
 		im.setDisplayName(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Ender Kit");
 		
 	    break;
-		
-//	case BUFFER :
-//	    if(Debug.getNMSVersion() < 1.8) {
-//	    i = new ItemStack(Material.RABBIT_FOOT);
-//	    }else {
-//	        i = new ItemStack(Material.BLAZE_POWDER);
-//	    }
-//	    im = i.getItemMeta();
-//	    
-//	    List<String> BufferLore = new ArrayList<String>();
-//		BufferLore.add(ChatColor.GOLD + "Buffer Kit");
-//		BufferLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-//		BufferLore.add(ChatColor.GOLD + " + Double Jump");
-//		BufferLore.add(ChatColor.GOLD + " + 2x Speed Potion");
-//		BufferLore.add(ChatColor.GOLD + " + 1x Jumpboost Potion");
-//		BufferLore.add(ChatColor.GOLD + " + Potions regen 30 seconds after use");
-//		BufferLore.add(ChatColor.GOLD + "-=-=-=-=-=-=-");
-//		
-//		im.addEnchant(Enchantment.SOUL_SPEED, 3, true);
-//		im.setLore(BufferLore);
-//		im.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + "Buffer Kit");
-//		
-//	    break;
 		
 	case BUILDER :
 	    i = new ItemStack(Material.OAK_PLANKS);

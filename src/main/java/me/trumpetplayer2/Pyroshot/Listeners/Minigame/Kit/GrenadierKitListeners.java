@@ -1,10 +1,9 @@
-package me.trumpetplayer2.Pyroshot.Listeners;
+package me.trumpetplayer2.Pyroshot.Listeners.Minigame.Kit;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -21,7 +20,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -31,39 +29,12 @@ import me.trumpetplayer2.Pyroshot.PyroshotMain;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Grenade;
 import me.trumpetplayer2.Pyroshot.PlayerStates.Kit;
 
-public class ItemUseListener implements Listener{
+public class GrenadierKitListeners implements Listener{
     PyroshotMain plugin;
-    public ItemUseListener(PyroshotMain main) {
+    public GrenadierKitListeners(PyroshotMain main) {
 	plugin = main;
     }
-    
-    @EventHandler
-    public void PotionSplash(PotionSplashEvent e) {
-	if(!plugin.game.isActive) {return;}
-	if(!(e.getEntity().getShooter() instanceof Player)){return;}
-	Player p = (Player) e.getEntity().getShooter();
-	ItemStack i = e.getPotion().getItem();
-	if(i.getType().equals(Material.POTION)) {
-	    //Item is potion, remove empty bottle
-	    if(p.getInventory().contains(Material.GLASS_BOTTLE)) {
-		p.getInventory().remove(Material.GLASS_BOTTLE);
-	    }
-	}
-	Kit k = plugin.getPlayerStats(p).getKit();
-	if(!(k.equals(Kit.WITCH))) {return;}
-	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> returnItem(p, i), 20 * 30);
-    }
-    
-    @EventHandler
-    public void PlayerItemConsume(PlayerItemConsumeEvent e) {
-	if(!plugin.game.isActive) {return;}
-	Player p = e.getPlayer();
-	Kit k = plugin.getPlayerStats(p).getKit();
-	if(!(k.equals(Kit.WITCH))) {return;}
-	ItemStack i = e.getItem();
-	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> returnItem(p, i), 20 * 30);
-    }
-    
+    //Grenadier
     @EventHandler
     public void throwBomb(ProjectileLaunchEvent e) {
         if(!plugin.game.isActive) {return;}
@@ -77,10 +48,12 @@ public class ItemUseListener implements Listener{
         //VECTORS DOWN HERE
         double speedBoost = 10;
         e.getEntity().setVelocity(new Vector(e.getEntity().getVelocity().getX() * speedBoost, 
-                e.getEntity().getVelocity().getY(), 
+                e.getEntity().getVelocity().getY() * speedBoost, 
                 e.getEntity().getVelocity().getZ() * speedBoost));
+        potion.setGravity(false);
     }
     
+    //Grenadier
     @EventHandler
     public void grenadeExplosion(PotionSplashEvent e) {
         if(!plugin.game.isActive) {return;}
@@ -95,6 +68,7 @@ public class ItemUseListener implements Listener{
         explode(g, e.getAffectedEntities(), e.getEntity().getLocation().clone());
     }
 
+    //Grenadier
     public void explode(Grenade g, Collection<LivingEntity> affectedEntities, Location l) {
         switch(g) {
         case DYNAMITE:
@@ -184,27 +158,6 @@ public class ItemUseListener implements Listener{
         }
         }
     
-//    @EventHandler
-//    public void onPearlShot(ProjectileLaunchEvent e) {
-//	if (!(e.getEntity() instanceof EnderPearl)) {return;}
-//	if(!(e.getEntity() instanceof Player)) {return;}
-//	Player p = (Player) e.getEntity();
-//	ItemStack i = ConfigHandler.raidPearl;
-//	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> checkPearlLanded(p, i), 20*30);
-//    }
-//    
-//    public void checkPearlLanded(Player p, ItemStack i) {
-//	if(!plugin.getPlayerStats(p).special) {return;}
-//	returnItem(p, i);
-//    }
     
-    public void returnItem(Player p, ItemStack i) {
-	//Item is potion, remove empty bottle
-        if(!plugin.game.isActive) {return;}
-	if(p.getInventory().contains(Material.GLASS_BOTTLE)) {
-	    p.getInventory().remove(Material.GLASS_BOTTLE);
-	}
-	p.getInventory().addItem(i);
-    }
     
 }

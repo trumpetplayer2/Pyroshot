@@ -15,6 +15,9 @@ import me.trumpetplayer2.Pyroshot.Effects.Effect;
 import me.trumpetplayer2.Pyroshot.Effects.Nothing;
 import me.trumpetplayer2.Pyroshot.Effects.Smite;
 import me.trumpetplayer2.Pyroshot.Listeners.*;
+import me.trumpetplayer2.Pyroshot.Listeners.Effect.*;
+import me.trumpetplayer2.Pyroshot.Listeners.Minigame.*;
+import me.trumpetplayer2.Pyroshot.Listeners.Minigame.Kit.*;
 import me.trumpetplayer2.Pyroshot.Localization.Localizations;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotMinigame;
 import me.trumpetplayer2.Pyroshot.MinigameHandler.PyroshotClasses.Events.RegisterEffectsEvents;
@@ -49,8 +52,8 @@ public class PyroshotMain extends JavaPlugin{
 	    getCommand("pyroshot").setTabCompleter(new PyroshotCommand());
 	    //Register Placeholders if possible
 	    if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-		//PlaceholderAPI Exists, load support
-		new PyroshotPapiExpansion().register();
+	        //PlaceholderAPI Exists, load support
+	        new PyroshotPapiExpansion().register();
 	    }else {
 		Bukkit.getServer().getConsoleSender().sendMessage(ConfigHandler.pluginAnnouncement + "Placeholder API was not found. Support disabled");
 	    }
@@ -122,9 +125,11 @@ public class PyroshotMain extends JavaPlugin{
         this.getServer().getPluginManager().registerEvents(new DoubleJumpListener(this), this);
         this.getServer().getPluginManager().registerEvents(new PlayerShootBowListener(this), this);
         this.getServer().getPluginManager().registerEvents(new EliminationListeners(this), this);
-        this.getServer().getPluginManager().registerEvents(new ItemUseListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerTeleportListener(this), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerDropItemListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new GrenadierKitListeners(this), this);
+        this.getServer().getPluginManager().registerEvents(new EnderKitListeners(), this);
+        this.getServer().getPluginManager().registerEvents(new SharedKitListeners(), this);
+
+        this.getServer().getPluginManager().registerEvents(new SpecialUse(this), this);
         this.getServer().getPluginManager().registerEvents(new EffectRegistration(), this);
         this.getServer().getPluginManager().registerEvents(new OwlKitListeners(), this);
         this.getServer().getPluginManager().registerEvents(new IllusionKitListeners(), this);
